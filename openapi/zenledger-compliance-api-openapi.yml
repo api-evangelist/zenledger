@@ -1,0 +1,4238 @@
+openapi: 3.1.0
+info:
+  title: ZenLedger Compliance Suite API
+  version: v3
+  description: 'REST surface of the ZenLedger Compliance Suite — the digital-asset trade-monitoring and crypto tax-compliance
+    API financial institutions and enterprises use to register companies and users, import exchange accounts and
+    wallets, read normalized transactions and holdings, screen wallet addresses against sanctions lists, and look
+    up the supported currencies, sources and chains.
+
+
+    DERIVED, NOT PUBLISHED BY THE PROVIDER. ZenLedger publishes no OpenAPI. This document was mechanically derived
+    by API Evangelist from the first-party Postman collection "V3::Compliance Suite: REST API Reference", published
+    by ZenLedger at https://docs.zenledger.io/compliance/v3/compliance_api.postman_collection.json and saved verbatim
+    in this repo at postman/zenledger-compliance-v3.postman_collection.json. Every path, method, header, documented
+    parameter, example request body and example response below is carried over from that collection; nothing was
+    invented. Request/response schemas are typed as generic objects because the collection carries examples, not
+    schemas. Each operation records its original collection URL template in x-postman-request.'
+  contact:
+    name: ZenLedger
+    url: https://zenledger.io/contact-us/
+    email: support@zenledger.io
+  termsOfService: https://zenledger.io/legal/
+  x-generated-by: API Evangelist enrichment pipeline (derived from the provider-published Postman collection)
+  x-source: postman/zenledger-compliance-v3.postman_collection.json
+  x-source-url: https://docs.zenledger.io/compliance/v3/compliance_api.postman_collection.json
+servers:
+- url: https://api.zenledger.io
+  description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io
+    in every saved example response.
+tags:
+- name: Authentication
+  description: OAuth 2.0 client_credentials token issuance.
+- name: Companies
+  description: Enterprise tenants registered under the Compliance Suite account.
+- name: Users
+  description: End users tracked under a company.
+- name: Transactions
+  description: Normalized crypto transactions for a user or across a company.
+- name: Holdings
+  description: Per-source balances and import state for a user or company.
+- name: Polymarkets
+  description: Polymarket prediction-market positions.
+- name: Imports
+  description: Wallet and exchange-account import (signed and encrypted).
+- name: Wallet Screening
+  description: Sanctions and risk screening for a blockchain address.
+- name: Supported Currencies
+  description: Currency reference data.
+- name: Supported Exchanges and Wallets
+  description: Supported exchange/wallet source reference data.
+- name: Supported Chains
+  description: Supported blockchain reference data.
+paths:
+  /oauth/token:
+    post:
+      operationId: jwtRequest
+      summary: JWT request
+      description: "The server response can vary based on the validity of the provided POST body:\n\n- **Success\
+        \ (HTTP status 200):**\n    - **Headers:** The response includes various headers such as `Content-Type`,\
+        \ `Cache-Control`, `Expires`, and more.\n    - **Body:** The response body is a JSON object containing the\
+        \ `access_token`, `token_type`, `expires_in`, and `scope` fields. The `access_token` is the JWT that should\
+        \ be included in the `Authorization` header for subsequent API requests.\n- **Unauthorized (HTTP status\
+        \ 401):**\n    - **Headers:** The response includes various headers such as `Content-Type`, `Cache-Control`,\
+        \ `Expires`, and more.\n    - **Body:** The response body is a JSON object containing the `error` and `error_description`\
+        \ fields, indicating an invalid client or failed authentication.\n- **Bad Request (HTTP status 400):**\n\
+        \    - **Headers:** The response includes various headers such as `Content-Type`, `Cache-Control`, `Expires`,\
+        \ and more.\n    - **Body:** The response body is a JSON object containing the `error` and `error_description`\
+        \ fields, indicating an invalid request."
+      tags:
+      - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+            example:
+              client_id: '{{oauth_client_id}}'
+              client_secret: '{{oauth_client_secret}}'
+              grant_type: client_credentials
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                JWT_request_success:
+                  value:
+                    access_token: access_token
+                    token_type: Bearer
+                    expires_in: 1800
+                    scope: public
+                    created_at: 1686752196
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                JWT_request_invalid_client:
+                  value:
+                    error: invalid_client
+                    error_description: Client authentication failed due to unknown client, no client authentication
+                      included, or unsupported authentication method.
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                JWT_request_invalid_request:
+                  value:
+                    error: invalid_request
+                    error_description: 'Missing required parameter: grant_type.'
+      security: []
+      x-postman-request: '{{base_url}}/oauth/token'
+  /compliance/api/v3/companies:
+    get:
+      operationId: getCompanies
+      summary: GET companies
+      description: '### GET **/companies**
+
+
+        **Returns** a list of all active companies that exist in the system by making a GET request to the path
+        `/compliance/api/v3/companies` on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        ### Request
+
+
+        ##### QUERY PARAMETERS
+
+
+        > NONE
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Companies
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_companies_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                    - reference: tu7vS9DL6gLqrAwMikRJ
+                      name: A Company
+                      created_at: '2023-06-01T17:13:01.087Z'
+                      updated_at: '2023-06-01T17:13:01.087Z'
+                    - reference: FSOLPzrHGKiiZinvKOrn
+                      name: Another Company
+                      created_at: '2023-06-01T17:31:35.194Z'
+                      updated_at: '2023-06-01T17:31:35.194Z'
+                    - reference: c5KqB1RoKMOmuc15Mz9B
+                      name: New name of company
+                      created_at: '2023-06-01T17:33:05.828Z'
+                      updated_at: '2023-06-01T19:44:58.498Z'
+                    - reference: 1RoKc155KqBMz9BMOmu
+                      name: Company Name
+                      created_at: '2023-06-02T07:48:44.305Z'
+                      updated_at: '2023-06-02T07:48:44.305Z'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_companies_unauthorized:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                    - code: ZENCS-AUTHGET-AA2
+                      message: Unauthorised
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies'
+    post:
+      operationId: createCompany
+      summary: CREATE company
+      description: "### POST **/companies**\n\nAll API requests to this endpoint must be **signed and encrypted**\
+        \ to ensure integrity and security. The signing process is explained in the **Request Signature and Encryption**\
+        \ section and ensures that the request is authenticated and has not been tampered with. Encryption protects\
+        \ sensitive data during transmission.\n\n**Creates** a new company which is linked to the enterprise by\
+        \ making a POST request to the `/compliance/api/v3/companies/` endpoint is used to create a new company\
+        \ in the system.\n\nThis endpoint requires authentication via a bearer token, provided in the Authorisation\
+        \ header of the request.\n\n### Request\n\n##### QUERY PARAMETERS\n\n> NONE\n\n##### BODY\n\n*In JSON format\n\
+        \n> **name** (optional) `string` Legal name of the company\n> \n> **reference** `string` Own company reference\n\
+        > \n> **import_notification_url** (optional) `string` if set, Webhook notifications will be sent here after\
+        \ each import completed. For security reasons, this value will never be returned by the API.\n> \n> **domain_target_url**\
+        \ (optional) `string` This parameter is required for proper functioning of the Iframe integration. When\
+        \ importing accounts via Iframe, the integration uses postMessage to communicate with the parent window.\
+        \ This attribute should be set to the domain where the parent application (the Iframe container) is hosted\
+        \ — for example, [https://app.partnerdomain.com](https://app.partnerdomain.com). It ensures messages are\
+        \ correctly delivered and received between the Iframe and its parent.\n> \n> Alternatively, the value \"\
+        default\" can be used. In that case, the domain will be set to the parent enterprise’s default_url, if defined,\
+        \ at the time the request is received by ZenLedger.\n> \n> *   For security reasons, this value will never\
+        \ be returned in API responses.\n\n##### RESPONSE `200`\n\n##### RESPONSE DATA\n\n> **api_version** `string`\
+        \ Version of the targeted API\n> \n> **data** `string` Wrapper for response data (See response example)"
+      tags:
+      - Companies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+            example:
+              name: Company Name
+              reference: '{{company_reference}}'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                CREATE_company_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      reference: tu7vS9DL6gLqrAwMikRJ
+                      name: Company Name
+                      created_at: '2023-06-02T07:48:44.305Z'
+                      updated_at: '2023-06-02T07:48:44.305Z'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                CREATE_company_duplicate_id:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPPST-AA2
+                      message: Duplicated External ID for company
+                CREATE_company_reference_not_allowed:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPPST-AA1
+                      message: Could not add company
+                CREATE_company_active_companies_limit_reached:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPPST-AA3
+                      message: Maximum number of active companies limit exceeded
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/'
+  /compliance/api/v3/companies/{company_reference}:
+    get:
+      operationId: getCompany
+      summary: GET company
+      description: '### GET **/companies/**{companyReference}
+
+
+        **Returns** the details of the requested company by making a GET request to the path `/compliance/api/v3/companies/{company_reference}`
+        on the base URL
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        ### Request
+
+
+        ##### QUERY PARAMETERS
+
+
+        > NONE
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Companies
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Path variable company_reference (from the Postman collection URL template).
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_company_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      reference: c155KqBMz9Bc155KqBMz9B
+                      name: company name
+                      created_at: '2023-05-31T08:14:43.332Z'
+                      updated_at: '2023-05-31T08:14:43.332Z'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_company_company_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPGET-AA3
+                      message: Could not find company
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}'
+    delete:
+      operationId: deleteCompany
+      summary: DELETE company
+      description: '### DELETE **/companies/**{companyReference}
+
+
+        **Deletes** a company which is linked to the enterprise by making a DELETE request to the `/compliance/api/v3/companies/{company_reference}`
+        endpoint.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        ### Request
+
+
+        ##### QUERY PARAMETERS
+
+
+        > NONE
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Companies
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Path variable company_reference (from the Postman collection URL template).
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                DELETE_company_success:
+                  value:
+                    api_version: '3.0'
+                    data: []
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                DELETE_company_company_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPGET-AA3
+                      message: Could not find company
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}'
+    put:
+      operationId: updateCompanyDetails
+      summary: UPDATE company details
+      description: "### PUT **/companies**\n\nAll API requests to this endpoint must be **signed and encrypted**\
+        \ to ensure integrity and security. The signing process is explained in the **Request Signature and Encryption**\
+        \ section and ensures that the request is authenticated and has not been tampered with. Encryption protects\
+        \ sensitive data during transmission.\n\n**Updates** the details of a company by making a PUT request to\
+        \ the path `/compliance/api/v3/companies/{company_reference}` on the base URL\n\nThis endpoint requires\
+        \ authentication via a bearer token, provided in the Authorisation header of the request.\n\n### Request\n\
+        \n##### QUERY PARAMETERS\n\n> NONE\n\n##### BODY\n\n*In JSON format\n\n> **name** (optional) `string` Legal\
+        \ name of the company\n> \n> **import_notification_url** (optional) `string` if set, Webhook notifications\
+        \ will be sent here after each import completed\n\n##### RESPONSE `200`\n\n##### RESPONSE DATA\n\n> **api_version**\
+        \ `string` Version of the targeted API\n> \n> **data** `string` Wrapper for response data (See response\
+        \ example)"
+      tags:
+      - Companies
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Path variable company_reference (from the Postman collection URL template).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+            example:
+              name: New Company Name
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                UPDATE_company_details_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      reference: Company Reference
+                      name: New Company Name
+                      created_at: '2023-06-01T12:30:24.409Z'
+                      updated_at: '2023-06-01T12:45:13.749Z'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                UPDATE_company_details_company_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPGET-AA3
+                      message: Could not find company
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}'
+  /compliance/api/v3/companies/{company_reference}/users:
+    get:
+      operationId: getCompanyUsers
+      summary: GET company users
+      description: '### GET **/companies/{companyReference}/users**
+
+
+        **Returns** a list of all active users that exist in the system for a specific company by making a GET request
+        to the path `/companies/{company_reference}/users` on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        ### Request
+
+
+        ##### URi PARAMETERS
+
+
+        > **companyReference** `string` The ID of a specific company
+
+
+        ##### QUERY PARAMETERS
+
+
+        > NONE
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Users
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_company_users_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      users:
+                      - id: 9f3ebcde-0d2c-4f8d-a5e8-e76b918372e4
+                        first_name: firstcompany4-name
+                        last_name: firstcompany4-namelast
+                        email: user@firstcompany4.com
+                        created_at: '2023-06-01T12:59:46.223Z'
+                        updated_at: '2023-06-01T12:59:46.223Z'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_company_users_company_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPGET-AA3
+                      message: Could not find company
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/users'
+    post:
+      operationId: createCompanyUser
+      summary: CREATE company user
+      description: "### POST **/companies/{companyReference}/users**\n\nAll API requests to this endpoint must be\
+        \ **signed and encrypted** to ensure integrity and security. The signing process is explained in the **Request\
+        \ Signature and Encryption** section and ensures that the request is authenticated and has not been tampered\
+        \ with. Encryption protects sensitive data during transmission.\n\n**Creates** a new company user which\
+        \ is linked to the company by making a POST request to the `/compliance/api/v3/companies/{company_reference}/users`\
+        \ endpoint is used to create a new user in the system.\n\nThis endpoint requires authentication via a bearer\
+        \ token, provided in the Authorisation header of the request.\n\n### Request\n\n##### URi PARAMETERS\n\n\
+        > **companyReference** `string` The ID of a specific company\n\n##### QUERY PARAMETERS\n\n> NONE\n\n#####\
+        \ BODY\n\n*In JSON format\n\n> **email** `string` Email address of the user\n> \n> **first_name** (optional)\
+        \ `string` First name of the user\n> \n> **last_name** (optional) `string` Last name of the user\n\n#####\
+        \ RESPONSE `200`\n\n##### RESPONSE DATA\n\n> **api_version** `string` Version of the targeted API\n> \n\
+        > **data** `string` Wrapper for response data (See response example)"
+      tags:
+      - Users
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+            example:
+              email: johndoe@example.com
+              first_name: John
+              last_name: Doe
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                CREATE_company_user_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      id: 9f3ebcde-0d2c-4f8d-a5e8-e76b918372e4
+                      first_name: John
+                      last_name: Doe
+                      email: johndoe@example.com
+                      created_at: '2023-07-04T07:23:49.810Z'
+                      updated_at: '2023-07-04T07:23:49.810Z'
+                CREATE_company_user_active_users_limit_reached:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-USRPST-AA8
+                      message: Maximum number of active users limit exceeded
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/users'
+  /compliance/api/v3/companies/{company_reference}/users/{user_id}:
+    get:
+      operationId: getCompanyUser
+      summary: GET company user
+      description: '### GET **/companies/{companyReference}/users/{userId}**
+
+
+        **Returns** the details of a specific user by making a GET request to the path `/companies/{company_reference}/users/{user_id}`
+        on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        ### Request
+
+
+        ##### URi PARAMETERS
+
+
+        > **companyReference** `string` The ID of a specific company
+
+
+        > **userId** `string` The ID of a specific user
+
+
+        ##### QUERY PARAMETERS
+
+
+        > NONE
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Users
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_company_users_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      users:
+                      - id: 9f3ebcde-0d2c-4f8d-a5e8-e76b918372e4
+                        first_name: firstcompany4-name
+                        last_name: firstcompany4-namelast
+                        email: user@firstcompany4.com
+                        created_at: '2023-06-01T12:59:46.223Z'
+                        updated_at: '2023-06-01T12:59:46.223Z'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_company_users_company_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPGET-AA3
+                      message: Could not find company
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/users/{{user_id}}'
+    put:
+      operationId: updateUserDetails
+      summary: UPDATE user details
+      description: "### UPDATE **/companies/{companyId}/users/{userId}**\n\nAll API requests to this endpoint must\
+        \ be **signed and encrypted** to ensure integrity and security. The signing process is explained in the\
+        \ **Request Signature and Encryption** section and ensures that the request is authenticated and has not\
+        \ been tampered with. Encryption protects sensitive data during transmission.\n\n**Updates** the details\
+        \ of a user by making a PUT request to the path `/compliance/api/v3/companies/{company_reference}/users/{user_id}`\
+        \ on the base URL\n\n**User Activation/Deactivation:**\n\nIf the boolean parameter **active** is passed\
+        \ in the body as *false*, the user will be deactivated, transactional data will no longer be pulled by ZenLedger\
+        \ and no data will be delivered by this API until the user is re-activated.\n\n> Pass the parameter **active**\
+        \ as *false* to deactivate  \n> Pass the parameter **active** as *true* to re-activate\n\nThis endpoint\
+        \ requires authentication via a bearer token, provided in the Authorisation header of the request.\n\n###\
+        \ Request\n\n##### URi PARAMETERS\n\n> **companyReference** `string` The ID of a specific company\n\n> **userId**\
+        \ `string` The ID of a specific user\n\n##### QUERY PARAMETERS\n\n> NONE\n\n##### BODY\n\n*In JSON format\n\
+        \n> **email** (optional) `string` Email address of the user\n> \n> **first_name** (optional) `string` First\
+        \ name of the user\n> \n> **last_name** (optional) `string` Last name of the user\n> \n> **active** (optional)\
+        \ `boolean` Activate/Deactivate a user if passed\n\n##### RESPONSE `200`\n\n##### RESPONSE DATA\n\n> **api_version**\
+        \ `string` Version of the targeted API\n> \n> **data** `string` Wrapper for response data (See response\
+        \ example)"
+      tags:
+      - Users
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+            example:
+              first_name: user 1 of referenced company
+              last_name: user 1 of referenced company
+              email: user@firstcompany2.com
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                UPDATE_user_details_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      id: 9f3ebcde-0d2c-4f8d-a5e8-e76b918372e4
+                      first_name: user 1 of referenced company
+                      last_name: user 1 of referenced company
+                      email: user@firstcompany2.com
+                      created_at: '2023-06-01T12:59:46.223Z'
+                      updated_at: '2023-06-01T13:08:15.608Z'
+                      active: 'true'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                UPDATE_user_details_user_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-USRGET-AA2
+                      message: Could not find user
+                UPDATE_user_details_company_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPGET-AA3
+                      message: Could not find company
+                UPDATE_user_details_active_users_limit_reached:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-USRPST-AA8
+                      message: Maximum number of active users limit exceeded
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/users/{{user_id}}'
+    delete:
+      operationId: deleteCompanyUser
+      summary: DELETE company user
+      description: '### DELETE **/companies/{companyReference}/users/{userId}**
+
+
+        **Deletes** a user which is linked to the company by making a DELETE request to the `/compliance/api/v3/companies/{company_reference}/users/{user_id}`
+        endpoint.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        ### Request
+
+
+        ##### URi PARAMETERS
+
+
+        > **companyReference** `string` The ID of a specific company
+
+
+        > **userId** `string` The ID of a specific user
+
+
+        ##### QUERY PARAMETERS
+
+
+        > NONE
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Users
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                DELETE_company_user_success:
+                  value:
+                    api_version: '3.0'
+                    data: []
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                DELETE_company_user_user_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-USRGET-AA2
+                      message: Could not find user
+                DELETE_company_user_company_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPGET-AA3
+                      message: Could not find company
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/users/{{user_id}}'
+  /compliance/api/v3/companies/{company_reference}/users/{user_id}/transactions:
+    get:
+      operationId: getTransactionsForUser
+      summary: GET transactions for user
+      description: "### GET **/companies/{companyReference}/users/{userId}/transactions**\n\n**Returns** a list\
+        \ of the user's transactions by making a GET request to the path `/companies/{company_reference}/users/{user_id}/transactions`\
+        \ on the base URL.\n\nThis endpoint requires authentication via a bearer token, provided in the Authorisation\
+        \ header of the request.\n\n> *Results paginated with 100 elements per page\n\n### Request\n\n##### URi\
+        \ PARAMETERS\n\n> **companyReference** `string` The ID of a specific company\n> \n> **userId** `string`\
+        \ The ID of a specific user\n\n##### QUERY PARAMETERS\n\n> **currency_code** `string` Filter transactions\
+        \ by currency code\n> \n> **date_from** `string` Specific cut-off date for the transactions list (beginning\
+        \ of the list) specific for the date when the transactions were imported into ZenLedger\n> \n> **date_to**\
+        \ `string` Specific cut-off date for the transactions list (end of the list) specific for the date when\
+        \ the transactions were imported into ZenLedger\n> \n> **transaction_date_from** `string` Specific cut-off\
+        \ date for the transactions list (beginning of the list) specific for the date when the transactions took\
+        \ place\n> \n> **transaction_date_to** `string` Specific cut-off date for the transactions list (end of\
+        \ the list) specific for the date when the transactions took place\n> \n> **source_id** `number` Specific\
+        \ source to show only transactions from a specific wallet/exchange\n> \n> **sorting_method** `string` Sorting\
+        \ method used to order the returned list of transactions. This can be set to **transaction_timestamps**\
+        \ or **import_timestamp**. If not set, the default sorting date will be the transaction date.\n> \n> **page**\
+        \ `number` Specific page requested for the paginated results\n\n##### RESPONSE `200`\n\n##### RESPONSE DATA\n\
+        \n> **api_version** `string` Version of the targeted API\n> \n> **data** `string` Wrapper for response data\
+        \ (See response example)"
+      tags:
+      - Transactions
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific user
+      - name: currency_code
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Filter transactions by currency code
+      - name: date_from
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Specific cut-off date for the transactions list (beginning of the list) specific for the date
+          when the transactions were imported into ZenLedger
+      - name: date_to
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Specific cut-off date for the transactions list (end of the list) specific for the date when
+          the transactions were imported into ZenLedger
+      - name: transaction_date_from
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Specific cut-off date for the transactions list (beginning of the list) specific for the date
+          when the transactions took place
+      - name: transaction_date_to
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Specific cut-off date for the transactions list (end of the list) specific for the date when
+          the transactions took place
+      - name: source_id
+        in: query
+        required: false
+        schema:
+          type: number
+        description: Specific source to show only transactions from a specific wallet/exchange
+      - name: sorting_method
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Sorting method used to order the returned list of transactions. This can be set to **transaction_timestamps**
+          or **import_timestamp**. If not set, the default sorting date will be the transaction date.
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: number
+        description: Specific page requested for the paginated results
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_transactions_for_user_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      transactions:
+                      - reference: fd8592122083e87d7d3aafdc8acce4c1
+                        import_timestamp: '2026-01-09T13:23:19Z'
+                        transaction_timestamp: '2025-12-25T11:31:36Z'
+                        transaction_super_type: sell
+                        transaction_type: fee
+                        transaction_hash: 4eb1Fuh2F1Csg1HmRNTy8QKT41c9WdLnVSo5sTct8vViZXoTZcuf84JfjsG8dg8PBY5dnNeqAw4rZV4sD7Mko9zQ
+                        amount_incoming: 0.0006088244047619051
+                        currency_incoming: USD
+                        currency_incoming_contract_address: 7wxahljatdzbaz7hyrifpypgppbckiyhf6haxuzsbonk
+                        currency_incoming_is_spam: false
+                        amount_outgoing: 5.0e-06
+                        currency_outgoing: SOL
+                        currency_outgoing_contract_address: null
+                        currency_outgoing_is_spam: false
+                        fee_amount: 0.0
+                        fee_currency: USD
+                        source_name: SOL Wallet
+                        source_id: 95721263-a907-4cbe-8ad9-9c6e337d94cb
+                        source_reference: sol-wallet
+                        transaction_id: 4eb1Fuh2F1Csg1HmRNTy8QKT41c9WdLnVSo5sTct8vViZXoTZcuf84JfjsG8dg8PBY5dnNeqAw4rZV4sD7Mko9zQ
+                        subtotal_fiat: 0.0
+                        total_fiat: 0.0
+                        address_from: null
+                        address_to: null
+                        chain_info:
+                        - id: null
+                          name: Solana
+                      - reference: ff0b41eacc027fc94e8229bf2e1a5eaa
+                        import_timestamp: '2026-01-09T13:23:11Z'
+                        transaction_timestamp: '2025-12-25T11:31:37Z'
+                        transaction_super_type: sell
+                        transaction_type: fee
+                        transaction_hash: 2PwDAFr4aWrJW926WosRHbJBnzodme6vPTMjPsjDTzJUtKfCWnKpgWd3oveSFhHCRUp4Pzgw5YnSBtqZa2Mqp1Bt
+                        amount_incoming: 0.0006088244047619051
+                        currency_incoming: USD
+                        currency_incoming_contract_address: 7wxahljatdzbaz7hyrifpypgppbckiyhf6haxuzsbonk
+                        currency_incoming_is_spam: false
+                        amount_outgoing: 5.0e-06
+                        currency_outgoing: SOL
+                        currency_outgoing_contract_address: null
+                        currency_outgoing_is_spam: false
+                        fee_amount: 0.0
+                        fee_currency: USD
+                        source_name: SOL Wallet
+                        source_id: 95721263-a907-4cbe-8ad9-9c6e337d94cb
+                        source_reference: sol-wallet
+                        transaction_id: 2PwDAFr4aWrJW926WosRHbJBnzodme6vPTMjPsjDTzJUtKfCWnKpgWd3oveSFhHCRUp4Pzgw5YnSBtqZa2Mqp1Bt
+                        subtotal_fiat: 0.0
+                        total_fiat: 0.0
+                        address_from: null
+                        address_to: null
+                        chain_info:
+                        - id: null
+                          name: Solana
+                      - reference: e03caa7f6756ff61171b4b45bf58c5ed
+                        import_timestamp: '2026-01-09T13:23:11Z'
+                        transaction_timestamp: '2025-12-25T11:31:47Z'
+                        transaction_super_type: sell
+                        transaction_type: fee
+                        transaction_hash: 3EGVXeWd5Hgt7wdYUWTGH62bKf9aDcBaCwUTmwqupce2ivfy4JFRfAkjNPqv1bwHozUhpCeVkkexDAgiT3jRXBCy
+                        amount_incoming: 0.0006088244047619051
+                        currency_incoming: USD
+                        currency_incoming_contract_address: 7wxahljatdzbaz7hyrifpypgppbckiyhf6haxuzsbonk
+                        currency_incoming_is_spam: false
+                        amount_outgoing: 5.0e-06
+                        currency_outgoing: SOL
+                        currency_outgoing_contract_address: null
+                        currency_outgoing_is_spam: false
+                        fee_amount: 0.0
+                        fee_currency: USD
+                        source_name: SOL Wallet
+                        source_id: 95721263-a907-4cbe-8ad9-9c6e337d94cb
+                        source_reference: sol-wallet
+                        transaction_id: 3EGVXeWd5Hgt7wdYUWTGH62bKf9aDcBaCwUTmwqupce2ivfy4JFRfAkjNPqv1bwHozUhpCeVkkexDAgiT3jRXBCy
+                        subtotal_fiat: 0.0
+                        total_fiat: 0.0
+                        address_from: null
+                        address_to: null
+                        chain_info:
+                        - id: null
+                          name: Solana
+                      - reference: df401174d759930db9ea3fb1f97f33b4
+                        import_timestamp: '2026-01-09T13:23:11Z'
+                        transaction_timestamp: '2025-12-25T11:31:47Z'
+                        transaction_super_type: sell
+                        transaction_type: fee
+                        transaction_hash: 21yqa7B3NVFy9rscQVwhvUNhC2RYwj6zXDn8YPD4tvdP9r8qhADdbdJ5xssq8Fpw2Nh7WaAuv7ja35Dct2V4zT9v
+                        amount_incoming: 0.0006088244047619051
+                        currency_incoming: USD
+                        currency_incoming_contract_address: 7wxahljatdzbaz7hyrifpypgppbckiyhf6haxuzsbonk
+                        currency_incoming_is_spam: false
+                        amount_outgoing: 5.0e-06
+                        currency_outgoing: SOL
+                        currency_outgoing_contract_address: null
+                        currency_outgoing_is_spam: false
+                        fee_amount: 0.0
+                        fee_currency: USD
+                        source_name: SOL Wallet
+                        source_id: 95721263-a907-4cbe-8ad9-9c6e337d94cb
+                        source_reference: sol-wallet
+                        transaction_id: 21yqa7B3NVFy9rscQVwhvUNhC2RYwj6zXDn8YPD4tvdP9r8qhADdbdJ5xssq8Fpw2Nh7WaAuv7ja35Dct2V4zT9v
+                        subtotal_fiat: 0.0
+                        total_fiat: 0.0
+                        address_from: null
+                        address_to: null
+                        chain_info:
+                        - id: null
+                          name: Solana
+                      - reference: 4de3bc14ad28e802c0f484dc3594fed4
+                        import_timestamp: '2026-01-09T13:23:11Z'
+                        transaction_timestamp: '2025-12-25T11:31:49Z'
+                        transaction_super_type: sell
+                        transaction_type: fee
+                        transaction_hash: 2y4UUDjjJhFNoLy9RP4yNjQuUp3ednPY7amrjPWNwvD1W7gDyr2LqJDgtAkKhnBVNWZjQXoBLBo7QT9GU776BAhL
+                        amount_incoming: 0.0006088244047619051
+                        currency_incoming: USD
+                        currency_incoming_contract_address: 7wxahljatdzbaz7hyrifpypgppbckiyhf6haxuzsbonk
+                        currency_incoming_is_spam: false
+                        amount_outgoing: 5.0e-06
+                        currency_outgoing: SOL
+                        currency_outgoing_contract_address: null
+                        currency_outgoing_is_spam: false
+                        fee_amount: 0.0
+                        fee_currency: USD
+                        source_name: SOL Wallet
+                        source_id: 95721263-a907-4cbe-8ad9-9c6e337d94cb
+                        source_reference: sol-wallet
+                        transaction_id: 2y4UUDjjJhFNoLy9RP4yNjQuUp3ednPY7amrjPWNwvD1W7gDyr2LqJDgtAkKhnBVNWZjQXoBLBo7QT9GU776BAhL
+                        subtotal_fiat: 0.0
+                        total_fiat: 0.0
+                        address_from: null
+                        address_to: null
+                        chain_info:
+                        - id: null
+                          name: Solana
+                    meta:
+                      current_page: 1
+                      total_entries: 5
+                      total_pages: 1
+                GET_transactions_for_user_empty_response:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      transactions: []
+                    meta:
+                      current_page: 1
+                      total_entries: 0
+                      total_pages: 0
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_transactions_for_user_user_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-USRGET-AA2
+                      message: Could not find user
+                GET_transactions_for_user_company_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPGET-AA3
+                      message: Could not find company
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/users/{{user_id}}/transactions'
+  /compliance/api/v3/companies/{company_reference}/transactions:
+    get:
+      operationId: getTransactionsForAllUserOfACompany
+      summary: GET transactions for all user of a company
+      description: "### GET **/companies/{companyReference}/transactions**\n\n**Returns** a list of all the users\
+        \ of a company with all their transactions by making a GET request to the path `/companies/{company_reference}/transactions`\
+        \ on the base URL.\n\nThis endpoint requires authentication via a bearer token, provided in the Authorisation\
+        \ header of the request.\n\n> *Results paginated with 100 elements per page\n\n### Request\n\n##### URi\
+        \ PARAMETERS\n\n> **companyReference** `string` The ID of a specific company\n\n##### QUERY PARAMETERS\n\
+        \n> **currency_code** `string` Filter transactions by currency code\n> \n> **date_from** `string` Specific\
+        \ cut-off date for the transactions list (beginning of the list) specific for the date when the transactions\
+        \ were imported into ZenLedger\n> \n> **date_to** `string` Specific cut-off date for the transactions list\
+        \ (end of the list) specific for the date when the transactions were imported into ZenLedger\n> \n> **transaction_date_from**\
+        \ `string` Specific cut-off date for the transactions list (beginning of the list) specific for the date\
+        \ when the transactions took place\n> \n> **transaction_date_to** `string` Specific cut-off date for the\
+        \ transactions list (end of the list) specific for the date when the transactions took place\n> \n> **source_id**\
+        \ `number` Specific source to show only transactions from a specific wallet/exchange\n> \n> **sorting_method**\
+        \ `string` Sorting method used to order the returned list of transactions. This can be set to **transaction_timestamps**\
+        \ or **import_timestamp**. If not set, the default sorting date will be the transaction date.\n> \n> **page**\
+        \ `number` Specific page requested for the paginated results\n\n##### RESPONSE `200`\n\n##### RESPONSE DATA\n\
+        \n> **api_version** `string` Version of the targeted API\n> \n> **data** `string` Wrapper for response data\
+        \ (See response example)"
+      tags:
+      - Transactions
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: number
+        description: Specific page requested for the paginated results
+        example: '30'
+      - name: currency_code
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Filter transactions by currency code
+      - name: date_from
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Specific cut-off date for the transactions list (beginning of the list) specific for the date
+          when the transactions were imported into ZenLedger
+      - name: date_to
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Specific cut-off date for the transactions list (end of the list) specific for the date when
+          the transactions were imported into ZenLedger
+      - name: transaction_date_from
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Specific cut-off date for the transactions list (beginning of the list) specific for the date
+          when the transactions took place
+      - name: transaction_date_to
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Specific cut-off date for the transactions list (end of the list) specific for the date when
+          the transactions took place
+      - name: source_id
+        in: query
+        required: false
+        schema:
+          type: number
+        description: Specific source to show only transactions from a specific wallet/exchange
+      - name: sorting_method
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Sorting method used to order the returned list of transactions. This can be set to **transaction_timestamps**
+          or **import_timestamp**. If not set, the default sorting date will be the transaction date.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_transactions_for_all_user_of_a_company_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      transactions:
+                      - reference: 643e2e8d95fe5018093a467fd1c293cc
+                        import_timestamp: '2026-01-09T13:24:13Z'
+                        transaction_timestamp: '2025-12-25T09:56:24Z'
+                        transaction_super_type: sell
+                        transaction_type: fee
+                        transaction_hash: 2UzNWFvee8n52hiv2q6VFC5XCKSJoCWgE1fbYCbmmcYBYJuTqKDoYkPiBrWjVuFaRb4yqGExoYdPC7wcVEVAvnhC
+                        amount_incoming: 0.00061017445652174
+                        currency_incoming: USD
+                        currency_incoming_contract_address: 7wxahljatdzbaz7hyrifpypgppbckiyhf6haxuzsbonk
+                        currency_incoming_is_spam: false
+                        amount_outgoing: 5.0e-06
+                        currency_outgoing: SOL
+                        currency_outgoing_contract_address: null
+                        currency_outgoing_is_spam: false
+                        fee_amount: 0.0
+                        fee_currency: USD
+                        source_name: SOL Wallet
+                        source_id: 95721263-a907-4cbe-8ad9-9c6e337d94cb
+                        source_reference: sol-wallet
+                        transaction_id: 2UzNWFvee8n52hiv2q6VFC5XCKSJoCWgE1fbYCbmmcYBYJuTqKDoYkPiBrWjVuFaRb4yqGExoYdPC7wcVEVAvnhC
+                        subtotal_fiat: 0.0
+                        total_fiat: 0.0
+                        address_from: null
+                        address_to: null
+                        chain_info:
+                        - id: null
+                          name: Solana
+                        user_id: 57f96bf7-3062-4a2c-8940-63926c8ee5fb
+                      - reference: 0601597997f2e0b4c5faa0491d2b6825
+                        import_timestamp: '2026-01-09T13:24:32Z'
+                        transaction_timestamp: '2025-12-25T09:56:25Z'
+                        transaction_super_type: sell
+                        transaction_type: fee
+                        transaction_hash: Ca2L9bf72es4pCsdnyjcZRajWbEwZS4oaFQH5c5DjF58U7K4ZtGDqU2sYpa8LMN43GS3mhi6gP2kBbtBXfgvhBe
+                        amount_incoming: 0.00061017445652174
+                        currency_incoming: USD
+                        currency_incoming_contract_address: 7wxahljatdzbaz7hyrifpypgppbckiyhf6haxuzsbonk
+                        currency_incoming_is_spam: false
+                        amount_outgoing: 5.0e-06
+                        currency_outgoing: SOL
+                        currency_outgoing_contract_address: null
+                        currency_outgoing_is_spam: false
+                        fee_amount: 0.0
+                        fee_currency: USD
+                        source_name: SOL Wallet
+                        source_id: 95721263-a907-4cbe-8ad9-9c6e337d94cb
+                        source_reference: sol-wallet
+                        transaction_id: Ca2L9bf72es4pCsdnyjcZRajWbEwZS4oaFQH5c5DjF58U7K4ZtGDqU2sYpa8LMN43GS3mhi6gP2kBbtBXfgvhBe
+                        subtotal_fiat: 0.0
+                        total_fiat: 0.0
+                        address_from: null
+                        address_to: null
+                        chain_info:
+                        - id: null
+                          name: Solana
+                        user_id: 57f96bf7-3062-4a2c-8940-63926c8ee5fb
+                      - reference: 1404aa5ffddd768ec52f504460989a67
+                        import_timestamp: '2026-01-09T13:24:32Z'
+                        transaction_timestamp: '2025-12-25T09:56:25Z'
+                        transaction_super_type: sell
+                        transaction_type: fee
+                        transaction_hash: 5QAd8UVsv18dsVhDzWcsChZT7uSeEkp9sduC8mosYunLQd8cWAykh6yFqW4cfP6HNqhFRTkX5WFNzUN7PzEZqt9m
+                        amount_incoming: 0.00061017445652174
+                        currency_incoming: USD
+                        currency_incoming_contract_address: 7wxahljatdzbaz7hyrifpypgppbckiyhf6haxuzsbonk
+                        currency_incoming_is_spam: false
+                        amount_outgoing: 5.0e-06
+                        currency_outgoing: SOL
+                        currency_outgoing_contract_address: null
+                        currency_outgoing_is_spam: false
+                        fee_amount: 0.0
+                        fee_currency: USD
+                        source_name: SOL Wallet
+                        source_id: 95721263-a907-4cbe-8ad9-9c6e337d94cb
+                        source_reference: sol-wallet
+                        transaction_id: 5QAd8UVsv18dsVhDzWcsChZT7uSeEkp9sduC8mosYunLQd8cWAykh6yFqW4cfP6HNqhFRTkX5WFNzUN7PzEZqt9m
+                        subtotal_fiat: 0.0
+                        total_fiat: 0.0
+                        address_from: null
+                        address_to: null
+                        chain_info:
+                        - id: null
+                          name: Solana
+                        user_id: 57f96bf7-3062-4a2c-8940-63926c8ee5fb
+                      - reference: 91aec8f39288565b58b29ef42fcb619b
+                        import_timestamp: '2026-01-09T13:24:02Z'
+                        transaction_timestamp: '2025-12-25T09:56:26Z'
+                        transaction_super_type: sell
+                        transaction_type: fee
+                        transaction_hash: 4EcNH9Kp7kX8rbZngrR8QHFcgjUto8pvwjkNtuhwjPczXcnjMZMbtnGmS9Ke9VfYu5y5UNiBtXbremFoHY1dLzPC
+                        amount_incoming: 0.00061017445652174
+                        currency_incoming: USD
+                        currency_incoming_contract_address: 7wxahljatdzbaz7hyrifpypgppbckiyhf6haxuzsbonk
+                        currency_incoming_is_spam: false
+                        amount_outgoing: 5.0e-06
+                        currency_outgoing: SOL
+                        currency_outgoing_contract_address: null
+                        currency_outgoing_is_spam: false
+                        fee_amount: 0.0
+                        fee_currency: USD
+                        source_name: SOL Wallet
+                        source_id: 95721263-a907-4cbe-8ad9-9c6e337d94cb
+                        source_reference: sol-wallet
+                        transaction_id: 4EcNH9Kp7kX8rbZngrR8QHFcgjUto8pvwjkNtuhwjPczXcnjMZMbtnGmS9Ke9VfYu5y5UNiBtXbremFoHY1dLzPC
+                        subtotal_fiat: 0.0
+                        total_fiat: 0.0
+                        address_from: null
+                        address_to: null
+                        chain_info:
+                        - id: null
+                          name: Solana
+                        user_id: 57f96bf7-3062-4a2c-8940-63926c8ee5fb
+                      - reference: cabb8f4a67e7b36b61f275e5e4ad331f
+                        import_timestamp: '2026-01-09T13:24:02Z'
+                        transaction_timestamp: '2025-12-25T09:56:26Z'
+                        transaction_super_type: sell
+                        transaction_type: fee
+                        transaction_hash: 44JevPUgtoiHMiXHCFZm9sUSqirf1x4QWdTw1PnLP43wSCUvLmPXTkAo6objMzWLgqYuJFfEhAbgtPG9XAh6JvLE
+                        amount_incoming: 0.00061017445652174
+                        currency_incoming: USD
+                        currency_incoming_contract_address: 7wxahljatdzbaz7hyrifpypgppbckiyhf6haxuzsbonk
+                        currency_incoming_is_spam: false
+                        amount_outgoing: 5.0e-06
+                        currency_outgoing: SOL
+                        currency_outgoing_contract_address: null
+                        currency_outgoing_is_spam: false
+                        fee_amount: 0.0
+                        fee_currency: USD
+                        source_name: SOL Wallet
+                        source_id: 95721263-a907-4cbe-8ad9-9c6e337d94cb
+                        source_reference: sol-wallet
+                        transaction_id: 44JevPUgtoiHMiXHCFZm9sUSqirf1x4QWdTw1PnLP43wSCUvLmPXTkAo6objMzWLgqYuJFfEhAbgtPG9XAh6JvLE
+                        subtotal_fiat: 0.0
+                        total_fiat: 0.0
+                        address_from: null
+                        address_to: null
+                        chain_info:
+                        - id: null
+                          name: Solana
+                        user_id: 57f96bf7-3062-4a2c-8940-63926c8ee5fb
+                    meta:
+                      current_page: 1
+                      total_entries: 6
+                      total_pages: 1
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_transactions_for_all_user_of_a_company_company_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPGET-AA3
+                      message: Could not find company
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/transactions?page=30'
+  /compliance/api/v3/companies/{company_reference}/users/{user_id}/holdings:
+    get:
+      operationId: getHoldingsForUser
+      summary: GET holdings for user
+      description: '### GET **/companies/{companyReference}/users/{userId}/holdings**
+
+
+        **Returns** a list of the user holdings by making a GET request to the path `/companies/{company_reference}/users/{user_id}/holdings`
+        on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        > *Results paginated with 20 elements per page
+
+
+        ### Request
+
+
+        ##### URi PARAMETERS
+
+
+        > **companyReference** `string` The ID of a specific company
+
+        >
+
+        > **userId** `string` The ID of a specific user
+
+
+        ##### QUERY PARAMETERS
+
+
+        > **currency_code** `string` Filter transactions by currency code
+
+        >
+
+        > **date_from** `string` Specific cut-off date for the transactions list (beginning of the list)
+
+        >
+
+        > **date_to** `string` Specific cut-off date for the transactions list (end of the list)
+
+        >
+
+        > **page** `number` Specific page requested for the paginated results
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Holdings
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific user
+      - name: currency_code
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Filter transactions by currency code
+      - name: date_from
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Specific cut-off date for the transactions list (beginning of the list)
+      - name: date_to
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Specific cut-off date for the transactions list (end of the list)
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: number
+        description: Specific page requested for the paginated results
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_holdings_for_user_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                    - holdings:
+                      - source_id: 06a31f82-cea0-4b04-8562-c895712abc3d
+                        source_type: wallet
+                        source_name: ETH Wallet
+                        source_reference: eth-wallet
+                        last_updated: '2025-04-02T13:29:07.371Z'
+                        import_status: COMPLETE
+                        last_imported_transaction:
+                          reference: cba084fa1e1fae97bab9bff8fc6905af
+                          timestamp: '2020-09-17T12:06:47Z'
+                          imported_at: '2025-04-02T13:28:20.436Z'
+                        address: '0x61a9927dAc6B9D833FD1C81377B1D4bc21577CF5'
+                        assets:
+                        - currency_reference: null
+                          currency_name: Uniswap V1
+                          currency_symbol: UNI-V1
+                          currency_price: 0.0
+                          balance: '0.0'
+                          staked_balance: '0.0'
+                          available_balance: '0.0'
+                          total_fiat: '0.0'
+                          contract_address: '0xaaaf91d9b90df800df4f55c205fd6989c977e73a'
+                          is_spam: false
+                        - currency_reference: null
+                          currency_name: BAT
+                          currency_symbol: BAT
+                          currency_price: 0.0
+                          balance: '0.0'
+                          staked_balance: '0.0'
+                          available_balance: '0.0'
+                          total_fiat: '0.0'
+                          contract_address: '0xaaaf91d9b90df800df4f55c205fd6989c977e73a'
+                          is_spam: false
+                        chain_info:
+                        - id: 1
+                          name: Ethereum Mainnet
+                      - source_id: c00a581c-196b-42a9-be65-36a841a0bf59
+                        source_type: exchange
+                        source_name: Coinbase
+                        source_reference: coinbase
+                        last_updated: '2025-04-02T14:58:41.139Z'
+                        import_status: COMPLETE
+                        last_imported_transaction:
+                          reference: 638d89f14a4002183984d42650fe1045
+                          timestamp: '2022-08-11T08:54:06Z'
+                          imported_at: '2025-04-02T14:57:26.592Z'
+                        address: null
+                        assets:
+                        - currency_reference: null
+                          currency_name: null
+                          currency_symbol: GAL
+                          currency_price: 0.0
+                          balance: '0.0000000014041932'
+                          staked_balance: '0.0'
+                          available_balance: '0.0000000014041932'
+                          total_fiat: '0.0'
+                          contract_address: '0xaaaf91d9b90df800df4f55c205fd6989c977e73a'
+                          is_spam: false
+                        - currency_reference: null
+                          currency_name: Ripple
+                          currency_symbol: XRP
+                          currency_price: 0.0
+                          balance: '0.000006'
+                          staked_balance: '0.0'
+                          available_balance: '0.000006'
+                          total_fiat: '0.0'
+                          contract_address: '0xaaaf91d9b90df800df4f55c205fd6989c977e73a'
+                          is_spam: false
+                        - currency_reference: null
+                          currency_name: null
+                          currency_symbol: VET
+                          currency_price: 0.0
+                          balance: '44.17205026994437'
+                          staked_balance: '0.0'
+                          available_balance: '44.17205026994437'
+                          total_fiat: '0.0'
+                          contract_address: '0xaaaf91d9b90df800df4f55c205fd6989c977e73a'
+                          is_spam: false
+                        chain_info: []
+                      - source_id: d8cb050f-1061-4d79-b1fc-fb689e00ad07
+                        source_type: wallet
+                        source_name: ETH Wallet
+                        source_reference: eth-wallet
+                        last_updated: '2025-04-02T13:29:07.462Z'
+                        import_status: COMPLETE
+                        last_imported_transaction:
+                          reference: b2ecc7d0bfa8c644f19da826c8150a9b
+                          timestamp: '2025-03-24T18:59:35Z'
+                          imported_at: '2025-04-02T13:28:21.427Z'
+                        address: '0x44de43d08aae5551e04ecf69abdbc860c3951375'
+                        assets:
+                        - currency_reference: null
+                          currency_name: blazedether.org
+                          currency_symbol: CLAIM REWARDS ON BLAZEDETHER.ORG-0-NFT
+                          currency_price: 0.0
+                          balance: '1.0'
+                          staked_balance: '0.0'
+                          available_balance: '1.0'
+                          total_fiat: '0.0'
+                          contract_address: '0xaaaf91d9b90df800df4f55c205fd6989c977e73a'
+                          is_spam: false
+                        - currency_reference: null
+                          currency_name: Ethereum
+                          currency_symbol: ETH
+                          currency_price: 0.0
+                          balance: '0.000104131384938'
+                          staked_balance: '0.0'
+                          available_balance: '0.000104131384938'
+                          total_fiat: '0.0'
+                          contract_address: null
+                          is_spam: false
+                        chain_info:
+                        - id: 1
+                          name: Ethereum Mainnet
+                      - source_id: 2a575ad1-bc7f-4f58-a736-c9fcddfc6fe9
+                        source_type: wallet
+                        source_name: BTC Wallet
+                        source_reference: btc-wallet
+                        last_updated: '2025-04-02T13:29:21.764Z'
+                        import_status: COMPLETE
+                        last_imported_transaction:
+                          reference: 2adbe056329a2c3640c9a8d75d96233e
+                          timestamp: '2022-06-16T15:12:18Z'
+                          imported_at: '2025-04-02T13:28:57.376Z'
+                        address: bc1qhdk5lt5frywgkkhshm22g3zf596g25tkpahgwr
+                        assets:
+                        - currency_reference: null
+                          currency_name: Bitcoin
+                          currency_symbol: BTC
+                          currency_price: 0.0
+                          balance: '0.0'
+                          staked_balance: '0.0'
+                          available_balance: '0.0'
+                          total_fiat: '0.0'
+                          contract_address: null
+                          is_spam: false
+                        chain_info:
+                        - id: null
+                          name: Bitcoin
+                      base_currency: USD
+                GET_holdings_for_user_empty_response:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      holdings: {}
+                      base_currency: USD
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_holdings_for_user_user_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-USRGET-AA2
+                      message: Could not find user
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/users/{{user_id}}/holdings'
+  /compliance/api/v3/companies/{company_reference}/users/{user_id}/holdings/{source_id}:
+    get:
+      operationId: getHoldingsForUserBySource
+      summary: GET holdings for user by source
+      description: '### GET **/companies/{companyReference}/users/{userId}/holdings/{sourceId}**
+
+
+        **Returns** the holdings of a specific source of a user by making a GET request to the path `/companies/{company_reference}/users/{user_id}/holdings/{source_id}`
+        on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        ### Request
+
+
+        ##### URi PARAMETERS
+
+
+        > **companyReference** `string` The ID of a specific company
+
+        >
+
+        > **userId** `string` The ID of a specific user
+
+        >
+
+        > **sourceId** `string` The ID of a specific source
+
+
+        ##### QUERY PARAMETERS
+
+
+        > NONE
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Holdings
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific user
+      - name: source_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific source
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_holdings_for_user_by_source_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                    - holdings:
+                      - source_id: face6831-bfbb-4ac5-8d85-ffe74169a970
+                        source_type: wallet
+                        source_name: ETH Wallet
+                        source_reference: eth-wallet
+                        last_updated: '2025-07-08T10:36:44.814Z'
+                        import_status: COMPLETE
+                        last_imported_transaction:
+                          reference: 18bcd0e672eee1c9b8705292ccf0c236
+                          timestamp: '2025-04-01T03:52:11Z'
+                          imported_at: '2025-07-08T10:36:23.724Z'
+                        address: '0x511aef977fe6626b8b6900984b41fdd6b367ab21'
+                        assets:
+                        - currency_reference: null
+                          currency_name: Ethereum
+                          currency_symbol: ETH
+                          currency_price: 0.0
+                          balance: '0.1175013886223704'
+                          staked_balance: '0.0'
+                          available_balance: '0.1175013886223704'
+                          total_fiat: '0.0'
+                          contract_address: null
+                          is_spam: false
+                        - currency_reference: null
+                          currency_name: null
+                          currency_symbol: SPIO
+                          currency_price: 0.0
+                          balance: '15.37657042863076'
+                          staked_balance: '0.0'
+                          available_balance: '15.37657042863076'
+                          total_fiat: '0.0'
+                          contract_address: '0x3c03b4ec9477809072ff9cc9292c9b25d4a8e6c6'
+                          is_spam: false
+                        - currency_reference: null
+                          currency_name: PolkaCover
+                          currency_symbol: CVR
+                          currency_price: 0.0
+                          balance: '1127.165049460295'
+                          staked_balance: '0.0'
+                          available_balance: '1127.165049460295'
+                          total_fiat: '0.0'
+                          contract_address: '0x3c03b4ec9477809072ff9cc9292c9b25d4a8e6c6'
+                          is_spam: false
+                        - currency_reference: null
+                          currency_name: Collateral
+                          currency_symbol: COLL
+                          currency_price: 0.0
+                          balance: '1230.705649017336'
+                          staked_balance: '0.0'
+                          available_balance: '1230.705649017336'
+                          total_fiat: '0.0'
+                          contract_address: '0x957891c11616d3e0b0a76a76fb42724c382e0ef3'
+                          is_spam: false
+                        chain_info:
+                        - id: 1
+                          name: Ethereum - (ERC-20, ERC-721, ERC-1155)
+                      base_currency: USD
+                GET_holdings_for_user_by_source_empty_response:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      holdings: {}
+                      base_currency: USD
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_holdings_for_user_by_source_user_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-USRGET-AA2
+                      message: Could not find user
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/users/{{user_id}}/holdings/{{source_id}}'
+    delete:
+      operationId: deleteUserSource
+      summary: DELETE user source
+      description: '### DELETE **/companies/{companyReference}/users/{userId}/holdings/{sourceId}**
+
+
+        **Deletes** a user''s source along with its transactions by making a DELETE request to the `/compliance/api/v3/companies/{company_reference}/users/{user_id}/holdings/{source_id}`
+        endpoint.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        ### Request
+
+
+        ##### URi PARAMETERS
+
+
+        > **companyReference** `string` The ID of a specific company
+
+
+        > **userId** `string` The ID of a specific user
+
+
+        > **sourceId** `string` The ID of a specific source
+
+
+        ##### QUERY PARAMETERS
+
+
+        > NONE
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Holdings
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific user
+      - name: source_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific source
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                DELETE_user_source_success:
+                  value:
+                    api_version: '3.0'
+                    data: []
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                DELETE_user_source_user_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-USRGET-AA2
+                      message: Could not find user
+                DELETE_user_source_source_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-PARAMGET-AA3
+                      message: Provided source not found
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/users/{{user_id}}/holdings/{{source_id}}'
+  /compliance/api/v3/companies/{company_reference}/holdings:
+    get:
+      operationId: getHoldingsForAllUsersOfACompany
+      summary: GET holdings for all users of a company
+      description: '### GET **/companies/{companyReference}/holdings**
+
+
+        **Returns** a list of all the users of a company with all their holdings by making a GET request to the
+        path `/companies/{company_reference}/holdings` on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        > *Results paginated with 20 elements per page
+
+
+        ### Request
+
+
+        ##### URi PARAMETERS
+
+
+        > **companyReference** `string` The ID of a specific company
+
+
+        ##### QUERY PARAMETERS
+
+
+        > **page** `number` Specific page requested for the paginated results
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Holdings
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: number
+        description: Specific page requested for the paginated results
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_holdings_for_all_users_of_a_company_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                    - users:
+                      - id: 7c039416-6c83-41e3-b6d0-d244b8f3d529
+                        holdings: []
+                        base_currency: USD
+                      - id: d2b9816f-1e14-4596-a6af-fde38cf36005
+                        holdings:
+                        - source_id: 85715a6e-ac84-4005-ad7b-b37bf97bd06b
+                          source_type: exchange
+                          source_name: Bit2Me
+                          source_reference: bit2me
+                          last_updated: '2025-03-25T12:46:27.686Z'
+                          import_status: COMPLETE
+                          last_imported_transaction:
+                            reference: 9918d0cbc2d941ceffe852e9bf1dad89
+                            timestamp: '2024-10-09T11:22:05Z'
+                            imported_at: '2025-03-25T12:46:24.318Z'
+                          address: null
+                          assets:
+                          - currency_reference: null
+                            currency_name: Cardano
+                            currency_symbol: ADA
+                            currency_price: 0.0
+                            balance: '0.0'
+                            staked_balance: '0.0'
+                            available_balance: '0.0'
+                            total_fiat: '0.0'
+                            contract_address: null
+                            is_spam: false
+                          - currency_reference: null
+                            currency_name: null
+                            currency_symbol: SOL
+                            currency_price: 0.0
+                            balance: '0.0005'
+                            staked_balance: '0.0'
+                            available_balance: '0.0005'
+                            total_fiat: '0.0'
+                            contract_address: null
+                            is_spam: false
+                          - currency_reference: null
+                            currency_name: OmiseGO
+                            currency_symbol: OMG
+                            currency_price: 0.0
+                            balance: '0.0'
+                            staked_balance: '0.0'
+                            available_balance: '0.0'
+                            total_fiat: '0.0'
+                            contract_address: null
+                            is_spam: false
+                          - currency_reference: null
+                            currency_name: null
+                            currency_symbol: GNO
+                            currency_price: 0.0
+                            balance: '0.0'
+                            staked_balance: '0.0'
+                            available_balance: '0.0'
+                            total_fiat: '0.0'
+                            contract_address: null
+                            is_spam: false
+                          chain_info: []
+                        base_currency: USD
+                      - id: 83b9c1ee-9df5-48e0-ac46-5ceec42a8a76
+                        holdings:
+                        - source_id: 4275df10-c89a-4001-b842-c45e910b7166
+                          source_type: exchange
+                          source_name: Coinbase
+                          source_reference: coinbase
+                          last_updated: '2025-06-23T15:11:00.312Z'
+                          import_status: COMPLETE
+                          last_imported_transaction:
+                            reference: b306d4eed2dea90e0a52f6224e9a9eae
+                            timestamp: '2024-04-04T14:10:32Z'
+                            imported_at: '2025-06-23T15:07:18.472Z'
+                          address: null
+                          assets:
+                          - currency_reference: null
+                            currency_name: EOS
+                            currency_symbol: EOS
+                            currency_price: 0.0
+                            balance: '0.0'
+                            staked_balance: '0.0'
+                            available_balance: '0.0'
+                            total_fiat: '0.0'
+                            contract_address: null
+                            is_spam: false
+                          - currency_reference: null
+                            currency_name: Cardano
+                            currency_symbol: ADA
+                            currency_price: 0.0
+                            balance: '0.010114'
+                            staked_balance: '0.010114'
+                            available_balance: '0.0'
+                            total_fiat: '0.0'
+                            contract_address: null
+                            is_spam: false
+                          chain_info: []
+                        - source_id: face6831-bfbb-4ac5-8d85-ffe74169a970
+                          source_type: wallet
+                          source_name: ETH Wallet
+                          source_reference: eth-wallet
+                          last_updated: '2025-07-08T10:36:44.814Z'
+                          import_status: COMPLETE
+                          last_imported_transaction:
+                            reference: 18bcd0e672eee1c9b8705292ccf0c236
+                            timestamp: '2025-04-01T03:52:11Z'
+                            imported_at: '2025-07-08T10:36:23.724Z'
+                          address: '0x511aef977fe6626b8b6900984b41fdd6b367ab21'
+                          assets:
+                          - currency_reference: null
+                            currency_name: Ethereum
+                            currency_symbol: ETH
+                            currency_price: 0.0
+                            balance: '0.1175013886223704'
+                            staked_balance: '0.0'
+                            available_balance: '0.1175013886223704'
+                            total_fiat: '0.0'
+                            contract_address: null
+                            is_spam: false
+                          - currency_reference: null
+                            currency_name: null
+                            currency_symbol: SPIO
+                            currency_price: 0.0
+                            balance: '15.37657042863076'
+                            staked_balance: '0.0'
+                            available_balance: '15.37657042863076'
+                            total_fiat: '0.0'
+                            contract_address: null
+                            is_spam: false
+                          - currency_reference: null
+                            currency_name: PolkaCover
+                            currency_symbol: CVR
+                            currency_price: 0.0
+                            balance: '1127.165049460295'
+                            staked_balance: '0.0'
+                            available_balance: '1127.165049460295'
+                            total_fiat: '0.0'
+                            contract_address: '0x3c03b4ec9477809072ff9cc9292c9b25d4a8e6c6'
+                            is_spam: false
+                          - currency_reference: null
+                            currency_name: Collateral
+                            currency_symbol: COLL
+                            currency_price: 0.0
+                            balance: '1230.705649017336'
+                            staked_balance: '0.0'
+                            available_balance: '1230.705649017336'
+                            total_fiat: '0.0'
+                            contract_address: '0x957891c11616d3e0b0a76a76fb42724c382e0ef3'
+                            is_spam: false
+                          - currency_reference: null
+                            currency_name: https://unimex.network/
+                            currency_symbol: UMX
+                            currency_price: 0.0
+                            balance: '0.0'
+                            staked_balance: '0.0'
+                            available_balance: '0.0'
+                            total_fiat: '0.0'
+                            contract_address: '0x10be9a8dae441d276a5027936c3aaded2d82bc15'
+                            is_spam: false
+                          - currency_reference: null
+                            currency_name: PolkastarterToken
+                            currency_symbol: POLS
+                            currency_price: 0.0
+                            balance: '157.5396924253004'
+                            staked_balance: '0.0'
+                            available_balance: '157.5396924253004'
+                            total_fiat: '0.0'
+                            contract_address: '0x83e6f1e41cdd28eaceb20cb649155049fac3d5aa'
+                            is_spam: false
+                          - currency_reference: null
+                            currency_name: null
+                            currency_symbol: LUNA
+                            currency_price: 0.0
+                            balance: '53.17595661355401'
+                            staked_balance: '0.0'
+                            available_balance: '53.17595661355401'
+                            total_fiat: '0.0'
+                            contract_address: null
+                            is_spam: false
+                          - currency_reference: null
+                            currency_name: SpiderDAO Token
+                            currency_symbol: SPDR
+                            currency_price: 0.0
+                            balance: '2256.656181068939'
+                            staked_balance: '0.0'
+                            available_balance: '2256.656181068939'
+                            total_fiat: '0.0'
+                            contract_address: '0xbcd4b7de6fde81025f74426d43165a5b0d790fdd'
+                            is_spam: true
+                          - currency_reference: null
+                            currency_name: Uniswap V2
+                            currency_symbol: UNI-V2--1
+                            currency_price: 0.0
+                            balance: '16.15954062297383'
+                            staked_balance: '0.0'
+                            available_balance: '16.15954062297383'
+                            total_fiat: '0.0'
+                            contract_address: '0xffa98a091331df4600f87c9164cd27e8a5cd2405'
+                            is_spam: false
+                          - currency_reference: null
+                            currency_name: Propy
+                            currency_symbol: PRO
+                            currency_price: 0.0
+                            balance: '806.74259421'
+                            staked_balance: '0.0'
+                            available_balance: '806.74259421'
+                            total_fiat: '0.0'
+                            contract_address: '0x226bb599a12c826476e3a771454697ea52e9e220'
+                            is_spam: true
+                          - currency_reference: null
+                            currency_name: Aragon Network Token
+                            currency_symbol: ANT
+                            currency_price: 0.0
+                            balance: '151.11'
+                            staked_balance: '0.0'
+                            available_balance: '151.11'
+                            total_fiat: '0.0'
+                            contract_address: '0xa117000000f279d81a1d3cc75430faa017fa5a2e'
+                            is_spam: false
+                          - currency_reference: null
+                            currency_name: SPI Club
+                            currency_symbol: SPIC
+                            currency_price: 0.0
+                            balance: '15.37657042863076'
+                            staked_balance: '0.0'
+                            available_balance: '15.37657042863076'
+                            total_fiat: '0.0'
+                            contract_address: '0xc15122898c3ee73211d8a8a4a656ba1980d53086'
+                            is_spam: true
+                          chain_info:
+                          - id: 1
+                            name: Ethereum - (ERC-20, ERC-721, ERC-1155)
+                        - source_id: 812a3dd1-8df5-4b06-843b-05d6e9ae8f26
+                          source_type: wallet
+                          source_name: BTC Wallet
+                          source_reference: btc-wallet
+                          last_updated: '2025-06-13T15:28:49.749Z'
+                          import_status: COMPLETE
+                          last_imported_transaction:
+                            reference: 4001fe6ffce4962298802be896b835e2
+                            timestamp: '2020-11-23T06:19:46Z'
+                            imported_at: '2025-06-13T15:28:44.707Z'
+                          address: bc1qeevcq77dyrk0gc5qs0v59arzmthj3ermd4elu8
+                          assets:
+                          - currency_reference: null
+                            currency_name: Bitcoin
+                            currency_symbol: BTC
+                            currency_price: 0.0
+                            balance: '0.0'
+                            staked_balance: '0.0'
+                            available_balance: '0.0'
+                            total_fiat: '0.0'
+                            contract_address: null
+                            is_spam: false
+                          chain_info:
+                          - id: null
+                            name: Bitcoin
+                        base_currency: USD
+                    meta:
+                      current_page: 1
+                      total_entries: 3
+                      total_pages: 1
+                GET_holdings_for_all_users_of_a_company_empty_response:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      holdings: {}
+                      base_currency: USD
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_holdings_for_all_users_of_a_company_company_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPGET-AA3
+                      message: Could not find company
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/holdings'
+  /compliance/api/v3/companies/{company_reference}/holdings/{source_id}/resync:
+    get:
+      operationId: getResyncSource
+      summary: GET resync source
+      description: "### GET **/companies/{companyReference}/holdings/{sourceId}/resync**\n\n**Returns** a 200 response\
+        \ when the source re-sync has been started successfully by making a GET request to the path `/companies/{company_reference}/holdings/{source_id}/resync`\
+        \ on the base URL.\n\nThis endpoint requires authentication via a bearer token, provided in the Authorisation\
+        \ header of the request.\n\n### Request\n\n##### URi PARAMETERS\n\n> **companyReference** `string` The ID\
+        \ of a specific company  \n> **sourceId** `string` The ID of a specific source\n\n##### QUERY PARAMETERS\n\
+        \n> NONE\n\n##### RESPONSE `200`\n\n##### RESPONSE DATA\n\n> **api_version** `string` Version of the targeted\
+        \ API\n> \n> **data** `string` Wrapper for response data (See response example)"
+      tags:
+      - Holdings
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: source_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific source
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_resync_source_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                    - message: Source 18831c28-9b97-4bd6-9a83-38ce426feb5e Re-Sync Started
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_resync_source_holding_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-HLDRSC-AA2
+                      message: Holding not found
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/holdings/{{source_id}}/resync'
+  /compliance/api/v3/companies/{company_reference}/holdings/{source_id}/resume:
+    get:
+      operationId: getResumeSource
+      summary: GET resume source
+      description: "### GET **/companies/{companyReference}/holdings/{sourceId}/resume**\n\n**Returns** a 200 response\
+        \ when the source import has been resumed successfully by making a GET request to the path `/companies/{company_reference}/holdings/{source_id}/resume`\
+        \ on the base URL.\n\nThis endpoint requires authentication via a bearer token, provided in the Authorisation\
+        \ header of the request.\n\n### Request\n\n##### URi PARAMETERS\n\n> **companyReference** `string` The ID\
+        \ of a specific company  \n**sourceId** `string` The ID of a specific source \n  \n\n##### QUERY PARAMETERS\n\
+        \n> NONE \n  \n\n##### RESPONSE `200`\n\n##### RESPONSE DATA\n\n> **api_version** `string` Version of the\
+        \ targeted API"
+      tags:
+      - Holdings
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: source_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Path variable source_id (from the Postman collection URL template).
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_resume_source_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                    - message: Source 18831c28-9b97-4bd6-9a83-38ce426feb5e import resumed
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_resume_source_holding_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-HLDRSC-AA2
+                      message: Holding not found
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/holdings/{{source_id}}/resume'
+  /compliance/api/v3/companies/{company_reference}/users/{user_id}/polymarkets:
+    get:
+      operationId: getPolymarketsForUser
+      summary: GET polymarkets for user
+      description: "### GET **/companies/{companyReference}/users/{userId}/polymarkets**\n\n**Returns** a list of\
+        \ the Polymarkets participated in by the user by making a GET request to the path `/companies/{company_reference}/users/{user_id}/polymarkets`\
+        \ on the base URL.\n\nPolymarkets represent prediction markets interacted with by users through their connected\
+        \ or uploaded accounts.\n\nThis endpoint requires authentication via a bearer token, provided in the `Authorization`\
+        \ header of the request.\n\n> \\*Results paginated with 100 elements per page \n  \n\n### Request\n\n#####\
+        \ URI PARAMETERS\n\n> **companyReference** `string` The ID of a specific company \n  \n> **userId** `string`\
+        \ The ID of a specific user \n  \n\n##### QUERY PARAMETERS\n\n> **page** `integer` Page number for paginated\
+        \ results \n  \n\n##### RESPONSE `200`\n\n##### RESPONSE DATA\n\n> **api_version** `string` Version of the\
+        \ targeted API \n  \n> **data** `array` List of polymarkets associated with the user \n  \n> **pagination**\
+        \ `object` Pagination metadata for the response"
+      tags:
+      - Polymarkets
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific user
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Page number for paginated results
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_polymarkets_for_user_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                    - markets:
+                      - condition_id: '0x1de721694086a3b2593b8c3913dbd170ae1f4a61d38a8d51aa867cd926dd2303'
+                        market_slug: bitcoin-above-80k-on-may-12
+                        question: Will the price of Bitcoin be above $80,000 on May 12?
+                        description: 'This market will resolve to "Yes" if the Binance 1 minute candle for BTC/USDT
+                          12:00 in the ET timezone (noon) on the date specified in the title has a final "Close"
+                          price higher than the price specified in the title. Otherwise, this market will resolve
+                          to "No".
+
+
+                          The resolution source for this market is Binance, specifically the BTC/USDT "Close" prices
+                          currently available at https://www.binance.com/en/trade/BTC_USDT with "1m" and "Candles"
+                          selected on the top bar.
+
+
+                          Please note that this market is about the price according to Binance BTC/USDT, not according
+                          to other exchanges or trading pairs.
+
+
+                          Price precision is determined by the number of decimal places in the source.'
+                      - condition_id: '0xb177f77bde742b8abb6613454f5a5cda050ae86db87392ecf2bf496e68ca7531'
+                        market_slug: bitcoin-above-78k-on-may-12
+                        question: Will the price of Bitcoin be above $78,000 on May 12?
+                        description: 'This market will resolve to "Yes" if the Binance 1 minute candle for BTC/USDT
+                          12:00 in the ET timezone (noon) on the date specified in the title has a final "Close"
+                          price higher than the price specified in the title. Otherwise, this market will resolve
+                          to "No".
+
+
+                          The resolution source for this market is Binance, specifically the BTC/USDT "Close" prices
+                          currently available at https://www.binance.com/en/trade/BTC_USDT with "1m" and "Candles"
+                          selected on the top bar.
+
+
+                          Please note that this market is about the price according to Binance BTC/USDT, not according
+                          to other exchanges or trading pairs.
+
+
+                          Price precision is determined by the number of decimal places in the source.'
+                      - condition_id: '0x8b6b886672c56ecd63520ae0a7407695cb4ed9eece6eedeceb02a8678d1ac78f'
+                        market_slug: bitcoin-above-70k-on-may-7
+                        question: Will the price of Bitcoin be above $70,000 on May 7?
+                        description: 'This market will resolve to "Yes" if the Binance 1 minute candle for BTC/USDT
+                          12:00 in the ET timezone (noon) on the date specified in the title has a final "Close"
+                          price higher than the price specified in the title. Otherwise, this market will resolve
+                          to "No".
+
+
+                          The resolution source for this market is Binance, specifically the BTC/USDT "Close" prices
+                          currently available at https://www.binance.com/en/trade/BTC_USDT with "1m" and "Candles"
+                          selected on the top bar.
+
+
+                          Please note that this market is about the price according to Binance BTC/USDT, not according
+                          to other exchanges or trading pairs.
+
+
+                          Price precision is determined by the number of decimal places in the source.'
+                      - condition_id: '0xa58e4ada1b3e17170156f10fad5768b9a27536015b2841ca9318c430754da746'
+                        market_slug: bitcoin-above-72k-on-may-7
+                        question: Will the price of Bitcoin be above $72,000 on May 7?
+                        description: 'This market will resolve to "Yes" if the Binance 1 minute candle for BTC/USDT
+                          12:00 in the ET timezone (noon) on the date specified in the title has a final "Close"
+                          price higher than the price specified in the title. Otherwise, this market will resolve
+                          to "No".
+
+
+                          The resolution source for this market is Binance, specifically the BTC/USDT "Close" prices
+                          currently available at https://www.binance.com/en/trade/BTC_USDT with "1m" and "Candles"
+                          selected on the top bar.
+
+
+                          Please note that this market is about the price according to Binance BTC/USDT, not according
+                          to other exchanges or trading pairs.
+
+
+                          Price precision is determined by the number of decimal places in the source.'
+                      - condition_id: '0x661e0ccb8f22ef89f8d18291facb5ef394afd37b3168ba4069a21eb20c4a9270'
+                        market_slug: bitcoin-above-80k-on-may-7
+                        question: Will the price of Bitcoin be above $80,000 on May 7?
+                        description: 'This market will resolve to "Yes" if the Binance 1 minute candle for BTC/USDT
+                          12:00 in the ET timezone (noon) on the date specified in the title has a final "Close"
+                          price higher than the price specified in the title. Otherwise, this market will resolve
+                          to "No".
+
+
+                          The resolution source for this market is Binance, specifically the BTC/USDT "Close" prices
+                          currently available at https://www.binance.com/en/trade/BTC_USDT with "1m" and "Candles"
+                          selected on the top bar.
+
+
+                          Please note that this market is about the price according to Binance BTC/USDT, not according
+                          to other exchanges or trading pairs.
+
+
+                          Price precision is determined by the number of decimal places in the source.'
+                GET_polymarkets_for_user_empty_response:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      markets: {}
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_polymarkets_for_user_user_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-USRGET-AA2
+                      message: Could not find user
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/users/{{user_id}}/polymarkets'
+  /compliance/api/v3/companies/{company_reference}/polymarkets:
+    get:
+      operationId: getPolymarketsForAllUsersOfACompany
+      summary: GET polymarkets for all users of a company
+      description: '### GET **/companies/{companyReference}/polymarkets**
+
+
+        **Returns** a list of all users of a company together with the Polymarkets they have participated in by
+        making a GET request to the path `/companies/{company_reference}/polymarkets` on the base URL.
+
+
+        Polymarkets represent prediction markets interacted with by users through their connected or uploaded accounts.
+
+
+        This endpoint requires authentication via a bearer token, provided in the `Authorization` header of the
+        request.
+
+
+        > \*Results paginated with 20 elements per page
+
+
+        ### Request
+
+
+        ##### URI PARAMETERS
+
+
+        > **companyReference** `string` The ID of a specific company
+
+
+        ##### QUERY PARAMETERS
+
+
+        > **page** `integer` Specific page requested for the paginated results
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+
+        > **data** `array` List of company users and their associated markets
+
+
+        > **pagination** `object` Pagination metadata for the response'
+      tags:
+      - Polymarkets
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Specific page requested for the paginated results
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_polymarkets_for_all_users_of_a_company_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                    - users:
+                      - id: 83b9c1ee-9df5-48e0-ac46-5ceec42a8a76
+                        markets:
+                        - condition_id: '0x1de721694086a3b2593b8c3913dbd170ae1f4a61d38a8d51aa867cd926dd2303'
+                          market_slug: bitcoin-above-80k-on-may-12
+                          question: Will the price of Bitcoin be above $80,000 on May 12?
+                          description: 'This market will resolve to "Yes" if the Binance 1 minute candle for BTC/USDT
+                            12:00 in the ET timezone (noon) on the date specified in the title has a final "Close"
+                            price higher than the price specified in the title. Otherwise, this market will resolve
+                            to "No".
+
+
+                            The resolution source for this market is Binance, specifically the BTC/USDT "Close"
+                            prices currently available at https://www.binance.com/en/trade/BTC_USDT with "1m" and
+                            "Candles" selected on the top bar.
+
+
+                            Please note that this market is about the price according to Binance BTC/USDT, not according
+                            to other exchanges or trading pairs.
+
+
+                            Price precision is determined by the number of decimal places in the source.'
+                        - condition_id: '0xb177f77bde742b8abb6613454f5a5cda050ae86db87392ecf2bf496e68ca7531'
+                          market_slug: bitcoin-above-78k-on-may-12
+                          question: Will the price of Bitcoin be above $78,000 on May 12?
+                          description: 'This market will resolve to "Yes" if the Binance 1 minute candle for BTC/USDT
+                            12:00 in the ET timezone (noon) on the date specified in the title has a final "Close"
+                            price higher than the price specified in the title. Otherwise, this market will resolve
+                            to "No".
+
+
+                            The resolution source for this market is Binance, specifically the BTC/USDT "Close"
+                            prices currently available at https://www.binance.com/en/trade/BTC_USDT with "1m" and
+                            "Candles" selected on the top bar.
+
+
+                            Please note that this market is about the price according to Binance BTC/USDT, not according
+                            to other exchanges or trading pairs.
+
+
+                            Price precision is determined by the number of decimal places in the source.'
+                      - id: 1ee83b9c-48e0-ac46-ac46-5cee8a76c42a
+                        markets:
+                        - condition_id: '0xa58e4ada1b3e17170156f10fad5768b9a27536015b2841ca9318c430754da746'
+                          market_slug: bitcoin-above-72k-on-may-7
+                          question: Will the price of Bitcoin be above $72,000 on May 7?
+                          description: 'This market will resolve to "Yes" if the Binance 1 minute candle for BTC/USDT
+                            12:00 in the ET timezone (noon) on the date specified in the title has a final "Close"
+                            price higher than the price specified in the title. Otherwise, this market will resolve
+                            to "No".
+
+
+                            The resolution source for this market is Binance, specifically the BTC/USDT "Close"
+                            prices currently available at https://www.binance.com/en/trade/BTC_USDT with "1m" and
+                            "Candles" selected on the top bar.
+
+
+                            Please note that this market is about the price according to Binance BTC/USDT, not according
+                            to other exchanges or trading pairs.
+
+
+                            Price precision is determined by the number of decimal places in the source.'
+                        - condition_id: '0x8b6b886672c56ecd63520ae0a7407695cb4ed9eece6eedeceb02a8678d1ac78f'
+                          market_slug: bitcoin-above-70k-on-may-7
+                          question: Will the price of Bitcoin be above $70,000 on May 7?
+                          description: 'This market will resolve to "Yes" if the Binance 1 minute candle for BTC/USDT
+                            12:00 in the ET timezone (noon) on the date specified in the title has a final "Close"
+                            price higher than the price specified in the title. Otherwise, this market will resolve
+                            to "No".
+
+
+                            The resolution source for this market is Binance, specifically the BTC/USDT "Close"
+                            prices currently available at https://www.binance.com/en/trade/BTC_USDT with "1m" and
+                            "Candles" selected on the top bar.
+
+
+                            Please note that this market is about the price according to Binance BTC/USDT, not according
+                            to other exchanges or trading pairs.
+
+
+                            Price precision is determined by the number of decimal places in the source.'
+                      - id: 842a3b8a-48e0-48e0-ac46-5642a8aceec7
+                        markets:
+                        - condition_id: '0x661e0ccb8f22ef89f8d18291facb5ef394afd37b3168ba4069a21eb20c4a9270'
+                          market_slug: bitcoin-above-80k-on-may-7
+                          question: Will the price of Bitcoin be above $80,000 on May 7?
+                          description: 'This market will resolve to "Yes" if the Binance 1 minute candle for BTC/USDT
+                            12:00 in the ET timezone (noon) on the date specified in the title has a final "Close"
+                            price higher than the price specified in the title. Otherwise, this market will resolve
+                            to "No".
+
+
+                            The resolution source for this market is Binance, specifically the BTC/USDT "Close"
+                            prices currently available at https://www.binance.com/en/trade/BTC_USDT with "1m" and
+                            "Candles" selected on the top bar.
+
+
+                            Please note that this market is about the price according to Binance BTC/USDT, not according
+                            to other exchanges or trading pairs.
+
+
+                            Price precision is determined by the number of decimal places in the source.'
+                    meta:
+                      current_page: 1
+                      total_entries: 1
+                      total_pages: 1
+                GET_polymarkets_for_all_users_of_a_company_empty_response:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      markets: {}
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_polymarkets_for_all_users_of_a_company_company_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPGET-AA3
+                      message: Could not find company
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/polymarkets'
+  /compliance/api/v3/companies/{company_reference}/users/{user_id}/imports:
+    post:
+      operationId: postWallet
+      summary: POST wallet
+      description: "### POST **/companies/{companyReference}/users/{userId}**\n\n**Returns** the details of a specific\
+        \ user by making a GET request to the path `/companies/{company_reference}/users/{user_id}/imports` on the\
+        \ base URL.\n\nThis endpoint requires authentication via a bearer token, provided in the Authorisation header\
+        \ of the request.\n\n### Request\n\n##### URi PARAMETERS\n\n> **companyReference** `string` The ID of a\
+        \ specific company\n\n> **userId** `string` The ID of a specific user\n\n##### BODY\n\n*In JSON format\n\
+        \n> **data** `string` encrypted payload including all parameters explained above\n> \n> **iv** A 16-byte\
+        \ random value ensuring unique encryption outputs\n\n##### RESPONSE `200`\n\n##### RESPONSE DATA\n\n> **api_version**\
+        \ `string` Version of the targeted API\n> \n> **data** `string` Wrapper for response data (See response\
+        \ example)"
+      tags:
+      - Imports
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific user
+      - name: X-Signature
+        in: header
+        required: false
+        schema:
+          type: string
+        description: 'Header carried in the published Postman example (example value: 90834609d89e2b6398b91b00fdfe5f0c48bef18e8d50eb11c5941ab4825e11fb).'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+            example:
+              data: i1P8lmd8zZhSmRFNAUe9izd/DbGbhd/5L9GpnbWmdywnbrJM9Lb3cTzKsPiGvlcgwvYt2bt2wF5m08LvZ/LqF0+sCfp5r6+FdKT2nbMOk4ICNDKBsGvqHyT8miRQ+IBRWCpKjx5tUHYOQKa275A5GIzpoDt8W7aQRW4ebheM3I6/4cqVrYhrTDL47p0ruMUhlGx0F56DUz+70yjZrI5dFg==
+              iv: 8pOeauVYagEIFQygF3Nctg==
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                POST_wallet_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      import_data:
+                      - user_ud: d2b9816f-1e14-4596-a6af-fde38cf36005
+                        source_id: e02bd7b9-9284-4427-91f8-21a3253343e4
+                        import_status: in-progress
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_currencies_invalid_token:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-USRPST-AA5
+                      message: Wallet already imported for user
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/users/{{user_id}}/imports'
+  /compliance/api/v1/companies/{company_reference}/users/{user_id}/imports:
+    post:
+      operationId: postExchange
+      summary: POST exchange
+      description: "### POST **/companies/{companyReference}/users/{userId}**\n\n**Returns** the details of a specific\
+        \ user by making a GET request to the path `/companies/{company_reference}/users/{user_id}/imports` on the\
+        \ base URL.\n\nThis endpoint requires authentication via a bearer token, provided in the Authorisation header\
+        \ of the request.\n\n### Request\n\n##### URi PARAMETERS\n\n> **companyReference** `string` The ID of a\
+        \ specific company\n\n> **userId** `string` The ID of a specific user\n\n##### BODY\n\n*In JSON format\n\
+        \n> **data** `string` encrypted payload including all parameters explained above\n> \n> **iv** A 16-byte\
+        \ random value ensuring unique encryption outputs\n\n##### RESPONSE `200`\n\n##### RESPONSE DATA\n\n> **api_version**\
+        \ `string` Version of the targeted API\n> \n> **data** `string` Wrapper for response data (See response\
+        \ example)"
+      tags:
+      - Imports
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific user
+      - name: X-Signature
+        in: header
+        required: false
+        schema:
+          type: string
+        description: 'Header carried in the published Postman example (example value: 94f79fec19ad48f66a6d67a1519e1a8e5488619d515b169087b530fbe8e14682).'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+            example:
+              data: AerM+vv9M0TfBE6iTfH8uTGTXMZVQlzC1FvDYFjsoSfJPPXIZBkkB5inlh42Iw2r8gW0ttzb/GxH4MJJsNdwOzam16e9m+oc8WLHLh95ucODbzbnkYZgf05YgeoHthZCMuPmNAdoU/hNNQFbpcI+eB7c4dnhp85SnkM8QXj3ZzJyzt4KuGhG9HVd7Rdi7/Pnt7ai60VoxNGC6uIhSlO2RanZVimZIsflqaSZulglji7HW2bpXbLX9fX1OMl7EZrejLR2r2UOKPerp3RUZz3IHQ2+X9qJ+CZ5Ksa/B0M9G3waAzpTbbLYPdRDIj4WqaP7g/una1oUowDOWrYPb9ak0Pf+JLTTK2V1s3eYTq4ZFfw1eTTko4aWsZvM8299K25thR5liPzUckNZ1J1k9YCCro19up5nTA+gcXNSaaIc+w2gEnVIsnHCqlPFs4KhHBOmqsacF50yiGPe3+/eFAyo8spt5zHOW2LnCNIl3eeGm613D9JlgVkRdHgLkK7ZRnuTNAxqAc78gfjDsireDeNzTQ==
+              iv: WegG/Ldk24eQKz1GpmuQ0w==
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                POST_exchange_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      import_data:
+                      - user_ud: 83b9c1ee-9df5-48e0-ac46-5ceec42a8a76
+                        source_id: 330a4910-39b6-49c9-81e5-d06c33c454c2
+                        import_status: in-progress
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                POST_exchange_invalid_api_keys:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-USRPST-AA4
+                      message: Could not import exchange account for user
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v1/companies/{{company_reference}}/users/{{user_id}}/imports'
+  /compliance/api/v3/screening:
+    get:
+      operationId: getWalletScreeningReport
+      summary: GET Wallet Screening Report
+      description: "### GET **/**screening\n\n**Returns** a wallet screening report by making a GET request to the\
+        \ path `/screening` on the base URL.\n\nThis endpoint requires authentication via a bearer token, provided\
+        \ in the Authorisation header of the request.\n\nThere are two versions of the screening service available:\
+        \ **standard** and **extended**.  \nThe standard version provides a basic background check, while the extended\
+        \ version returns a more comprehensive report with detailed risk insights and additional metadata.\n\n>\
+        \ The version used is determined by your service tier and it can only be enabled on request.\n\n### Request\n\
+        \n##### URi PARAMETERS\n\n> NONE\n\n##### QUERY PARAMETERS\n\n> **chain** `string` **Extended version only.**\
+        \ Base coin of the Blockchain to check. The background check is run on all blockchains but a base chain\
+        \ is required\n> \n> **address** `string` Wallet address to check\n\n##### RESPONSE `200`\n\n##### RESPONSE\
+        \ DATA\n\n> **api_version** `string` Version of the targeted API\n> \n> **data** `string` Wrapper for response\
+        \ data (See response example)"
+      tags:
+      - Wallet Screening
+      parameters:
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: '**Extended version only.** Base coin of the Blockchain to check. The background check is run
+          on all blockchains but a base chain is required'
+        example: '{{chain}}'
+      - name: address
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Wallet address to check
+        example: '{{address}}'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_Standard_Wallet_Screening_Report_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      screening_report:
+                        status: filed
+                        details:
+                        - category: sanctioned entity
+                          name: 'SANCTIONED ENTITY: OFAC SDN Secondeye Solution 2021-04-15 1da5821544e25c636c1417ba96ade4cf6d2f9b5a'
+                        - category: sanctions
+                          name: 'SANCTIONS: OFAC SDN Secondeye Solution 2021-04-15 1da5821544e25c636c1417ba96ade4cf6d2f9b5a'
+                GET_Extended_Wallet_Screening_Report_success_Copy:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      screening_report:
+                        blockchain: ETH
+                        address: '0x1da5821544e25c636c1417ba96ade4cf6d2f9b5a'
+                        sanctioned_or_investigated: true
+                        details:
+                        - report_data:
+                          - description: The address listed on the US Treasury Department's Office of Foreign Assets
+                              Control sanction list.
+                          owner_info:
+                          - owner_info:
+                            - name: Bittrex.com
+                              url: https://www.Bittrex.com
+                              legal_name: Bittrex Global GmbH
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_Wallet_Screening_Report_chain_not_supported:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-PARAMGET-AA6
+                      message: chain not supported
+                GET_Wallet_Screening_Report_chain_not_provided:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-PARAMGET-AA5
+                      message: chain not provided
+                GET_Wallet_Screening_Report_address_not_provided:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-PARAMGET-AA4
+                      message: address not provided
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/screening?chain={{chain}}&address={{address}}'
+  /compliance/api/v3/currencies:
+    get:
+      operationId: getCurrencies
+      summary: GET currencies
+      description: '### GET **/currencies**
+
+
+        **Returns** a paginated list of supported cryptocurrencies by making a GET request to the path `/compliance/api/v3/currencies`
+        on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        > *Results paginated with 100 elements per page
+
+
+        ### Request
+
+
+        ##### QUERY PARAMETERS
+
+
+        > **page** `number` Specific page requested for the paginated results
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Supported Currencies
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: number
+        description: Specific page requested for the paginated results
+        example: '42'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_currencies_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      currencies:
+                      - reference: council-of-apes
+                        name: Council of Apes
+                        symbol: COAPE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x55006895f398d7713d69081144b19d8c9022b582'
+                      - reference: counosx
+                        name: CounosX
+                        symbol: CCXX
+                        blockchains: []
+                      - reference: counterparty
+                        name: Counterparty
+                        symbol: XCP
+                        blockchains: []
+                      - reference: county-metaverse
+                        name: County Metaverse
+                        symbol: COUNTY
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x1967cabd079fcdd363a044f1444bf00a94558a2f'
+                      - reference: couponbay
+                        name: CouponBay
+                        symbol: CUP
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x3209d14ff61766359e64aceff91877cec2ad968e'
+                      - reference: cousin-doge
+                        name: Cousin Doge
+                        symbol: COUSINDOGE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xda8df4506de8e110cc216937945963bab380a615'
+                      - reference: coution-live
+                        name: COUTION LIVE
+                        symbol: CTL
+                        blockchains:
+                        - platform: tron
+                          contract: tdaogsywy3wwuyktk8z1fxsa8nxnmdfk9a
+                      - reference: covalent
+                        name: Covalent
+                        symbol: CQT
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xd417144312dbf50465b1c641d016962017ef6240'
+                      - reference: covalent-cova
+                        name: Cova Unity
+                        symbol: COVA
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xb37a769b37224449d92aac57de379e1267cd3b00'
+                      - reference: covenant-child
+                        name: Covenant
+                        symbol: COVN
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x19ac2659599fd01c853de846919544276ad26f50'
+                      - reference: covercompared
+                        name: CoverCompared
+                        symbol: CVR
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x3c03b4ec9477809072ff9cc9292c9b25d4a8e6c6'
+                      - reference: cover-protocol
+                        name: Cover Protocol
+                        symbol: COVER
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x4688a8b1f292fdab17e9a90c8bc379dc1dbd8713'
+                        - platform: fantom
+                          contract: '0xb01e8419d842beebf1b70a7b5f7142abbaf7159d'
+                      - reference: covesting
+                        name: Covesting
+                        symbol: COV
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xada86b1b313d1d5267e3fc0bb303f0a2b66d0ea7'
+                        - platform: binance-smart-chain
+                          contract: '0x0f237db17aa4e6de062e6f052bd9c805789b01c3'
+                      - reference: covey
+                        name: Covey
+                        symbol: $CVY
+                        blockchains: []
+                      - reference: covicoin
+                        name: CoviCoin
+                        symbol: CVC
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xc6f0a9b75fa529dcc0f90459e30684e7ed9a9ea6'
+                      - reference: covid-19-recovery-token
+                        name: COVID-19 Recovery Token
+                        symbol: COVDR
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xdb8afb917a2d4848ee5b3bed7f6c0bab0555427d'
+                      - reference: covid-doge
+                        name: Covid Doge
+                        symbol: COVID DOGE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xae1f20ca661ec552c0664a73ad5e5963824f92e1'
+                      - reference: covid-slice
+                        name: Covid Slice
+                        symbol: COVID19
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x8d5eb659959c68bd78a4f6f2ecccbbcb8c2cfb79'
+                      - reference: covid-token
+                        name: Covid Token
+                        symbol: COVIDTOKEN
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x23c28e9346c82228fb2b62b20b6fe5d75989f5b2'
+                      - reference: cow--4
+                        name: COWRY
+                        symbol: COW
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xb149dd64ea4b173e5fc9ecf77bd380418695185d'
+                      - reference: cowboy-snake
+                        name: Cowboy Snake
+                        symbol: COWS
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x33b48893b8f119fb45f431b36f830a9584804201'
+                      - reference: cow-inu
+                        name: Cow Inu
+                        symbol: CI
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xceafc372af7fddccbfd28f10329710e58bb2f970'
+                      - reference: cow-protocol
+                        name: CoW Protocol
+                        symbol: COW
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xdef1ca1fb7fbcdc777520aa7f396b4e015f497ab'
+                        - platform: xdai
+                          contract: '0x177127622c4a00f3d409b75571e12cb3c8973d3c'
+                      - reference: cowrie
+                        name: Cowrie
+                        symbol: COWRIE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xde51d1599339809cafb8194189ce67d5bdca9e9e'
+                      - reference: cowry
+                        name: COWRY
+                        symbol: COW
+                        blockchains: []
+                      - reference: coxswap
+                        name: Coxswap
+                        symbol: COX
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x17fea92ca2e7570d07b63ecd6b698e01386555a4'
+                      - reference: coxswap-2
+                        name: Coxswap
+                        symbol: COX
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x2266cfa689da2186f307f2dd8beafa12a4ad9709'
+                      - reference: cpc--4
+                        name: CryptoPerformance Coin
+                        symbol: CPC
+                        blockchains: []
+                      - reference: cpchain
+                        name: CPChain
+                        symbol: CPC
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xfae4ee59cdd86e3be9e8b90b53aa866327d7c090'
+                        - platform: binance-smart-chain
+                          contract: cpc-fed
+                      - reference: cplay-network
+                        name: CPLAY Network
+                        symbol: CPLAY
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x740e08e52542df19d7f2f9cbf3924ac0bfe53071'
+                      - reference: cpos-cloud-payment
+                        name: CPOS Cloud Payment
+                        symbol: CPOS
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xc0dc5adfae1dada9111f376810d772cabd9b6f13'
+                      - reference: cprop
+                        name: CPROP
+                        symbol: CPROP
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x0fb843d37aa2a99db8d81af9fe2f0a6485c7c002'
+                      - reference: cpuchain
+                        name: CPUchain
+                        symbol: CPU
+                        blockchains: []
+                      - reference: cpucoin
+                        name: CPUcoin
+                        symbol: CPU
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x6d52dfefb16bb9cdc78bfca09061e44574886626'
+                      - reference: crabada
+                        name: Crabada
+                        symbol: CRA
+                        blockchains:
+                        - platform: avalanche
+                          contract: '0xa32608e873f9ddef944b24798db69d80bbb4d1ed'
+                      - reference: crabada-amulet
+                        name: Crabada Amulet
+                        symbol: CRAM
+                        blockchains:
+                        - platform: avalanche
+                          contract: '0xd2cd7a59aa8f8fdc68d01b1e8a95747730b927d3'
+                      - reference: crab-market
+                        name: Crab Market
+                        symbol: CRAB
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x24bcec1afda63e622a97f17cff9a61ffcfd9b735'
+                      - reference: crab-rave-token
+                        name: Crab Rave Token
+                        symbol: CRABS
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x2c9715d6d95443c3bdf29e473ad168ff6fa6627d'
+                      - reference: crabstrike
+                        name: CrabStrike
+                        symbol: CST
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x3993453b9587e06a0e925727fd844d2d2babd39f'
+                      - reference: cracle
+                        name: Cracle
+                        symbol: CRA
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x0fc0b3f6f5c769c138088266ac21760ab33f76ca'
+                      - reference: cradle-of-sins
+                        name: Cradle of Sins
+                        symbol: COS
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x4d9f39f7cb7c7444335077223ceef33dbb58096f'
+                        - platform: binance-smart-chain
+                          contract: '0x4d9f39f7cb7c7444335077223ceef33dbb58096f'
+                      - reference: crafting-finance
+                        name: Crafting Finance
+                        symbol: CRF
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x508df5aa4746be37b5b6a69684dfd8bdc322219d'
+                      - reference: craft-network
+                        name: Craft network
+                        symbol: CFT
+                        blockchains:
+                        - platform: icon
+                          contract: cx2e6d0fc0eca04965d06038c8406093337f085fcf
+                      - reference: cramer-coin
+                        name: Cramer Coin
+                        symbol: CRAMER
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x64df3aab3b21cc275bb76c4a581cf8b726478ee0'
+                        - platform: ethereum
+                          contract: '0x64df3aab3b21cc275bb76c4a581cf8b726478ee0'
+                      - reference: crane-miners
+                        name: TheCraneMiners
+                        symbol: CRANE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x8c85a0e86f37ca231463ead62a40350d7bf7cef0'
+                        - platform: binance-smart-chain
+                          contract: '0x8c85a0e86f37ca231463ead62a40350d7bf7cef0'
+                      - reference: cranx-chain
+                        name: GranX Chain
+                        symbol: GRANX
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xbd668ec47e10d3bf23b1d68139e545162a0dfcfa'
+                      - reference: cratos
+                        name: Cratos
+                        symbol: CRTS
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x678e840c640f619e17848045d23072844224dd37'
+                        - platform: binance-smart-chain
+                          contract: '0x678e840c640f619e17848045d23072844224dd37'
+                      - reference: crave
+                        name: Crave
+                        symbol: CRAVE
+                        blockchains: []
+                      - reference: crazy-bunny
+                        name: Crazy Bunny
+                        symbol: CRAZYBUNNY
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x48ed9372169ef0bf2b901bbe45e52b6a6b8f1ecc'
+                      - reference: crazy-bunny-equity-token
+                        name: Crazy Bunny Equity Token
+                        symbol: CBUNNY
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xaec23008b1098e39c0f8de90bf7431d185efe8b3'
+                      - reference: crazy-internet-coin
+                        name: Crazy Internet Coin
+                        symbol: CIC
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xad640689e6950b7453729a4686edb3fdfd754616'
+                      - reference: crazyminer
+                        name: CrazyMiner
+                        symbol: PWR
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xd52efe1039d706722b3d696e74ad4095dc3d3860'
+                      - reference: crazy-rich-coin
+                        name: Crazy Rich Coin
+                        symbol: CRC
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xc23fa49b581fff9a3ea7e49d0504b06d07c6ff2a'
+                      - reference: crazysharo
+                        name: CrazySharo
+                        symbol: SHARO
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x7f3daf301c629bfa243cbba6654370d929379657'
+                      - reference: crazy-tiger
+                        name: Crazy Tiger
+                        symbol: CRAZYTIGER
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xedd52d44de950ccc3b2e6abdf0da8e99bb0ec480'
+                      - reference: crazytime
+                        name: CrazyTime
+                        symbol: CRAZYTIME
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x94241428e0e36df628e0c2485bc0e158a5da3362'
+                      - reference: crazy-treasure-token
+                        name: Crazy Treasure Token
+                        symbol: CTT
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xf56783b3a4fa5f09efca962bd4bab1f5fadd9ab9'
+                      - reference: crb-coin
+                        name: CRB Coin
+                        symbol: CRB
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x518afa06aeca8dd0946b89a565e51f5a91d81176'
+                        - platform: ethereum
+                          contract: '0x2fd8bc03d9e827f77fac20b5130ee98b7f80149d'
+                      - reference: crd-network
+                        name: CRD Network
+                        symbol: CRD
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xcaaa93712bdac37f736c323c93d4d5fdefcc31cc'
+                      - reference: crdt
+                        name: CRDT
+                        symbol: CRDT
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xdaab5e695bb0e8ce8384ee56ba38fa8290618e52'
+                      - reference: cre8r-dao
+                        name: CRE8R DAO
+                        symbol: CRE8R
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xaa61d5dec73971cd4a026ef2820bb87b4a4ed8d6'
+                        - platform: fantom
+                          contract: '0x2ad402655243203fcfa7dcb62f8a08cc2ba88ae0'
+                      - reference: cream
+                        name: Creamcoin
+                        symbol: CRM
+                        blockchains: []
+                      - reference: cream-2
+                        name: Cream
+                        symbol: CREAM
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x2ba592f78db6436527729929aaf6c908497cb200'
+                        - platform: sora
+                          contract: '0x00521ad5caeadc2e3e04be4d4ebb0b7c8c9b71ba657c2362a3953490ebc81410'
+                        - platform: arbitrum-one
+                          contract: '0xf4d48ce3ee1ac3651998971541badbb9a14d7234'
+                        - platform: fantom
+                          contract: '0x657a1861c15a3ded9af0b6799a195a249ebdcbc6'
+                        - platform: energi
+                          contract: '0x1cca61099dcebe517f8cac58f27218e7aff2d3bf'
+                        - platform: solana
+                          contract: 9iwfhhe7bjkno4eb1wx3p4uyjjen9roglt4bvmdzzoin
+                        - platform: solana
+                          contract: 5fu5uugbjpuvdbveb3a1jtnirl8rxtiyesmwvkjtunqv
+                        - platform: near-protocol
+                          contract: 2ba592f78db6436527729929aaf6c908497cb200.factory.bridge.near
+                      - reference: creama
+                        name: Creama
+                        symbol: CREAMA
+                        blockchains:
+                        - platform: avalanche
+                          contract: '0x3947146f331b9ef6448064c6311cdd24d9467a1a'
+                      - reference: cream-eth2
+                        name: Cream ETH 2
+                        symbol: CRETH2
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xcbc1065255cbc3ab41a6868c22d1f1c573ab89fd'
+                        - platform: ethereum
+                          contract: '0x49d72e3973900a195a155a46441f0c08179fdb64'
+                      - reference: creamlands
+                        name: Creamlands
+                        symbol: CREAM
+                        blockchains:
+                        - platform: hedera-hashgraph
+                          contract: 0.0.926385
+                      - reference: creampye
+                        name: Creampye [OLD]
+                        symbol: PYE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xaad87f47cdea777faf87e7602e91e3a6afbe4d57'
+                      - reference: cream-shares
+                        name: IceCream Shares
+                        symbol: CSHARE
+                        blockchains:
+                        - platform: avalanche
+                          contract: '0x155f794b56353533e0afbf76e1b1fc57dfad5bd7'
+                        - platform: avalanche
+                          contract: '0x155f794b56353533e0afbf76e1b1fc57dfad5bd7'
+                      - reference: cream-wormhole
+                        name: Cream (Wormhole)
+                        symbol: CREAM
+                        blockchains:
+                        - platform: solana
+                          contract: hihxl2im6l6p1oqoseiixdj3phpynxvskh9a2ddqlvdh
+                      - reference: creamy
+                        name: Creamy
+                        symbol: CREAMY
+                        blockchains:
+                        - platform: solana
+                          contract: creampddimxxj2ztcwp5wmetba4nyakcrtbeqtsktqhe
+                      - reference: create
+                        name: Create
+                        symbol: CT
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xa85c461c66038ffc8433e2a961339b7f36656e16'
+                        - platform: binance-smart-chain
+                          contract: '0xa85c461c66038ffc8433e2a961339b7f36656e16'
+                      - reference: creaticles
+                        name: Creaticles
+                        symbol: CRE8
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xc36b4311b21fc0c2ead46f1ea6ce97c9c4d98d3d'
+                      - reference: creativecoin
+                        name: CREA
+                        symbol: CREA
+                        blockchains: []
+                      - reference: creator-platform
+                        name: Creator Platform
+                        symbol: CTR
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x923b83c26b3809d960ff80332ed00aa46d7ed375'
+                        - platform: binance-smart-chain
+                          contract: '0xd6cce248263ea1e2b8cb765178c944fc16ed0727'
+                      - reference: creator-protocol
+                        name: Creator Protocol
+                        symbol: CRE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xc2c14affaddee38d7375c400d144251a87d2c34a'
+                      - reference: creature_hunters
+                        name: Creature Hunters
+                        symbol: CHTS
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x1cdb9b4465f4e65b93d0ad802122c7c9279975c9'
+                      - reference: creda
+                        name: CreDA
+                        symbol: CREDA
+                        blockchains:
+                        - platform: arbitrum-one
+                          contract: '0xc136e6b376a9946b156db1ed3a34b08afdaed76d'
+                      - reference: cred-coin-pay
+                        name: CRED COIN PAY
+                        symbol: CRED
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xfc76ba9157ee5d079de8c1e969ee54096aaa6c9c'
+                      - reference: credefi
+                        name: Credefi
+                        symbol: CREDI
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xae6e307c3fe9e922e5674dbd7f830ed49c014c6b'
+                        - platform: binance-smart-chain
+                          contract: '0x2235e79086dd23135119366da45851c741874e5b'
+                      - reference: credefi-wormhole
+                        name: Credefi (Wormhole)
+                        symbol: CREDI
+                        blockchains:
+                        - platform: terra
+                          contract: terra18xyl0ees6ueyhkhn0mjdtrm82e393ult2dazl3
+                      - reference: credi--1
+                        name: CREDI
+                        symbol: CREDI
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xae6e307c3fe9e922e5674dbd7f830ed49c014c6b'
+                        - platform: ethereum
+                          contract: '0xae6e307c3fe9e922e5674dbd7f830ed49c014c6b'
+                      - reference: credit
+                        name: TerraCredit
+                        symbol: CREDIT
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x9d440a8dc5ae7dd4f6b406b78340856838c3e5da'
+                        - platform: binance-smart-chain
+                          contract: '0xc9308bcf5fa46d728422753d2d5afbc5cdb66b03'
+                      - reference: credit-2
+                        name: PROXI DeFi
+                        symbol: CREDIT
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xc4cb5793bd58bad06bf51fb37717b86b02cbe8a4'
+                      - reference: creditcoin-2
+                        name: Creditcoin
+                        symbol: CTC
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xa3ee21c306a700e682abcdfe9baa6a08f3820419'
+                      - reference: credit-printer
+                        name: Credit Printer
+                        symbol: CREDITP
+                        blockchains:
+                        - platform: fantom
+                          contract: '0x5e5aabc95380b38c014fdc5e602c5183177fcca4'
+                      - reference: credits
+                        name: CREDITS
+                        symbol: CS
+                        blockchains: []
+                      - reference: credit-suisse-inu
+                        name: Credit Suisse Inu
+                        symbol: CSI
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x74bff2018687b8a1ff7132e13cd4fdc763725bcf'
+                        - platform: ethereum
+                          contract: '0x74bff2018687b8a1ff7132e13cd4fdc763725bcf'
+                      - reference: creditum
+                        name: Creditum
+                        symbol: CREDIT
+                        blockchains:
+                        - platform: fantom
+                          contract: '0x77128dfdd0ac859b33f44050c6fa272f34872b5e'
+                      - reference: credmark
+                        name: Credmark
+                        symbol: CMK
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x68cfb82eacb9f198d508b514d898a403c449533e'
+                      - reference: creds
+                        name: Creds
+                        symbol: CREDS
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xc13f4f0f865bac08f62654b57e38669ebc4747a3'
+                      - reference: crema-finance
+                        name: Crema Finance
+                        symbol: CRM
+                        blockchains: []
+                      - reference: cremation-coin
+                        name: Cremation Coin
+                        symbol: CREMAT
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xb8501a9a9aaae239a2490f44e00b284baa0b131a'
+                        - platform: ethereum
+                          contract: '0x8b9f7e9586633ca4abffb1f746da8daed7849cb2'
+                      - reference: creo-engine
+                        name: Creo Engine
+                        symbol: CREO
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x9521728bf66a867bc65a93ece4a543d817871eb7'
+                      - reference: crescent-network
+                        name: Crescent Network
+                        symbol: CRE
+                        blockchains:
+                        - platform: cosmos
+                          contract: ucre
+                      - reference: crescentswap-moonlight
+                        name: Crescentswap Moonlight
+                        symbol: MNLT
+                        blockchains:
+                        - platform: arbitrum-one
+                          contract: '0x0a1694716de67c98f61942b2cab7df7fe659c87a'
+                      - reference: crespo
+                        name: Crespo
+                        symbol: CSO
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x5ecb025e51415dba9fd272c551076357cf4069f5'
+                      - reference: creta-world
+                        name: Creta World
+                        symbol: CRETA
+                        blockchains:
+                        - platform: polygon-pos
+                          contract: '0x202655af326de310491cb54f120e02ee0da92b55'
+                      - reference: creth2--1
+                        name: Cream ETH Token
+                        symbol: CRETH2
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x49d72e3973900a195a155a46441f0c08179fdb64'
+                        - platform: ethereum
+                          contract: '0x49d72e3973900a195a155a46441f0c08179fdb64'
+                      - reference: crevacoin
+                        name: Crevacoin
+                        symbol: CREVA
+                        blockchains: []
+                      - reference: crex-token
+                        name: Crex Token
+                        symbol: CREX
+                        blockchains: []
+                    meta:
+                      current_page: 42
+                      total_entries: 20048
+                      total_pages: 201
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_currencies_invalid_token:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-AUTHGET-AA4
+                      message: The access token is invalid
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/currencies?page=42'
+  /compliance/api/v3/sources:
+    get:
+      operationId: getSources
+      summary: GET sources
+      description: '### GET **/sources**
+
+
+        **Returns** a paginated list of supported exchanges and wallets by making a GET request to the path `/compliance/api/v3/sources`
+        on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        > *Results paginated with 100 elements per page
+
+
+        ### Request
+
+
+        ##### QUERY PARAMETERS
+
+
+        > **page** `number` Specific page requested for the paginated results
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Supported Exchanges and Wallets
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: number
+        description: Specific page requested for the paginated results
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_sources_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      sources:
+                      - reference: coinbase
+                        name: Coinbase
+                        type: exchange
+                        api: true
+                        csv: false
+                        oauth: true
+                        address: false
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: true
+                        fiat_types_csv: true
+                        api_balances: true
+                        transaction_addresses: true
+                      - reference: bittrex
+                        name: Bittrex
+                        type: exchange
+                        api: false
+                        csv: true
+                        oauth: false
+                        address: false
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: false
+                        transaction_addresses: false
+                      - reference: binance
+                        name: Binance
+                        type: exchange
+                        api: true
+                        csv: true
+                        oauth: false
+                        address: false
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: true
+                        api_balances: false
+                        transaction_addresses: false
+                      - reference: gemini
+                        name: Gemini
+                        type: exchange
+                        api: true
+                        csv: false
+                        oauth: false
+                        address: false
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: true
+                        transaction_addresses: false
+                      - reference: bitstamp
+                        name: Bitstamp
+                        type: exchange
+                        api: true
+                        csv: false
+                        oauth: false
+                        address: false
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: false
+                        transaction_addresses: false
+                      - reference: coinbase-pro
+                        name: Coinbase Pro
+                        type: exchange
+                        api: true
+                        csv: true
+                        oauth: false
+                        address: false
+                        pass_phrase: true
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: true
+                        transaction_addresses: false
+                      - reference: kraken
+                        name: Kraken
+                        type: exchange
+                        api: true
+                        csv: true
+                        oauth: false
+                        address: false
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: true
+                        fiat_types_csv: true
+                        api_balances: true
+                        transaction_addresses: false
+                      - reference: kucoin
+                        name: Kucoin
+                        type: exchange
+                        api: true
+                        csv: true
+                        oauth: false
+                        address: false
+                        pass_phrase: true
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: false
+                        transaction_addresses: false
+                      - reference: bitfinex
+                        name: Bitfinex
+                        type: exchange
+                        api: true
+                        csv: false
+                        oauth: false
+                        address: false
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: false
+                        transaction_addresses: false
+                      - reference: hitbtc
+                        name: Hitbtc
+                        type: exchange
+                        api: true
+                        csv: false
+                        oauth: false
+                        address: false
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: false
+                        transaction_addresses: false
+                      - reference: btc-wallet
+                        name: BTC Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: true
+                        transaction_addresses: true
+                      - reference: eth-wallet
+                        name: ETH Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: true
+                        transaction_addresses: true
+                      - reference: ltc-wallet
+                        name: LTC Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: false
+                        transaction_addresses: true
+                      - reference: doge-wallet
+                        name: DOGE Wallet
+                        type: wallet
+                        api: false
+                        csv: true
+                        oauth: false
+                        address: false
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: true
+                        transaction_addresses: true
+                      - reference: dash-wallet
+                        name: DASH Wallet
+                        type: wallet
+                        api: false
+                        csv: true
+                        oauth: false
+                        address: false
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: false
+                        transaction_addresses: true
+                      - reference: jaxx
+                        name: Jaxx
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: true
+                        transaction_addresses: true
+                      - reference: trezor
+                        name: Trezor
+                        type: wallet
+                        api: false
+                        csv: true
+                        oauth: false
+                        address: false
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: true
+                        transaction_addresses: true
+                      - reference: ledger-nano
+                        name: Ledger Nano
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: true
+                        transaction_addresses: true
+                      - reference: exodus
+                        name: Exodus
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: true
+                        transaction_addresses: true
+                      - reference: bit-pay
+                        name: BitPay
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: true
+                        transaction_addresses: true
+                      - reference: electrum
+                        name: Electrum
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: true
+                        transaction_addresses: true
+                    meta:
+                      current_page: 1
+                      total_entries: 21
+                      total_pages: 1
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_sources_invalid_token:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-AUTHGET-AA4
+                      message: The access token is invalid
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/sources'
+  /compliance/api/v3/chains:
+    get:
+      operationId: getChains
+      summary: GET chains
+      description: "### GET **/**chains\n\n**Returns** a paginated list of supported blockchains by making a GET\
+        \ request to the path `/compliance/api/v3/chains` on the base URL.\n\nThis endpoint requires authentication\
+        \ via a bearer token, provided in the Authorisation header of the request.\n\n> *Results paginated with\
+        \ 100 elements per page\n\n### Request\n\n##### QUERY PARAMETERS\n\n> **page** `number` Specific page requested\
+        \ for the paginated results\n\n##### RESPONSE `200`\n\n##### RESPONSE DATA\n\n> **api_version** `string`\
+        \ Version of the targeted API\n> \n> **data** `string` Wrapper for response data (See response example)"
+      tags:
+      - Supported Chains
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: number
+        description: Specific page requested for the paginated results
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_chains_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      chains:
+                      - name: Optimism Chain
+                        chain_id: 10
+                        code: op
+                        label: Optimism Chain
+                      - name: Bitcoin
+                        chain_id: null
+                        code: btc
+                        label: Bitcoin (BTC)
+                      - name: Dogecoin
+                        chain_id: 2000
+                        code: doge
+                        label: Dogecoin (DOGE)
+                      - name: Polygon Network
+                        chain_id: 137
+                        code: matic
+                        label: Polygon Network (MATIC)
+                      - name: Avalanche C-Chain
+                        chain_id: 43114
+                        code: avax
+                        label: Avalanche C-Chain (AVAX)
+                      - name: Binance Coin Main-Net / BEP-2
+                        chain_id: null
+                        code: bnb
+                        label: Binance Coin (BNB) Main-Net / BEP-2
+                      - name: Ethereum - (ERC-20, ERC-721, ERC-1155)
+                        chain_id: 1
+                        code: eth
+                        label: Ethereum (ETH) - (ERC-20, ERC-721, ERC-1155)
+                      - name: Binance Smart Chain
+                        chain_id: 56
+                        code: bsc
+                        label: Binance Smart Chain (BSC)
+                      - name: Ethereum Classic
+                        chain_id: 61
+                        code: etc
+                        label: Ethereum Classic (ETC)
+                    meta:
+                      current_page: 1
+                      total_entries: 9
+                      total_pages: 1
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_chains_invalid_token:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-AUTHGET-AA4
+                      message: The access token is invalid
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/chains'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT bearer token obtained from POST /oauth/token using the OAuth 2.0 client_credentials grant
+        with the client_id and client_secret ZenLedger issues. The token expires after 30 minutes (expires_in 1800)
+        and must be refreshed at the same endpoint.

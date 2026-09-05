@@ -1,0 +1,111 @@
+generated: '2026-09-05'
+method: probed
+source: live GET of the named /.well-known/ paths on every host this record knows
+note: >-
+  No host serves any of the probed well-known documents. zenledger.io answers 404 with the WordPress 404 page;
+  api.zenledger.io answers a bare 404 with an empty body; docs.zenledger.io answers 200 for EVERY path with the same
+  14,019-byte HTML shell (a static-site catch-all, not a document) and is recorded as a miss; app.zenledger.io is
+  behind a Cloudflare interstitial that returned 429 to our crawler on every path, so those probes are inconclusive
+  rather than negative. No WellKnown, SecurityTxt, APICatalog or AgentCard pointer is emitted, because nothing was
+  served.
+hosts:
+- host: zenledger.io
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+- host: api.zenledger.io
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+- host: docs.zenledger.io
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    result: html-shell
+    note: SPA/static catch-all — identical 14,019-byte HTML body on every path. Not a document.
+  - path: /.well-known/openid-configuration
+    status: 200
+    result: html-shell
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    result: html-shell
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    result: html-shell
+  - path: /.well-known/api-catalog
+    status: 200
+    result: html-shell
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    result: html-shell
+  - path: /.well-known/agent-card.json
+    status: 200
+    result: html-shell
+  - path: /.well-known/agent.json
+    status: 200
+    result: html-shell
+  - path: /.well-known/aauth-resource.json
+    status: 200
+    result: html-shell
+- host: app.zenledger.io
+  documents:
+  - path: /.well-known/security.txt
+    status: 429
+    result: bot-challenge
+    note: Cloudflare "Just a moment..." interstitial on every path; inconclusive, not a recorded absence.
+  - path: /.well-known/openid-configuration
+    status: 429
+    result: bot-challenge
+  - path: /.well-known/oauth-authorization-server
+    status: 429
+    result: bot-challenge
+  - path: /.well-known/oauth-protected-resource
+    status: 429
+    result: bot-challenge
+  - path: /.well-known/api-catalog
+    status: 429
+    result: bot-challenge
+  - path: /.well-known/ai-plugin.json
+    status: 429
+    result: bot-challenge
+  - path: /.well-known/agent-card.json
+    status: 429
+    result: bot-challenge
+  - path: /.well-known/agent.json
+    status: 429
+    result: bot-challenge
+  - path: /.well-known/aauth-resource.json
+    status: 429
+    result: bot-challenge

@@ -1,0 +1,96 @@
+generated: '2026-09-05'
+method: searched
+source: https://docs.zenledger.io/compliance/v3/README.md
+docs: https://docs.zenledger.io/compliance/v3/README.md
+summary:
+  types:
+  - oauth2
+  - http
+  model: >-
+    One OAuth 2.0 client_credentials token endpoint fronts both published ZenLedger APIs. Credentials are issued by
+    ZenLedger out of band (there is no self-serve developer key). The resulting JWT is presented as an HTTP bearer
+    token on every other request and expires after 30 minutes. The wallet/exchange import endpoints add a second
+    layer: an HMAC-SHA256 request signature plus an AES-256-CBC encrypted request body.
+token_endpoint: https://api.zenledger.io/oauth/token
+token_lifetime_seconds: 1800
+credential_issuance: assigned-by-provider
+self_serve_keys: false
+schemes:
+- name: oauth2ClientCredentials
+  type: oauth2
+  flow: clientCredentials
+  token_url: https://api.zenledger.io/oauth/token
+  request_body: '{"client_id": "...", "client_secret": "...", "grant_type": "client_credentials"}'
+  content_type: application/json
+  response_fields:
+  - access_token
+  - token_type
+  - expires_in
+  - scope
+  - created_at
+  scopes_returned:
+  - public
+  description: >-
+    POST /oauth/token with a JSON body carrying client_id, client_secret and grant_type=client_credentials. A 200
+    returns access_token, token_type "Bearer", expires_in 1800 and scope "public". A 401 returns error /
+    error_description for an invalid client; a 400 for a malformed request. The same endpoint is used to refresh
+    after expiry — there is no refresh_token grant.
+  source: https://docs.zenledger.io/compliance/v3/README.md
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  header: 'Authorization: Bearer {jwt_token}'
+  description: >-
+    Every non-token operation on both APIs requires the JWT in the Authorization header. Presenting an expired token
+    returns error code ZENCS-AUTHGET-AA4 (Compliance) / ZENAGG-AUTHGET-AA4 (Aggregator) — "Invalid OAuth token: Need
+    to refresh the token every 30 minutes".
+  sources:
+  - openapi/zenledger-compliance-api-openapi.yml
+  - openapi/zenledger-aggregator-api-openapi.yml
+request_signing:
+  applies_to:
+  - POST /compliance/api/v3/companies/{company_reference}/users/{user_id}/imports
+  - POST /compliance/api/v1/companies/{company_reference}/users/{user_id}/imports
+  signature:
+    header: X-Signature
+    algorithm: HMAC-SHA256
+    encoding: hex
+    signed_material: >-
+      The published TypeScript example computes the HMAC over the base64 ciphertext of the encrypted payload using
+      the shared API secret. The prose above the example describes concatenating method, URL path, query parameters
+      and body before hashing; the two descriptions differ and the code sample is the operative one.
+  encryption:
+    algorithm: AES-256-CBC
+    key_derivation: SHA-256 digest of the shared secret
+    iv: 16 random bytes, sent base64-encoded in the request body as `iv`
+    envelope_fields:
+    - data
+    - iv
+    - signature
+  key_exchange: The encryption key is shared out of band between client and ZenLedger.
+  source: https://docs.zenledger.io/compliance/v3/README.md
+live_probe:
+  date: '2026-09-05'
+  probes:
+  - url: https://api.zenledger.io/oauth/token
+    method: POST
+    body: '{"grant_type":"client_credentials"}'
+    credentials_sent: false
+    http_status: 401
+    response: '{"error":"invalid_client","error_description":"Client authentication failed due to unknown client, no client authentication included, or unsupported authentication method."}'
+  - url: https://api.zenledger.io/compliance/api/v3/chains
+    method: GET
+    credentials_sent: false
+    http_status: 401
+  finding: >-
+    Both APIs are live at the documented host and enforce authentication. The token endpoint returns a conformant
+    RFC 6749 error object; a protected reference-data endpoint returns 401 to an anonymous caller. Confirmed
+    anonymously — no credentials were used and no protected data was read.
+
+notes:
+- The OpenAPI documents in this repo model the bearer scheme only, because that is what the Postman collection
+  encodes per request; the OAuth 2.0 token flow is documented in prose in the collection's Authentication folder and
+  is captured here.
+- Scope is returned as the single literal value "public"; ZenLedger publishes no scope reference page and no
+  per-scope authorization model, so no scopes/ artifact is emitted.

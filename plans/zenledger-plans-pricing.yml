@@ -1,0 +1,102 @@
+generated: '2026-09-05'
+method: searched
+source: https://zenledger.io/pricing/
+fetched_via: https://static.zenledger.io/pricing/
+fetch_note: >-
+  zenledger.io returns a Cloudflare 429 interstitial to non-browser clients. static.zenledger.io is the same
+  WordPress origin without the challenge and served the identical pricing page; the canonical URL is recorded above.
+currency: USD
+plan_count: 7
+api_pricing_published: false
+api_pricing_note: >-
+  None of these plans includes API access. The published plans price the consumer and tax-professional products at
+  app.zenledger.io. The two APIs profiled in this repo — the Compliance Suite and the Aggregator Suite — carry no
+  published price, no published quota and no self-serve signup: both product pages route to "Schedule a Demo" and
+  the Postman collections state that credentials are "previously facilitated by ZenLedger". API pricing is
+  enterprise, quote-only, and unpublished. The transaction caps below are product caps, not API rate limits; the
+  API's own documented cap is a per-import transaction limit defaulting to 100,000 and configured per company or
+  inherited from the enterprise (see rate-limits/zenledger-rate-limits.yml).
+plans:
+- name: Silver
+  family: DIY crypto tax
+  price: 49
+  currency: USD
+  period: year
+  included_quota:
+    transactions: 100
+  overage: null
+  limits:
+    transactions_max: 100
+  features: [DeFi, Staking, Margin Trading, All detailed reports, Audit Report, Tax Pro Access, HIFO/FIFO/LIFO, Unlimited Exchanges, Mining or Donations, ICOs & Airdrops, Tax Loss Harvesting, Crypto as Income, FinCen/FBAR Alert, TurboTax Integration]
+- name: Gold
+  family: DIY crypto tax
+  price: 199
+  currency: USD
+  period: year
+  included_quota:
+    transactions: 5000
+  limits:
+    transactions_max: 5000
+  most_popular: true
+- name: Platinum
+  family: DIY crypto tax
+  price: 399
+  currency: USD
+  period: year
+  included_quota:
+    transactions: 15000
+  limits:
+    transactions_max: 15000
+- name: Platinum + Unlimited transactions
+  family: DIY crypto tax
+  price: 999
+  price_note: Platinum ($399) plus the "Unlimited Transactions +$600" add-on. Includes 1 hour of live support.
+  currency: USD
+  period: year
+  included_quota:
+    transactions: unlimited
+- name: Premium Support Consultation
+  family: Professional
+  price: 275
+  currency: USD
+  period: one-time
+  included_quota:
+    consultation_minutes: 60
+- name: Tax Pro Prepared Plan - Single Year
+  family: Professional
+  price: 2800
+  list_price: 3500
+  currency: USD
+  period: year
+  note: Estimated; priced on time required. 14-day refund policy. ZenLedger software sold separately.
+- name: Tax Pro Prepared Plan - Multi Year
+  family: Professional
+  price: 5200
+  list_price: 6500
+  currency: USD
+  period: two-years
+  note: Estimated; priced on time required. 14-day refund policy.
+adjacent_offers:
+- name: State and Federal Tax Filing (powered by april)
+  price: 30
+  currency: USD
+  period: year
+  note: Flat rate, no subscription required, 30-day money-back guarantee. A filing service, not a plan tier.
+- name: Personal product consulting
+  price: 150
+  currency: USD
+  period: hour
+  note: Add-on, available per request.
+discounts:
+- Save 10% when purchasing multiple years.
+refund_policy:
+  diy_plans: 1 year
+  professional_plans: 14 days
+  tax_filing: 30 days
+enterprise:
+  self_serve: false
+  contact_paths:
+  - https://zenledger.io/compliance/
+  - https://zenledger.io/enterprise/
+  - https://zenledger.io/partnerships/
+  - https://zenledger.io/government/

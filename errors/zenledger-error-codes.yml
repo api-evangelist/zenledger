@@ -1,0 +1,236 @@
+generated: '2026-09-05'
+method: searched
+source: https://docs.zenledger.io/compliance/v3/compliance_api.postman_collection.json (Error Codes > Glossary);
+  https://docs.zenledger.io/aggregators/rest-api/v1/aggregators_api.postman_collection.json (Error Codes > Glossary)
+format: vendor-specific
+rfc9457: false
+note: 'ZenLedger does not use RFC 9457 application/problem+json. Errors are returned inside the standard JSON envelope
+  as an `errors` object carrying a namespaced string code and a human message, with the HTTP status carrying the
+  class. Codes are namespaced per API: ZENCS-* for the Compliance Suite, ZENAGG-* for the Aggregator Suite. The
+  middle segment names the resource and verb (AUTHGET, CMPPST, USRDEL, HLDRSC, PFLPST, PARAMGET, RSRCGET).'
+envelope:
+  content_type: application/json
+  shape: '{"api_version": "3.0", "data": [], "errors": {"code": "ZENCS-CMPGET-AA3", "message": "Could not find company"}}'
+  fields:
+  - name: api_version
+    description: Version of the targeted API, e.g. "3.0".
+  - name: data
+    description: Always present; an empty array on an error response.
+  - name: errors.code
+    description: Namespaced ZenLedger error code (see error_codes[]).
+  - name: errors.message
+    description: Human-readable message.
+status_codes_observed:
+- status: 200
+  meaning: Success. Some error conditions are still returned with a 200 and an errors object — read errors.code,
+    not the status alone.
+- status: 400
+  meaning: Bad request (malformed token request).
+- status: 401
+  meaning: Unauthorized — invalid client credentials or expired JWT.
+- status: 403
+  meaning: Forbidden action.
+- status: 404
+  meaning: Resource not found.
+- status: 422
+  meaning: Unprocessable entity on create/update validation failures.
+error_code_count: 45
+error_codes:
+- code: ZENCS-AUTHGET-AA1
+  api: ZenLedger Compliance Suite API
+  domain: authentication
+  title: Forbidden action
+- code: ZENCS-AUTHGET-AA2
+  api: ZenLedger Compliance Suite API
+  domain: authentication
+  title: Unauthorised action
+- code: ZENCS-AUTHGET-AA3
+  api: ZenLedger Compliance Suite API
+  domain: authentication
+  title: Invalid Api key
+  remediation: Check your API Key or request a new one
+- code: ZENCS-AUTHGET-AA4
+  api: ZenLedger Compliance Suite API
+  domain: authentication
+  title: Invalid OAuth token
+  remediation: Need to refresh the token every 30 minutes
+- code: ZENCS-RSRCGET-AA1
+  api: ZenLedger Compliance Suite API
+  domain: routing
+  title: Resource not found
+  remediation: Review your integration
+- code: ZENCS-CMPGET-AA1
+  api: ZenLedger Compliance Suite API
+  domain: companies
+  title: Could not retrieve companies
+- code: ZENCS-CMPGET-AA2
+  api: ZenLedger Compliance Suite API
+  domain: companies
+  title: Could not retrieve company
+  remediation: Make sure the company ID is correct
+- code: ZENCS-CMPGET-AA3
+  api: ZenLedger Compliance Suite API
+  domain: companies
+  title: Could not find company
+  remediation: Make sure the company ID is correct
+- code: ZENCS-CMPGET-AA4
+  api: ZenLedger Compliance Suite API
+  domain: companies
+  title: Company has no active users
+- code: ZENCS-CMPPST-AA1
+  api: ZenLedger Compliance Suite API
+  domain: companies
+  title: Could not add company
+- code: ZENCS-CMPPST-AA2
+  api: ZenLedger Compliance Suite API
+  domain: companies
+  title: Duplicated Reference for company
+  remediation: A company with this reference already exists
+- code: ZENCS-CMPPST-AA3
+  api: ZenLedger Compliance Suite API
+  domain: companies
+  title: Maximum number of active companies limit exceeded
+- code: ZENCS-CMPUPD-AA1
+  api: ZenLedger Compliance Suite API
+  domain: companies
+  title: Could not update company details
+- code: ZENCS-CMPDEL-AA1
+  api: ZenLedger Compliance Suite API
+  domain: companies
+  title: Could not delete company
+- code: ZENCS-PARAMGET-AA1
+  api: ZenLedger Compliance Suite API
+  domain: request-parameters
+  title: Provided currency not found
+  remediation: We do not support this currency at this moment
+- code: ZENCS-PARAMGET-AA2
+  api: ZenLedger Compliance Suite API
+  domain: request-parameters
+  title: Wrong date format provided
+  remediation: Please provide a valid UTC date in ISO-8601 format
+- code: ZENCS-PARAMGET-AA3
+  api: ZenLedger Compliance Suite API
+  domain: request-parameters
+  title: Provided source not found
+  remediation: Make sure the source ID is correct
+- code: ZENCS-PARAMGET-AA4
+  api: ZenLedger Compliance Suite API
+  domain: request-parameters
+  title: Wallet address not provided
+  remediation: This parameter is mandatory
+- code: ZENCS-PARAMGET-AA5
+  api: ZenLedger Compliance Suite API
+  domain: request-parameters
+  title: Blockchain not provided
+  remediation: This parameter is mandatory
+- code: ZENCS-PARAMGET-AA6
+  api: ZenLedger Compliance Suite API
+  domain: request-parameters
+  title: Blockchain not supported
+  remediation: ZenLedger does not support this chain at the moment
+- code: ZENCS-USRGET-AA1
+  api: ZenLedger Compliance Suite API
+  domain: users
+  title: Could not retrieve users
+- code: ZENCS-USRGET-AA2
+  api: ZenLedger Compliance Suite API
+  domain: users
+  title: Could not find user
+  remediation: Make sure the user ID is correct
+- code: ZENCS-USRGET-AA3
+  api: ZenLedger Compliance Suite API
+  domain: users
+  title: Requested user is disabled
+- code: ZENCS-USRGET-AA4
+  api: ZenLedger Compliance Suite API
+  domain: users
+  title: Could not retrieve user holdings
+- code: ZENCS-USRGET-AA5
+  api: ZenLedger Compliance Suite API
+  domain: users
+  title: Source not found in user holdings
+  remediation: Make sure the source ID is correct
+- code: ZENCS-USRGET-AA6
+  api: ZenLedger Compliance Suite API
+  domain: users
+  title: Could not retrieve user transactions
+- code: ZENCS-USRPST-AA1
+  api: ZenLedger Compliance Suite API
+  domain: users
+  title: Could not add user
+- code: ZENCS-USRPST-AA2
+  api: ZenLedger Compliance Suite API
+  domain: users
+  title: Duplicated email for user
+  remediation: Email address is unique, please pass a different email address
+- code: ZENCS-USRPST-AA3
+  api: ZenLedger Compliance Suite API
+  domain: users
+  title: Could not import wallet for user
+- code: ZENCS-USRPST-AA4
+  api: ZenLedger Compliance Suite API
+  domain: users
+  title: Could not import exchange account for user
+- code: ZENCS-USRPST-AA5
+  api: ZenLedger Compliance Suite API
+  domain: users
+  title: Wallet already imported for user
+  remediation: Pull the user souorces to see it
+- code: ZENCS-USRPST-AA6
+  api: ZenLedger Compliance Suite API
+  domain: users
+  title: Could not import account, review account data
+- code: ZENCS-USRPST-AA7
+  api: ZenLedger Compliance Suite API
+  domain: users
+  title: Exchange API credentials expired
+  remediation: Go to your exchange to create a new Key pair
+- code: ZENCS-USRPST-AA8
+  api: ZenLedger Compliance Suite API
+  domain: users
+  title: Maximum number of active users limit exceeded
+- code: ZENCS-HLDRSC-AA1
+  api: ZenLedger Compliance Suite API
+  domain: holdings
+  title: Could not re-sync holdings
+- code: ZENCS-HLDRSC-AA2
+  api: ZenLedger Compliance Suite API
+  domain: holdings
+  title: Holding not found
+  remediation: Make sure the holding ID is correct
+- code: ZENCS-USRUPD-AA1
+  api: ZenLedger Compliance Suite API
+  domain: users
+  title: Could not update user details
+- code: ZENCS-USRDEL-AA1
+  api: ZenLedger Compliance Suite API
+  domain: users
+  title: Could not delete user
+- code: ZENCS-USRDEL-AA2
+  api: ZenLedger Compliance Suite API
+  domain: users
+  title: Could not delete user holding
+- code: ZENAGG-AUTHGET-AA1
+  api: ZenLedger Aggregator Suite API
+  domain: authentication
+  title: Forbidden
+- code: ZENAGG-AUTHGET-AA2
+  api: ZenLedger Aggregator Suite API
+  domain: authentication
+  title: Unauthorised
+- code: ZENAGG-AUTHGET-AA3
+  api: ZenLedger Aggregator Suite API
+  domain: authentication
+  title: Invalid Api key
+- code: ZENAGG-AUTHGET-AA4
+  api: ZenLedger Aggregator Suite API
+  domain: authentication
+  title: Invalid OAuth token
+- code: ZENAGG-RSRCGET-AA1
+  api: ZenLedger Aggregator Suite API
+  domain: routing
+  title: Resource not found
+- code: ZENAGG-PFLPST-AA1
+  api: ZenLedger Aggregator Suite API
+  domain: portfolios
+  title: Could not create portfolio

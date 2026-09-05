@@ -64,5 +64,50 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-ZenLedger is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://forgeglobal.com/zenledger_stock/
+ZenLedger is a crypto tax and digital-asset accounting company. Beyond the consumer tax product at
+app.zenledger.io, it operates two documented B2B REST APIs on `https://api.zenledger.io`:
+
+| API | Version | Operations | Reference |
+|---|---|---|---|
+| **Compliance Suite API** — digital-asset trade monitoring, tax compliance and sanctions screening for financial institutions | v3 | 27 | https://docs.zenledger.io/compliance/v3/ |
+| **Aggregator Suite API** — partner surface that aggregates accounts into a portfolio and returns its tax calculation | v1 | 5 | https://docs.zenledger.io/aggregators/rest-api/v1/ |
+
+Both authenticate with an OAuth 2.0 `client_credentials` JWT from `POST /oauth/token` (30-minute lifetime).
+Credentials are issued by ZenLedger; there is no self-serve API signup.
+
+## Where the contract came from
+
+**ZenLedger publishes no OpenAPI.** Its machine-readable contract is a versioned **Postman collection** per API,
+served from its own documentation hub. Both collections are saved verbatim in `postman/`, and the OpenAPI documents
+in `openapi/` are mechanically derived from them by API Evangelist — every path, method, header, documented
+parameter, example request and example response is carried over; nothing was invented. Each derived document says
+so in `info.description` and records the original request template per operation in `x-postman-request`.
+
+- `postman/zenledger-compliance-v3.postman_collection.json` — from https://docs.zenledger.io/compliance/v3/compliance_api.postman_collection.json
+- `postman/zenledger-aggregators-v1.postman_collection.json` — from https://docs.zenledger.io/aggregators/rest-api/v1/aggregators_api.postman_collection.json
+
+Confirmed live and first-party on 2026-09-05: an anonymous `POST https://api.zenledger.io/oauth/token` returns a
+conformant RFC 6749 `invalid_client` error (HTTP 401), and `GET /compliance/api/v3/chains` returns 401.
+
+## What this profile found
+
+- **A rich, current contract.** 32 operations, 45 documented error codes, a 46-subtype transaction taxonomy with
+  stated tax treatment per subtype, and three webhooks with a documented retry schedule.
+- **No agent surface.** No MCP server, no A2A agent card, no GraphQL, and no `/.well-known/` document on any host.
+- **No client SDK in any language.** npm, PyPI, RubyGems, crates.io, Maven and NuGet all return nothing
+  first-party. The `github.com/zenledger-io` organization holds forks of exchange clients ZenLedger consumes, not
+  clients for its own API.
+- **No rate limits, no idempotency, no sandbox.** Neither reference documents a rate limit, a retry-safety
+  mechanism, or a test mode.
+- **Unsigned webhooks.** No HMAC header, shared secret or IP allowlist is documented on inbound notifications —
+  including the one that carries a sanctions-screening verdict.
+- **A bounty program with no `security.txt`.** ZenLedger runs a real bug bounty at https://zenledger.io/security/
+  but serves no RFC 9116 document on any host, so no scanner or agent can find it.
+
+## Artifacts
+
+`openapi/` `postman/` `overlays/` `authentication/` `conventions/` `errors/` `lifecycle/` `conformance/`
+`data-model/` `asyncapi/` `security/` `packages/` `plans/` `rate-limits/` `mcp/` `skills/` `llms/` `well-known/`
+
+- https://zenledger.io/
+- https://docs.zenledger.io/

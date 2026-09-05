@@ -1,0 +1,40 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the ZenLedger Aggregator Suite API
+  version: '1.0.0'
+  x-generated: '2026-09-05'
+  x-method: generated
+  x-source: openapi/zenledger-aggregator-api-openapi.yml
+  x-note: >-
+    Records the runtime semantics ZenLedger documents in prose but does not encode in the Aggregator Suite
+    contract. Never mutates the base document.
+extends: openapi/zenledger-aggregator-api-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-profile: https://apis.io/provider/zenledger/
+    x-contract-provenance: derived-from-postman
+    x-provider-publishes-openapi: false
+    x-shares-token-endpoint-with: ZenLedger Compliance Suite API
+- target: $.components.securitySchemes
+  update:
+    oauth2ClientCredentials:
+      type: oauth2
+      description: >-
+        Same token endpoint and credentials as the Compliance Suite. The Aggregator reference states the request as
+        a GET in prose while its own code sample and collection both use POST; POST is the operative form.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.zenledger.io/oauth/token
+          scopes:
+            public: The single scope value returned by the token endpoint.
+- target: $.paths['/aggregators/api/v1/portfolios'].post
+  update:
+    x-consequence: medium
+    x-reversal: none-documented
+    x-produces: aggcode
+    x-note: The aggregation code returned here is the only handle on the portfolio; no read, update or delete operation is published.
+- target: $.paths['/aggregators/api/v1/taxes'].get
+  update:
+    x-requires-prior: createPortfolio
+    x-note: Requires the aggcode returned by POST /portfolios.

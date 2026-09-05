@@ -1,0 +1,32 @@
+generated: '2026-09-05'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: zenledger.io
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov 24 20:16:20 2026 GMT
+  hsts: null
+- host: docs.zenledger.io
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov 12 23:25:31 2026 GMT
+  hsts: false
+- host: api.zenledger.io
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 15 06:11:07 2026 GMT
+  hsts: null
+domains:
+- domain: zenledger.io
+  dnssec: false
+  caa:
+  - 0 issue "amazon.com"
+  - 0 issue "amazonaws.com"
+  - 0 issue "amazontrust.com"
+  - 0 issue "awstrust.com"
+  - 0 issue "comodoca.com"
+  - 0 issue "digicert.com; cansignhttpexchanges=yes"
+  spf: true
+  dmarc: true
+  dmarc_policy: reject

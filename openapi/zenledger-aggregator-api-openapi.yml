@@ -1,0 +1,1905 @@
+openapi: 3.1.0
+info:
+  title: ZenLedger Aggregator Suite API
+  version: v1
+  description: 'REST surface of the ZenLedger Aggregator Suite — the partner/aggregator API for creating a portfolio
+    from a set of exchange and wallet accounts, retrieving the resulting tax calculation, and reading the supported
+    source and currency reference data.
+
+
+    DERIVED, NOT PUBLISHED BY THE PROVIDER. ZenLedger publishes no OpenAPI. This document was mechanically derived
+    by API Evangelist from the first-party Postman collection "Aggregator Suite: REST API Reference", published
+    by ZenLedger at https://docs.zenledger.io/aggregators/rest-api/v1/aggregators_api.postman_collection.json and
+    saved verbatim in this repo at postman/zenledger-aggregators-v1.postman_collection.json. Every path, method,
+    header, documented parameter, example request body and example response below is carried over from that collection;
+    nothing was invented. Request/response schemas are typed as generic objects because the collection carries examples,
+    not schemas.'
+  contact:
+    name: ZenLedger
+    url: https://zenledger.io/contact-us/
+    email: support@zenledger.io
+  termsOfService: https://zenledger.io/legal/
+  x-generated-by: API Evangelist enrichment pipeline (derived from the provider-published Postman collection)
+  x-source: postman/zenledger-aggregators-v1.postman_collection.json
+  x-source-url: https://docs.zenledger.io/aggregators/rest-api/v1/aggregators_api.postman_collection.json
+servers:
+- url: https://api.zenledger.io
+  description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io
+    in every saved example response.
+tags:
+- name: Authentication
+  description: OAuth 2.0 client_credentials token issuance.
+- name: Portfolios
+  description: Create an aggregated portfolio from a set of accounts.
+- name: Taxes
+  description: Retrieve the tax calculation for an aggregated portfolio.
+- name: Supported Exchanges and Wallets
+  description: Supported exchange/wallet source reference data.
+- name: Supported Currencies
+  description: Currency reference data.
+paths:
+  /oauth/token:
+    post:
+      operationId: jwtRequest
+      summary: JWT request
+      description: "The server response can vary based on the validity of the provided POST body:\n\n- **Success\
+        \ (HTTP status 200):**\n    - **Headers:** The response includes various headers such as `Content-Type`,\
+        \ `Cache-Control`, `Expires`, and more.\n    - **Body:** The response body is a JSON object containing the\
+        \ `access_token`, `token_type`, `expires_in`, and `scope` fields. The `access_token` is the JWT that should\
+        \ be included in the `Authorization` header for subsequent API requests.\n- **Unauthorized (HTTP status\
+        \ 401):**\n    - **Headers:** The response includes various headers such as `Content-Type`, `Cache-Control`,\
+        \ `Expires`, and more.\n    - **Body:** The response body is a JSON object containing the `error` and `error_description`\
+        \ fields, indicating an invalid client or failed authentication.\n- **Bad Request (HTTP status 400):**\n\
+        \    - **Headers:** The response includes various headers such as `Content-Type`, `Cache-Control`, `Expires`,\
+        \ and more.\n    - **Body:** The response body is a JSON object containing the `error` and `error_description`\
+        \ fields, indicating an invalid request."
+      tags:
+      - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+            example:
+              client_id: '{{oauth_client_id}}'
+              client_secret: '{{oauth_client_secret}}'
+              grant_type: client_credentials
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                JWT_request_success:
+                  value:
+                    access_token: access_token
+                    token_type: Bearer
+                    expires_in: 1800
+                    scope: public
+                    created_at: 1686752196
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                JWT_request_invalid_client:
+                  value:
+                    error: invalid_client
+                    error_description: Client authentication failed due to unknown client, no client authentication
+                      included, or unsupported authentication method.
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                JWT_request_invalid_request:
+                  value:
+                    error: invalid_request
+                    error_description: 'Missing required parameter: grant_type.'
+      security: []
+      x-postman-request: '{{base_url}}/oauth/token'
+  /aggregators/api/v1/portfolios:
+    post:
+      operationId: createPortfolio
+      summary: CREATE portfolio
+      description: '### POST **/portfolios**
+
+
+        **Creates** a new portfolio to be later linked to a new user.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        ### Request
+
+
+        ##### QUERY PARAMETERS
+
+
+        > NONE
+
+
+        ##### BODY
+
+
+        *In JSON format
+
+
+        > **portfolio** `object` Object containing a list of wallets with the following properties.
+
+        >
+
+        >> **blockchain** (optional) `string` Blockchain of the wallet
+
+        >>
+
+        >> **coin** `string` Cryptocurrency symbol
+
+        >>
+
+        >> **address** `string` Wallet address.
+
+        >>
+
+        >> **display_name** (optional) `string` if set, Name used for identifying the source in UI.
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Portfolios
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+            example:
+              portfolio:
+              - blockchain: ethereum
+                coin: eth
+                address: '0xc5689793548164f7D6B5477EEE6697DF6F3C2843'
+                display_name: Eth wallet
+              - blockchain: bitcoin
+                coin: btc
+                address: 3Df7budise9ws3vzPADMbN5XA4JJZ8BuUR
+                display_name: BTC wallet
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                CREATE_portfolio_success:
+                  value:
+                    api_version: '1.0'
+                    data:
+                      signup_url: https://app.zenledger.io/new_sign_up?aggref=AGGREF&aggcode=AGGREF7bfa64c5d52e
+                      aggcode: AGGREF7bfa64c5d52e
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                CREATE_portfolio_can_not_create:
+                  value:
+                    api_version: '1.0'
+                    data: []
+                    errors:
+                      code: ZENAGG-PFLPST-AA1
+                      message: Could not create portfolio
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/aggregators/api/v1/portfolios/'
+  /aggregators/api/v1/taxes:
+    get:
+      operationId: taxes
+      summary: Taxes
+      tags:
+      - Taxes
+      parameters:
+      - name: aggcode
+        in: query
+        required: false
+        schema:
+          type: string
+        example: heybelugaca48dacb783c
+      responses:
+        '200':
+          description: Successful response. The published collection carries no example body for this request.
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/aggregators/api/v1/taxes/?aggcode=heybelugaca48dacb783c'
+  /aggregators/api/v1/sources:
+    get:
+      operationId: getSources
+      summary: GET sources
+      description: '### GET **/sources**
+
+
+        **Returns** a paginated list of supported wallets by making a GET request to the path `/aggregators/api/v1/sources`
+        on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        > *Results paginated with 100 elements per page
+
+
+        ### Request
+
+
+        ##### QUERY PARAMETERS
+
+
+        > **page** `number` Specific page requested for the paginated results
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Supported Exchanges and Wallets
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: number
+        description: Specific page requested for the paginated results
+        example: '1'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_sources_success:
+                  value:
+                    api_version: '1.0'
+                    data:
+                      sources:
+                      - reference: btc-wallet
+                        name: BTC Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: eth-wallet
+                        name: ETH Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: ltc-wallet
+                        name: LTC Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: abra
+                        name: Abra
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: jaxx
+                        name: Jaxx
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: ledger-nano
+                        name: Ledger Nano
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: keep-key
+                        name: Keep Key
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: ledger-blue
+                        name: Ledger Blue
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: bitlox
+                        name: Bitlox
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: bitlox-digital
+                        name: Bitlox Digital
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: exodus
+                        name: Exodus
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: copay
+                        name: Copay
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: mycelium
+                        name: Mycelium
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: my-ether-wallet
+                        name: MyEtherWallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: bit-pay
+                        name: BitPay
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: electrum
+                        name: Electrum
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: airbitz
+                        name: Airbitz
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: brd
+                        name: BRD
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: freewallet
+                        name: Freewallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: infinito-wallet
+                        name: Infinito Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: idex
+                        name: Idex
+                        type: exchange
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: coinomi
+                        name: Coinomi
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: ada-wallet
+                        name: ADA Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: daedalus
+                        name: Daedalus
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: bancor-network
+                        name: Bancor Network
+                        type: exchange
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: binance-dex
+                        name: Binance DEX
+                        type: exchange
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: xtz-wallet
+                        name: XTZ Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: zec-wallet
+                        name: ZEC Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: vet-wallet
+                        name: VET Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: ont-wallet
+                        name: ONT Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: ark-wallet
+                        name: ARK Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: dcr-wallet
+                        name: DCR Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: rdd-wallet
+                        name: RDD Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: atom-wallet
+                        name: ATOM Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: coinswitch
+                        name: Coinswitch
+                        type: exchange
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: trust-wallet
+                        name: Trust Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: metamask
+                        name: Metamask
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: ETH
+                      - reference: mycrypto
+                        name: Mycrypto
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: ETH
+                      - reference: uniswap
+                        name: Uniswap
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: dharma
+                        name: Dharma
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: compound
+                        name: Compound
+                        type: exchange
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: dgb-wallet
+                        name: DGB Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: vtc-wallet
+                        name: VTC Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: waves-wallet
+                        name: WAVES Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: sys-wallet
+                        name: SYS Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: zil-wallet
+                        name: ZIL Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: ZIL
+                      - reference: aion-wallet
+                        name: AION Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: algo-wallet
+                        name: ALGO Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: ALGO
+                      - reference: one-wallet
+                        name: ONE Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: xvg-wallet
+                        name: XVG Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: zerion
+                        name: Zerion
+                        type: exchange
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: aave
+                        name: Aave
+                        type: exchange
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: synthetix
+                        name: Synthetix
+                        type: exchange
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: 1inch-exchange
+                        name: 1inch.exchange
+                        type: exchange
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: balancer
+                        name: Balancer
+                        type: exchange
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: dot-wallet
+                        name: DOT Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: zapper-fi
+                        name: Zapper.fi
+                        type: exchange
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: iris-wallet
+                        name: IRIS Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: kava-wallet
+                        name: KAVA Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: sushiswap
+                        name: Sushiswap
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: coinbase-wallet
+                        name: Coinbase Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: curve
+                        name: Curve
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: paraswap
+                        name: Paraswap
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: ledger-hw
+                        name: Ledger HW
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: binance-chain
+                        name: Binance Chain
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: BSC
+                      - reference: polygon
+                        name: Polygon
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: MATIC
+                      - reference: matic-wallet
+                        name: MATIC Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: bsc-wallet
+                        name: BSC Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: pancake-swap
+                        name: PancakeSwap
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: BSC
+                      - reference: avalanche
+                        name: Avalanche
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: AVAX
+                      - reference: avax-wallet
+                        name: AVAX Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: fantom
+                        name: Fantom
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: FTM
+                      - reference: ftm-wallet
+                        name: FTM Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: FTM
+                      - reference: atomic
+                        name: Atomic
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: game-stop-wallet
+                        name: GameStop Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: bit-keep
+                        name: BitKeep
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: qredo
+                        name: Qredo
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: math-wallet
+                        name: MathWallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: coin98
+                        name: Coin98
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: phantom
+                        name: Phantom
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: SOL
+                      - reference: sol-wallet
+                        name: SOL Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: solana
+                        name: Solana
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: SOL
+                      - reference: torus
+                        name: Torus
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: SOL
+                      - reference: solflare
+                        name: Solflare
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: SOL
+                      - reference: safepal
+                        name: Safepal
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: SOL
+                      - reference: sollet
+                        name: Sollet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: SOL
+                      - reference: token-pocket
+                        name: Token Pocket
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: SOL
+                      - reference: slope
+                        name: Slope
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: SOL
+                      - reference: clover
+                        name: Clover
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: SOL
+                      - reference: glow
+                        name: Glow
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: SOL
+                      - reference: arbitrum
+                        name: Arbitrum
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: ARB
+                      - reference: arb-wallet
+                        name: ARB Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: optimism
+                        name: Optimism
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: OP
+                      - reference: op-wallet
+                        name: OP Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: unisat
+                        name: Unisat
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: btc_od-wallet
+                        name: BTC_OD Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: base
+                        name: Base Chain
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: BASE
+                    meta:
+                      current_page: 1
+                      total_entries: 97
+                      total_pages: 1
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_sources_invalid_token:
+                  value:
+                    api_version: '1.0'
+                    data: []
+                    errors:
+                      code: ZENAGG-AUTHGET-AA4
+                      message: Invalid OAuth token
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/aggregators/api/v1/sources?page=1'
+  /aggregators/api/v1/currencies:
+    get:
+      operationId: getCurrencies
+      summary: GET currencies
+      description: '### GET **/currencies**
+
+
+        **Returns** a paginated list of supported cryptocurrencies by making a GET request to the path `/aggregators/api/v1/currencies`
+        on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        > *Results paginated with 100 elements per page
+
+
+        ### Request
+
+
+        ##### QUERY PARAMETERS
+
+
+        > **page** `number` Specific page requested for the paginated results
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Supported Currencies
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: number
+        description: Specific page requested for the paginated results
+        example: '1'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_currencies_success:
+                  value:
+                    api_version: '1.0'
+                    data:
+                      currencies:
+                      - reference: council-of-apes
+                        name: Council of Apes
+                        symbol: COAPE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x55006895f398d7713d69081144b19d8c9022b582'
+                      - reference: counosx
+                        name: CounosX
+                        symbol: CCXX
+                        blockchains: []
+                      - reference: counterparty
+                        name: Counterparty
+                        symbol: XCP
+                        blockchains: []
+                      - reference: county-metaverse
+                        name: County Metaverse
+                        symbol: COUNTY
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x1967cabd079fcdd363a044f1444bf00a94558a2f'
+                      - reference: couponbay
+                        name: CouponBay
+                        symbol: CUP
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x3209d14ff61766359e64aceff91877cec2ad968e'
+                      - reference: cousin-doge
+                        name: Cousin Doge
+                        symbol: COUSINDOGE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xda8df4506de8e110cc216937945963bab380a615'
+                      - reference: coution-live
+                        name: COUTION LIVE
+                        symbol: CTL
+                        blockchains:
+                        - platform: tron
+                          contract: tdaogsywy3wwuyktk8z1fxsa8nxnmdfk9a
+                      - reference: covalent
+                        name: Covalent
+                        symbol: CQT
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xd417144312dbf50465b1c641d016962017ef6240'
+                      - reference: covalent-cova
+                        name: Cova Unity
+                        symbol: COVA
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xb37a769b37224449d92aac57de379e1267cd3b00'
+                      - reference: covenant-child
+                        name: Covenant
+                        symbol: COVN
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x19ac2659599fd01c853de846919544276ad26f50'
+                      - reference: covercompared
+                        name: CoverCompared
+                        symbol: CVR
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x3c03b4ec9477809072ff9cc9292c9b25d4a8e6c6'
+                      - reference: cover-protocol
+                        name: Cover Protocol
+                        symbol: COVER
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x4688a8b1f292fdab17e9a90c8bc379dc1dbd8713'
+                        - platform: fantom
+                          contract: '0xb01e8419d842beebf1b70a7b5f7142abbaf7159d'
+                      - reference: covesting
+                        name: Covesting
+                        symbol: COV
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xada86b1b313d1d5267e3fc0bb303f0a2b66d0ea7'
+                        - platform: binance-smart-chain
+                          contract: '0x0f237db17aa4e6de062e6f052bd9c805789b01c3'
+                      - reference: covey
+                        name: Covey
+                        symbol: $CVY
+                        blockchains: []
+                      - reference: covicoin
+                        name: CoviCoin
+                        symbol: CVC
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xc6f0a9b75fa529dcc0f90459e30684e7ed9a9ea6'
+                      - reference: covid-19-recovery-token
+                        name: COVID-19 Recovery Token
+                        symbol: COVDR
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xdb8afb917a2d4848ee5b3bed7f6c0bab0555427d'
+                      - reference: covid-doge
+                        name: Covid Doge
+                        symbol: COVID DOGE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xae1f20ca661ec552c0664a73ad5e5963824f92e1'
+                      - reference: covid-slice
+                        name: Covid Slice
+                        symbol: COVID19
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x8d5eb659959c68bd78a4f6f2ecccbbcb8c2cfb79'
+                      - reference: covid-token
+                        name: Covid Token
+                        symbol: COVIDTOKEN
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x23c28e9346c82228fb2b62b20b6fe5d75989f5b2'
+                      - reference: cow--4
+                        name: COWRY
+                        symbol: COW
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xb149dd64ea4b173e5fc9ecf77bd380418695185d'
+                      - reference: cowboy-snake
+                        name: Cowboy Snake
+                        symbol: COWS
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x33b48893b8f119fb45f431b36f830a9584804201'
+                      - reference: cow-inu
+                        name: Cow Inu
+                        symbol: CI
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xceafc372af7fddccbfd28f10329710e58bb2f970'
+                      - reference: cow-protocol
+                        name: CoW Protocol
+                        symbol: COW
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xdef1ca1fb7fbcdc777520aa7f396b4e015f497ab'
+                        - platform: xdai
+                          contract: '0x177127622c4a00f3d409b75571e12cb3c8973d3c'
+                      - reference: cowrie
+                        name: Cowrie
+                        symbol: COWRIE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xde51d1599339809cafb8194189ce67d5bdca9e9e'
+                      - reference: cowry
+                        name: COWRY
+                        symbol: COW
+                        blockchains: []
+                      - reference: coxswap
+                        name: Coxswap
+                        symbol: COX
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x17fea92ca2e7570d07b63ecd6b698e01386555a4'
+                      - reference: coxswap-2
+                        name: Coxswap
+                        symbol: COX
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x2266cfa689da2186f307f2dd8beafa12a4ad9709'
+                      - reference: cpc--4
+                        name: CryptoPerformance Coin
+                        symbol: CPC
+                        blockchains: []
+                      - reference: cpchain
+                        name: CPChain
+                        symbol: CPC
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xfae4ee59cdd86e3be9e8b90b53aa866327d7c090'
+                        - platform: binance-smart-chain
+                          contract: cpc-fed
+                      - reference: cplay-network
+                        name: CPLAY Network
+                        symbol: CPLAY
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x740e08e52542df19d7f2f9cbf3924ac0bfe53071'
+                      - reference: cpos-cloud-payment
+                        name: CPOS Cloud Payment
+                        symbol: CPOS
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xc0dc5adfae1dada9111f376810d772cabd9b6f13'
+                      - reference: cprop
+                        name: CPROP
+                        symbol: CPROP
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x0fb843d37aa2a99db8d81af9fe2f0a6485c7c002'
+                      - reference: cpuchain
+                        name: CPUchain
+                        symbol: CPU
+                        blockchains: []
+                      - reference: cpucoin
+                        name: CPUcoin
+                        symbol: CPU
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x6d52dfefb16bb9cdc78bfca09061e44574886626'
+                      - reference: crabada
+                        name: Crabada
+                        symbol: CRA
+                        blockchains:
+                        - platform: avalanche
+                          contract: '0xa32608e873f9ddef944b24798db69d80bbb4d1ed'
+                      - reference: crabada-amulet
+                        name: Crabada Amulet
+                        symbol: CRAM
+                        blockchains:
+                        - platform: avalanche
+                          contract: '0xd2cd7a59aa8f8fdc68d01b1e8a95747730b927d3'
+                      - reference: crab-market
+                        name: Crab Market
+                        symbol: CRAB
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x24bcec1afda63e622a97f17cff9a61ffcfd9b735'
+                      - reference: crab-rave-token
+                        name: Crab Rave Token
+                        symbol: CRABS
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x2c9715d6d95443c3bdf29e473ad168ff6fa6627d'
+                      - reference: crabstrike
+                        name: CrabStrike
+                        symbol: CST
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x3993453b9587e06a0e925727fd844d2d2babd39f'
+                      - reference: cracle
+                        name: Cracle
+                        symbol: CRA
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x0fc0b3f6f5c769c138088266ac21760ab33f76ca'
+                      - reference: cradle-of-sins
+                        name: Cradle of Sins
+                        symbol: COS
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x4d9f39f7cb7c7444335077223ceef33dbb58096f'
+                        - platform: binance-smart-chain
+                          contract: '0x4d9f39f7cb7c7444335077223ceef33dbb58096f'
+                      - reference: crafting-finance
+                        name: Crafting Finance
+                        symbol: CRF
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x508df5aa4746be37b5b6a69684dfd8bdc322219d'
+                      - reference: craft-network
+                        name: Craft network
+                        symbol: CFT
+                        blockchains:
+                        - platform: icon
+                          contract: cx2e6d0fc0eca04965d06038c8406093337f085fcf
+                      - reference: cramer-coin
+                        name: Cramer Coin
+                        symbol: CRAMER
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x64df3aab3b21cc275bb76c4a581cf8b726478ee0'
+                        - platform: ethereum
+                          contract: '0x64df3aab3b21cc275bb76c4a581cf8b726478ee0'
+                      - reference: crane-miners
+                        name: TheCraneMiners
+                        symbol: CRANE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x8c85a0e86f37ca231463ead62a40350d7bf7cef0'
+                        - platform: binance-smart-chain
+                          contract: '0x8c85a0e86f37ca231463ead62a40350d7bf7cef0'
+                      - reference: cranx-chain
+                        name: GranX Chain
+                        symbol: GRANX
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xbd668ec47e10d3bf23b1d68139e545162a0dfcfa'
+                      - reference: cratos
+                        name: Cratos
+                        symbol: CRTS
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x678e840c640f619e17848045d23072844224dd37'
+                        - platform: binance-smart-chain
+                          contract: '0x678e840c640f619e17848045d23072844224dd37'
+                      - reference: crave
+                        name: Crave
+                        symbol: CRAVE
+                        blockchains: []
+                      - reference: crazy-bunny
+                        name: Crazy Bunny
+                        symbol: CRAZYBUNNY
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x48ed9372169ef0bf2b901bbe45e52b6a6b8f1ecc'
+                      - reference: crazy-bunny-equity-token
+                        name: Crazy Bunny Equity Token
+                        symbol: CBUNNY
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xaec23008b1098e39c0f8de90bf7431d185efe8b3'
+                      - reference: crazy-internet-coin
+                        name: Crazy Internet Coin
+                        symbol: CIC
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xad640689e6950b7453729a4686edb3fdfd754616'
+                      - reference: crazyminer
+                        name: CrazyMiner
+                        symbol: PWR
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xd52efe1039d706722b3d696e74ad4095dc3d3860'
+                      - reference: crazy-rich-coin
+                        name: Crazy Rich Coin
+                        symbol: CRC
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xc23fa49b581fff9a3ea7e49d0504b06d07c6ff2a'
+                      - reference: crazysharo
+                        name: CrazySharo
+                        symbol: SHARO
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x7f3daf301c629bfa243cbba6654370d929379657'
+                      - reference: crazy-tiger
+                        name: Crazy Tiger
+                        symbol: CRAZYTIGER
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xedd52d44de950ccc3b2e6abdf0da8e99bb0ec480'
+                      - reference: crazytime
+                        name: CrazyTime
+                        symbol: CRAZYTIME
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x94241428e0e36df628e0c2485bc0e158a5da3362'
+                      - reference: crazy-treasure-token
+                        name: Crazy Treasure Token
+                        symbol: CTT
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xf56783b3a4fa5f09efca962bd4bab1f5fadd9ab9'
+                      - reference: crb-coin
+                        name: CRB Coin
+                        symbol: CRB
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x518afa06aeca8dd0946b89a565e51f5a91d81176'
+                        - platform: ethereum
+                          contract: '0x2fd8bc03d9e827f77fac20b5130ee98b7f80149d'
+                      - reference: crd-network
+                        name: CRD Network
+                        symbol: CRD
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xcaaa93712bdac37f736c323c93d4d5fdefcc31cc'
+                      - reference: crdt
+                        name: CRDT
+                        symbol: CRDT
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xdaab5e695bb0e8ce8384ee56ba38fa8290618e52'
+                      - reference: cre8r-dao
+                        name: CRE8R DAO
+                        symbol: CRE8R
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xaa61d5dec73971cd4a026ef2820bb87b4a4ed8d6'
+                        - platform: fantom
+                          contract: '0x2ad402655243203fcfa7dcb62f8a08cc2ba88ae0'
+                      - reference: cream
+                        name: Creamcoin
+                        symbol: CRM
+                        blockchains: []
+                      - reference: cream-2
+                        name: Cream
+                        symbol: CREAM
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x2ba592f78db6436527729929aaf6c908497cb200'
+                        - platform: sora
+                          contract: '0x00521ad5caeadc2e3e04be4d4ebb0b7c8c9b71ba657c2362a3953490ebc81410'
+                        - platform: arbitrum-one
+                          contract: '0xf4d48ce3ee1ac3651998971541badbb9a14d7234'
+                        - platform: fantom
+                          contract: '0x657a1861c15a3ded9af0b6799a195a249ebdcbc6'
+                        - platform: energi
+                          contract: '0x1cca61099dcebe517f8cac58f27218e7aff2d3bf'
+                        - platform: solana
+                          contract: 9iwfhhe7bjkno4eb1wx3p4uyjjen9roglt4bvmdzzoin
+                        - platform: solana
+                          contract: 5fu5uugbjpuvdbveb3a1jtnirl8rxtiyesmwvkjtunqv
+                        - platform: near-protocol
+                          contract: 2ba592f78db6436527729929aaf6c908497cb200.factory.bridge.near
+                      - reference: creama
+                        name: Creama
+                        symbol: CREAMA
+                        blockchains:
+                        - platform: avalanche
+                          contract: '0x3947146f331b9ef6448064c6311cdd24d9467a1a'
+                      - reference: cream-eth2
+                        name: Cream ETH 2
+                        symbol: CRETH2
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xcbc1065255cbc3ab41a6868c22d1f1c573ab89fd'
+                        - platform: ethereum
+                          contract: '0x49d72e3973900a195a155a46441f0c08179fdb64'
+                      - reference: creamlands
+                        name: Creamlands
+                        symbol: CREAM
+                        blockchains:
+                        - platform: hedera-hashgraph
+                          contract: 0.0.926385
+                      - reference: creampye
+                        name: Creampye [OLD]
+                        symbol: PYE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xaad87f47cdea777faf87e7602e91e3a6afbe4d57'
+                      - reference: cream-shares
+                        name: IceCream Shares
+                        symbol: CSHARE
+                        blockchains:
+                        - platform: avalanche
+                          contract: '0x155f794b56353533e0afbf76e1b1fc57dfad5bd7'
+                        - platform: avalanche
+                          contract: '0x155f794b56353533e0afbf76e1b1fc57dfad5bd7'
+                      - reference: cream-wormhole
+                        name: Cream (Wormhole)
+                        symbol: CREAM
+                        blockchains:
+                        - platform: solana
+                          contract: hihxl2im6l6p1oqoseiixdj3phpynxvskh9a2ddqlvdh
+                      - reference: creamy
+                        name: Creamy
+                        symbol: CREAMY
+                        blockchains:
+                        - platform: solana
+                          contract: creampddimxxj2ztcwp5wmetba4nyakcrtbeqtsktqhe
+                      - reference: create
+                        name: Create
+                        symbol: CT
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xa85c461c66038ffc8433e2a961339b7f36656e16'
+                        - platform: binance-smart-chain
+                          contract: '0xa85c461c66038ffc8433e2a961339b7f36656e16'
+                      - reference: creaticles
+                        name: Creaticles
+                        symbol: CRE8
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xc36b4311b21fc0c2ead46f1ea6ce97c9c4d98d3d'
+                      - reference: creativecoin
+                        name: CREA
+                        symbol: CREA
+                        blockchains: []
+                      - reference: creator-platform
+                        name: Creator Platform
+                        symbol: CTR
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x923b83c26b3809d960ff80332ed00aa46d7ed375'
+                        - platform: binance-smart-chain
+                          contract: '0xd6cce248263ea1e2b8cb765178c944fc16ed0727'
+                      - reference: creator-protocol
+                        name: Creator Protocol
+                        symbol: CRE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xc2c14affaddee38d7375c400d144251a87d2c34a'
+                      - reference: creature_hunters
+                        name: Creature Hunters
+                        symbol: CHTS
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x1cdb9b4465f4e65b93d0ad802122c7c9279975c9'
+                      - reference: creda
+                        name: CreDA
+                        symbol: CREDA
+                        blockchains:
+                        - platform: arbitrum-one
+                          contract: '0xc136e6b376a9946b156db1ed3a34b08afdaed76d'
+                      - reference: cred-coin-pay
+                        name: CRED COIN PAY
+                        symbol: CRED
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xfc76ba9157ee5d079de8c1e969ee54096aaa6c9c'
+                      - reference: credefi
+                        name: Credefi
+                        symbol: CREDI
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xae6e307c3fe9e922e5674dbd7f830ed49c014c6b'
+                        - platform: binance-smart-chain
+                          contract: '0x2235e79086dd23135119366da45851c741874e5b'
+                      - reference: credefi-wormhole
+                        name: Credefi (Wormhole)
+                        symbol: CREDI
+                        blockchains:
+                        - platform: terra
+                          contract: terra18xyl0ees6ueyhkhn0mjdtrm82e393ult2dazl3
+                      - reference: credi--1
+                        name: CREDI
+                        symbol: CREDI
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xae6e307c3fe9e922e5674dbd7f830ed49c014c6b'
+                        - platform: ethereum
+                          contract: '0xae6e307c3fe9e922e5674dbd7f830ed49c014c6b'
+                      - reference: credit
+                        name: TerraCredit
+                        symbol: CREDIT
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x9d440a8dc5ae7dd4f6b406b78340856838c3e5da'
+                        - platform: binance-smart-chain
+                          contract: '0xc9308bcf5fa46d728422753d2d5afbc5cdb66b03'
+                      - reference: credit-2
+                        name: PROXI DeFi
+                        symbol: CREDIT
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xc4cb5793bd58bad06bf51fb37717b86b02cbe8a4'
+                      - reference: creditcoin-2
+                        name: Creditcoin
+                        symbol: CTC
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xa3ee21c306a700e682abcdfe9baa6a08f3820419'
+                      - reference: credit-printer
+                        name: Credit Printer
+                        symbol: CREDITP
+                        blockchains:
+                        - platform: fantom
+                          contract: '0x5e5aabc95380b38c014fdc5e602c5183177fcca4'
+                      - reference: credits
+                        name: CREDITS
+                        symbol: CS
+                        blockchains: []
+                      - reference: credit-suisse-inu
+                        name: Credit Suisse Inu
+                        symbol: CSI
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x74bff2018687b8a1ff7132e13cd4fdc763725bcf'
+                        - platform: ethereum
+                          contract: '0x74bff2018687b8a1ff7132e13cd4fdc763725bcf'
+                      - reference: creditum
+                        name: Creditum
+                        symbol: CREDIT
+                        blockchains:
+                        - platform: fantom
+                          contract: '0x77128dfdd0ac859b33f44050c6fa272f34872b5e'
+                      - reference: credmark
+                        name: Credmark
+                        symbol: CMK
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x68cfb82eacb9f198d508b514d898a403c449533e'
+                      - reference: creds
+                        name: Creds
+                        symbol: CREDS
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xc13f4f0f865bac08f62654b57e38669ebc4747a3'
+                      - reference: crema-finance
+                        name: Crema Finance
+                        symbol: CRM
+                        blockchains: []
+                      - reference: cremation-coin
+                        name: Cremation Coin
+                        symbol: CREMAT
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xb8501a9a9aaae239a2490f44e00b284baa0b131a'
+                        - platform: ethereum
+                          contract: '0x8b9f7e9586633ca4abffb1f746da8daed7849cb2'
+                      - reference: creo-engine
+                        name: Creo Engine
+                        symbol: CREO
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x9521728bf66a867bc65a93ece4a543d817871eb7'
+                      - reference: crescent-network
+                        name: Crescent Network
+                        symbol: CRE
+                        blockchains:
+                        - platform: cosmos
+                          contract: ucre
+                      - reference: crescentswap-moonlight
+                        name: Crescentswap Moonlight
+                        symbol: MNLT
+                        blockchains:
+                        - platform: arbitrum-one
+                          contract: '0x0a1694716de67c98f61942b2cab7df7fe659c87a'
+                      - reference: crespo
+                        name: Crespo
+                        symbol: CSO
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x5ecb025e51415dba9fd272c551076357cf4069f5'
+                      - reference: creta-world
+                        name: Creta World
+                        symbol: CRETA
+                        blockchains:
+                        - platform: polygon-pos
+                          contract: '0x202655af326de310491cb54f120e02ee0da92b55'
+                      - reference: creth2--1
+                        name: Cream ETH Token
+                        symbol: CRETH2
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x49d72e3973900a195a155a46441f0c08179fdb64'
+                        - platform: ethereum
+                          contract: '0x49d72e3973900a195a155a46441f0c08179fdb64'
+                      - reference: crevacoin
+                        name: Crevacoin
+                        symbol: CREVA
+                        blockchains: []
+                      - reference: crex-token
+                        name: Crex Token
+                        symbol: CREX
+                        blockchains: []
+                    meta:
+                      current_page: 42
+                      total_entries: 20048
+                      total_pages: 201
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_currencies_invalid_token:
+                  value:
+                    api_version: '1.0'
+                    data: []
+                    errors:
+                      code: ZENAGG-AUTHGET-AA4
+                      message: Invalid OAuth token
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/aggregators/api/v1/currencies?page=1'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT bearer token obtained from POST /oauth/token using the OAuth 2.0 client_credentials grant
+        with the client_id and client_secret ZenLedger issues. The token expires after 30 minutes (expires_in 1800)
+        and must be refreshed at the same endpoint.

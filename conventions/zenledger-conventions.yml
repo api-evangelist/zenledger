@@ -1,0 +1,209 @@
+generated: '2026-09-05'
+method: searched
+source: https://docs.zenledger.io/compliance/v3/README.md
+docs: https://docs.zenledger.io/compliance/v3/
+derived_from:
+- openapi/zenledger-compliance-api-openapi.yml
+- openapi/zenledger-aggregator-api-openapi.yml
+scope: >-
+  Cross-cutting runtime semantics for both published ZenLedger REST APIs (Compliance Suite v3 and Aggregator Suite
+  v1), which share one host, one token endpoint and one response envelope.
+
+auth:
+  style: oauth2-client-credentials-then-bearer-jwt
+  header: 'Authorization: Bearer {jwt_token}'
+  token_endpoint: https://api.zenledger.io/oauth/token
+  token_lifetime_seconds: 1800
+  self_serve: false
+  detail: authentication/zenledger-authentication.yml
+
+idempotency:
+  coverage: none
+  supported: false
+  header: null
+  scope: []
+  note: >-
+    ZenLedger documents no replay-protection mechanism. There is no Idempotency-Key header, no client-supplied
+    request id, and no documented dedupe key on any of the ten mutating operations (5 POST, 2 PUT, 3 DELETE) across
+    the two APIs. The word "idempotent" does not appear anywhere in either published reference. The one adjacent
+    behaviour ZenLedger does state is import-level, not request-level: re-running a stopped import through the
+    resume endpoint de-duplicates already-imported transactions. That protects the data after the fact; it does not
+    make the POST safe to retry, and a duplicate POST /companies still fails with ZENCS-CMPPST-AA2 (Duplicated
+    Reference) rather than returning the original result. Duplicate-detection on natural keys — company reference
+    and user email — is the only safety net, and it surfaces as an error, not as a replayed response.
+  evidence:
+  - https://docs.zenledger.io/compliance/v3/README.md
+  - https://docs.zenledger.io/aggregators/rest-api/v1/README.md
+
+reversibility:
+  grade: documented
+  na: false
+  note: >-
+    Every destructive operation has a named counterpart operation, but ZenLedger states no window for any of them —
+    no retention period, no restore path, no grace interval. A deleted company, user or source has no documented
+    undelete. That is why this grades `documented` and not `verified`.
+  write_surface:
+  - operation: createCompany
+    operationId: createCompany
+    reversal: deleteCompany
+    reversal_operationId: deleteCompany
+    window: null
+    window_source: null
+    note: DELETE /compliance/api/v3/companies/{company_reference}. No restore operation and no stated retention window.
+  - operation: createCompanyUser
+    operationId: createCompanyUser
+    reversal: deleteCompanyUser
+    reversal_operationId: deleteCompanyUser
+    window: null
+    window_source: null
+    note: DELETE .../users/{user_id}. No restore operation and no stated retention window. A user can also be disabled rather than deleted (error ZENCS-USRGET-AA3 "Requested user is disabled" implies a disabled state), but no operation to disable or re-enable is published.
+  - operation: postWallet
+    operationId: postWallet
+    reversal: deleteUserSource
+    reversal_operationId: deleteUserSource
+    window: null
+    window_source: null
+    note: An imported wallet or exchange account is removed with DELETE .../holdings/{source_id}. No stated window; no undo for the removal itself.
+  - operation: postExchange
+    operationId: postExchange
+    reversal: deleteUserSource
+    reversal_operationId: deleteUserSource
+    window: null
+    window_source: null
+  - operation: updateCompanyDetails
+    operationId: updateCompanyDetails
+    reversal: null
+    window: null
+    note: PUT is a straight overwrite. No prior-version read, no revert operation.
+  - operation: updateUserDetails
+    operationId: updateUserDetails
+    reversal: null
+    window: null
+    note: PUT is a straight overwrite. No prior-version read, no revert operation.
+  - operation: createPortfolio
+    operationId: createPortfolio
+    reversal: null
+    window: null
+    note: The Aggregator Suite publishes no delete or cancel for a created portfolio.
+  recovery_semantics:
+  - mechanism: import resume
+    operationId: getResumeSource
+    description: >-
+      An import stopped at the transaction limit is continued with GET .../holdings/{source_id}/resume, which lifts
+      the cap for that account and re-triggers the import. Already-imported transactions are de-duplicated. This is
+      forward recovery, not reversal.
+    window: null
+  - mechanism: import resync
+    operationId: getResyncSource
+    description: GET .../holdings/{source_id}/resync re-pulls a source. Forward recovery, not reversal.
+    window: null
+
+dry_run_mode:
+  supported: false
+  note: No preview, simulate, validate-only or dry-run parameter is documented on any operation.
+
+pagination:
+  style: page-number
+  request_params:
+  - name: page
+    in: query
+    type: number
+    description: Specific page requested for the paginated results.
+  page_sizes:
+  - endpoints: [getTransactionsForUser, getTransactionsForAllUserOfACompany, getPolymarketsForUser, getPolymarketsForAllUsersOfACompany, getCurrencies]
+    size: 100
+  - endpoints: [getHoldingsForUser, getHoldingsForAllUsersOfACompany]
+    size: 20
+  response_fields:
+  - pagination
+  note: >-
+    Page size is fixed per endpoint and is not client-controllable — there is no per_page or limit parameter. The
+    documented size differs by resource (100 for transactions, polymarkets and currencies; 20 for holdings), which
+    a client must hardcode per endpoint. Paginated responses carry a `pagination` object alongside `data`.
+
+envelope:
+  shape: '{"api_version": "<version>", "data": <array|object>, "pagination": {...}, "errors": {...}}'
+  fields:
+  - name: api_version
+    description: Version of the targeted API, e.g. "3.0" for Compliance v3.
+  - name: data
+    description: Wrapper for the response payload. Always present, empty array on error.
+  - name: pagination
+    description: Present on paginated collection responses.
+  - name: errors
+    description: Present on error responses; carries code and message.
+  note: >-
+    Every response — success and error alike — uses the same wrapper, so a client must inspect `errors` rather than
+    relying on the HTTP status alone.
+
+error_semantics:
+  format: vendor-specific
+  rfc9457: false
+  code_namespaces: [ZENCS, ZENAGG]
+  detail: errors/zenledger-error-codes.yml
+
+versioning:
+  style: path-segment
+  pattern: /compliance/api/v{n}/... and /aggregators/api/v{n}/...
+  current:
+  - api: Compliance Suite
+    version: v3
+    docs: https://docs.zenledger.io/compliance/v3/
+  - api: Aggregator Suite
+    version: v1
+    docs: https://docs.zenledger.io/aggregators/rest-api/v1/
+  prior_versions_still_published:
+  - https://docs.zenledger.io/compliance/v2/
+  - https://docs.zenledger.io/compliance/v1/
+  note: >-
+    Version is also echoed in every response body as api_version. One v3 collection request — POST exchange — still
+    targets /compliance/api/v1/.../imports rather than v3, so v1 is not merely archived documentation; at least one
+    v1 path is the documented current call. Recorded as published, not as a defect judgement.
+  detail: lifecycle/zenledger-lifecycle.yml
+
+request_id_tracing:
+  supported: true
+  observed_only: true
+  response_header: X-Request-Id
+  note: >-
+    Saved example responses in the published Postman collections carry X-Request-Id (and X-Runtime, and Cloudflare's
+    CF-RAY). ZenLedger does not document these headers or tell a client to quote X-Request-Id when raising a
+    support ticket, so this is an observed platform behaviour rather than a published tracing contract.
+
+rate_limit_signaling:
+  documented: false
+  detail: rate-limits/zenledger-rate-limits.yml
+
+field_expansion:
+  supported: false
+  note: No expand, fields, include or sparse-fieldset parameter is documented.
+
+filtering:
+  supported: true
+  params:
+  - name: currency_code
+    description: Filter transactions by currency code.
+  - name: date_from
+    description: Cut-off date by ZenLedger import date (start).
+  - name: date_to
+    description: Cut-off date by ZenLedger import date (end).
+  - name: transaction_date_from
+    description: Cut-off date by on-chain/exchange transaction date (start).
+  - name: transaction_date_to
+    description: Cut-off date by on-chain/exchange transaction date (end).
+  - name: source_id
+    description: Restrict to a single wallet/exchange source.
+  - name: sorting_method
+    description: transaction_timestamps or import_timestamp; defaults to transaction date.
+  date_format: UTC ISO-8601 (a bad format returns ZENCS-PARAMGET-AA2)
+
+metadata:
+  supported: false
+  note: No customer-defined metadata bag is documented on any resource.
+
+request_signing:
+  applies_to_subset: true
+  detail: authentication/zenledger-authentication.yml
+  note: >-
+    The two import operations require an HMAC-SHA256 X-Signature header and an AES-256-CBC encrypted body. No other
+    operation does, so a client needs two different request-construction paths against the same API.

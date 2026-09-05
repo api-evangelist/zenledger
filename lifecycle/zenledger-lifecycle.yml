@@ -1,0 +1,90 @@
+generated: '2026-09-05'
+method: searched
+source: https://docs.zenledger.io/
+docs: https://docs.zenledger.io/
+
+versioning:
+  scheme: path-segment major version
+  patterns:
+  - /compliance/api/v{n}/
+  - /aggregators/api/v{n}/
+  echoed_in_body: api_version
+  current:
+  - api: ZenLedger Compliance Suite API
+    version: v3
+    docs: https://docs.zenledger.io/compliance/v3/
+    collection: https://docs.zenledger.io/compliance/v3/compliance_api.postman_collection.json
+  - api: ZenLedger Aggregator Suite API
+    version: v1
+    docs: https://docs.zenledger.io/aggregators/rest-api/v1/
+    collection: https://docs.zenledger.io/aggregators/rest-api/v1/aggregators_api.postman_collection.json
+  prior_versions:
+  - version: v2
+    api: Compliance Suite
+    docs: https://docs.zenledger.io/compliance/v2/
+    collection: https://docs.zenledger.io/compliance/v2/compliance_api.postman_collection.json
+    status: still-published
+    http_status: 200
+  - version: v1
+    api: Compliance Suite
+    docs: https://docs.zenledger.io/compliance/v1/
+    collection: https://docs.zenledger.io/compliance/v1/compliance_api.postman_collection.json
+    status: still-published
+    http_status: 200
+  note: >-
+    The documentation hub labels v3 as "Recommended" and v2/v1 as "the previous release" and "the original release",
+    which is a soft steer rather than a deprecation. All three collections are still served. One v3 collection
+    request (POST exchange import) targets /compliance/api/v1/, so v1 paths are not uniformly retired.
+
+deprecation_policy:
+  published: false
+  sunset_header: false
+  deprecation_header: false
+  deprecated_operations: []
+  note: >-
+    ZenLedger publishes no deprecation policy, no removal timeline and no notice period. Neither published
+    reference mentions "deprecated", "sunset" or "end of life", no operation carries `deprecated: true`, and no
+    RFC 8594 Sunset or Deprecation response header is documented or present in any saved example response. Older
+    versions are described only as older, with no stated retirement date — so an integrator has no signal for when
+    v1 or v2 stops answering.
+
+status_page:
+  published: true
+  url: https://status.zenledger.io/
+  http_status: 200
+  title: Zenledger Services - Status
+  provider: Atlassian Statuspage
+  alternate_url: https://zenledger.statuspage.io/
+  scope_note: >-
+    The status page covers "Zenledger Services" as a whole. It does not break out the Compliance Suite or Aggregator
+    Suite API as separately monitored components, so an API consumer cannot subscribe to API-only incidents.
+
+changelog:
+  published: false
+  note: >-
+    Neither API reference carries a dated changelog, release notes page or version history. The only change signal
+    a consumer has is the appearance of a new versioned collection under docs.zenledger.io. No changelog/ artifact
+    is emitted, because there is nothing dated to structure.
+
+sla:
+  published: false
+  note: No public uptime commitment, support-response SLA or credit schedule is published for either API. Terms are set in the enterprise agreement.
+
+support:
+  channels:
+  - type: HelpCenter
+    url: https://support.zenledger.io/en/
+  - type: Contact
+    url: https://zenledger.io/contact-us/
+  - type: Email
+    value: support@zenledger.io
+  api_support_note: >-
+    Support is the consumer help center; there is no developer-specific support channel, forum or community for the
+    Compliance or Aggregator APIs. API credentials are issued by ZenLedger through a sales conversation.
+
+onboarding:
+  self_serve: false
+  note: >-
+    Neither API has a signup path. The Compliance and Aggregator product pages route to "Schedule a Demo" and
+    credentials are "previously facilitated by ZenLedger". The consumer product at app.zenledger.io is self-serve
+    but grants no API access.

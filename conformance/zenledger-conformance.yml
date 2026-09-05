@@ -1,0 +1,163 @@
+generated: '2026-09-05'
+method: searched
+source: https://zenledger.io/security/
+docs: https://zenledger.io/security/
+derived_from:
+- openapi/zenledger-compliance-api-openapi.yml
+- openapi/zenledger-aggregator-api-openapi.yml
+- authentication/zenledger-authentication.yml
+
+conformance:
+- id: oauth2
+  name: OAuth 2.0 (RFC 6749) — client_credentials grant
+  conforms: true
+  evidence: >-
+    POST https://api.zenledger.io/oauth/token with client_id, client_secret and grant_type=client_credentials
+    returns access_token, token_type "Bearer", expires_in and scope. Documented in the Authentication folder of
+    https://docs.zenledger.io/compliance/v3/compliance_api.postman_collection.json with saved 200/401/400 examples.
+  live_probe:
+    date: '2026-09-05'
+    request: POST https://api.zenledger.io/oauth/token with {"grant_type":"client_credentials"} and no credentials
+    http_status: 401
+    body: '{"error":"invalid_client","error_description":"Client authentication failed due to unknown client, no client authentication included, or unsupported authentication method."}'
+    finding: >-
+      The endpoint is live and returns a conformant RFC 6749 section 5.2 error object with the registered
+      `invalid_client` error code and an `error_description`. This is an anonymous, unauthenticated probe against
+      the documented token endpoint; no credentials were used and no protected resource was accessed.
+  deviations:
+  - The token request body is sent as application/json rather than the RFC 6749 application/x-www-form-urlencoded
+    form encoding. A saved 401 example shows the form-encoded variant returning invalid_client.
+  - No refresh_token grant; re-issue is a repeat client_credentials call.
+  - No token introspection (RFC 7662) or revocation (RFC 7009) endpoint is published.
+- id: bearer-token-usage
+  name: OAuth 2.0 Bearer Token Usage (RFC 6750)
+  conforms: true
+  evidence: 'Authorization: Bearer {jwt_token} on every non-token operation across both APIs; see components.securitySchemes.bearerAuth in both OpenAPI documents in this repo.'
+- id: oidc
+  name: OpenID Connect Discovery
+  conforms: false
+  evidence: >-
+    GET https://api.zenledger.io/.well-known/openid-configuration returned 404 and
+    https://zenledger.io/.well-known/openid-configuration returned 404 on 2026-09-05. No discovery document is
+    published. See well-known/zenledger-well-known.yml.
+- id: oauth-authorization-server-metadata
+  name: OAuth 2.0 Authorization Server Metadata (RFC 8414)
+  conforms: false
+  evidence: /.well-known/oauth-authorization-server returned 404 on zenledger.io and api.zenledger.io on 2026-09-05.
+- id: rfc9457
+  name: Problem Details for HTTP APIs (RFC 9457 / RFC 7807)
+  conforms: false
+  evidence: >-
+    Errors are returned as a vendor envelope {api_version, data, errors:{code,message}} with content-type
+    application/json, not application/problem+json. See errors/zenledger-error-codes.yml.
+- id: rfc8594
+  name: Sunset HTTP Header (RFC 8594)
+  conforms: false
+  evidence: No Sunset or Deprecation header is documented or present in any saved example response. See lifecycle/zenledger-lifecycle.yml.
+- id: rfc9116
+  name: security.txt (RFC 9116)
+  conforms: false
+  evidence: /.well-known/security.txt returned 404 on zenledger.io and api.zenledger.io on 2026-09-05, despite ZenLedger running a bounty program at https://zenledger.io/security/.
+- id: idempotency
+  name: Idempotent request replay (Idempotency-Key)
+  conforms: false
+  evidence: No idempotency mechanism is documented on any of the ten mutating operations. See conventions/zenledger-conventions.yml idempotency.coverage=none.
+- id: pagination
+  name: Paginated collection responses
+  conforms: true
+  evidence: >-
+    A `page` query parameter and a `pagination` object in the response envelope, documented per endpoint at 100
+    elements per page (transactions, polymarkets, currencies) and 20 (holdings). Page size is not client-controllable.
+- id: rest
+  name: Resource-oriented REST over JSON
+  conforms: true
+  evidence: >-
+    "Because the REST API is based on open standards, you can use any web development language to access the API"
+    — https://docs.zenledger.io/compliance/v3/README.md. Standard GET/POST/PUT/DELETE over nested
+    /companies/{ref}/users/{id}/... resources with JSON request and response bodies.
+- id: openapi
+  name: OpenAPI-described contract published by the provider
+  conforms: false
+  evidence: >-
+    No OpenAPI, Swagger, AsyncAPI or GraphQL document is served on api.zenledger.io or docs.zenledger.io. Probed
+    2026-09-05: /openapi.json, /openapi.yaml, /swagger.json, /v1/openapi.json, /api-docs, /docs, /redoc all 404 on
+    api.zenledger.io; docs.zenledger.io answers a 14,019-byte HTML shell for the same paths. ZenLedger's
+    machine-readable contract is the Postman collection, which is real and complete; the OpenAPI documents in this
+    repo are derived from it by API Evangelist.
+- id: hmac-request-signing
+  name: HMAC-SHA256 request signing
+  conforms: true
+  partial: true
+  evidence: >-
+    X-Signature header, HMAC-SHA256 over the base64 ciphertext, hex-encoded, on the two import operations only.
+    Documented with a TypeScript reference implementation in the Request Signature and Encryption folder of the v3
+    collection.
+  deviations:
+  - Not an interoperable standard — this is a bespoke scheme, not RFC 9421 HTTP Message Signatures.
+  - Applies to 2 of 10 mutating operations.
+- id: rfc9421
+  name: HTTP Message Signatures (RFC 9421)
+  conforms: false
+  evidence: The signing scheme is bespoke (X-Signature, HMAC over ciphertext) rather than RFC 9421 Signature/Signature-Input.
+
+domain_standards:
+  applicable: true
+  market: Crypto tax reporting, digital-asset trade monitoring and sanctions screening
+  declared_in_contract: false
+  note: >-
+    Nothing in either contract declares a domain interchange standard. There is no SCIM schema URN, no OData
+    $metadata, no ISO 20022 message type, no FDX or Open Banking shape, no FIX/FIXML, and no machine-readable
+    reference to a tax-form schema. The regulatory regimes ZenLedger operates against — IRS reporting (Form 8949,
+    Schedule D, 1099-DA), FinCEN/FBAR, OFAC sanctions lists, and the SEC/FINRA trade-monitoring obligations the
+    Compliance Suite is sold into — are reporting and screening regimes that prescribe document formats and duties,
+    not API contracts, so there is no published standard for this contract to conform to. Recorded as a genuine
+    absence of an applicable standard, not as a provider gap. REWARD-ONLY: no penalty applies.
+  probed_shortlist:
+  - standard: fdx
+    present: false
+  - standard: iso-20022
+    present: false
+  - standard: scim
+    present: false
+  - standard: odata
+    present: false
+  - standard: fapi
+    present: false
+
+compliance_program:
+  certifications:
+  - name: SOC 2 Type II
+    status: maintained
+    evidence: >-
+      "We understand the need for security and maintain SOC 2 Type II compliance to hold the highest standards for
+      your data" — https://zenledger.io/compliance/. The security page states the Information Security Program
+      "follows the criteria set forth by the SOC 2 Framework" and that the organization "undergoes independent
+      third-party assessments to test our security and compliance controls."
+    report_available: not-published
+    note: No trust center, no public report request flow, and no named auditor. The claim is prose on a marketing page; there is no downloadable or gated report portal.
+  practices:
+  - name: Independent third-party penetration testing
+    frequency: at least annually
+    evidence: https://zenledger.io/security/
+  - name: Annual risk assessments
+    frequency: at least annually
+    evidence: https://zenledger.io/security/
+  - name: Quarterly access reviews
+    frequency: quarterly
+    evidence: https://zenledger.io/security/
+  - name: Encryption at rest and in transit (TLS/SSL only)
+    evidence: https://zenledger.io/security/
+  - name: Vendor risk management and published subprocessor list
+    evidence: https://zenledger.io/subprocessors/
+  - name: Security awareness training and background checks for all staff
+    evidence: https://zenledger.io/security/
+  hosting:
+  - Amazon Web Services (AWS)
+  - Google Cloud Platform (GCP)
+  data_residency: United States
+  not_claimed:
+  - ISO 27001
+  - PCI DSS
+  - HIPAA
+  - FedRAMP
+  - GDPR certification (a privacy policy and subprocessor list are published; no certification is claimed)

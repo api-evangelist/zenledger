@@ -1,0 +1,57 @@
+generated: '2026-09-05'
+method: searched
+source: https://zenledger.io/security/
+trust_center:
+  dedicated_portal: false
+  probed:
+  - url: https://trust.zenledger.io
+    status: 0
+    result: NXDOMAIN
+  - url: https://zenledger.io/security/
+    status: 200
+    result: security-page
+  - url: https://zenledger.io/legal/
+    status: 200
+    result: legal-index
+  form: >-
+    ZenLedger publishes a security page and a legal index rather than a trust center. There is no report-request
+    workflow, no document vault, no auditor attestation download, no compliance dashboard and no subprocessor
+    change-notification subscription. Certifications are asserted in prose.
+  pages:
+  - name: Security
+    url: https://zenledger.io/security/
+    covers: [organizational security, cloud security, access security, vendor and risk management, bounty program, incident response]
+  - name: Legal
+    url: https://zenledger.io/legal/
+  - name: Privacy Policy
+    url: https://zenledger.io/privacy-policy/
+  - name: Terms of Use
+    url: https://zenledger.io/terms-of-use/
+  - name: Subprocessors
+    url: https://zenledger.io/subprocessors/
+  - name: Cookie Policy
+    url: https://zenledger.io/cookiepolicy/
+certifications:
+- name: SOC 2 Type II
+  claimed: true
+  evidence_url: https://zenledger.io/compliance/
+  report_obtainable: unknown
+  auditor: not-named
+  note: Asserted on the Compliance product page and echoed on the security page. No report, no attestation letter, no auditor name and no request flow is published.
+- name: SOC 2 Framework alignment (Information Security Program)
+  claimed: true
+  evidence_url: https://zenledger.io/security/
+subprocessors_published: true
+subprocessors_url: https://zenledger.io/subprocessors/
+data_residency: United States
+infrastructure:
+- Amazon Web Services (AWS)
+- Google Cloud Platform (GCP)
+not_claimed:
+- ISO 27001
+- ISO 27017
+- ISO 27018
+- PCI DSS
+- HIPAA
+- FedRAMP
+- CSA STAR

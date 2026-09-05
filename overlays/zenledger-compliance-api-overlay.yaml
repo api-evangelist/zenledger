@@ -1,0 +1,100 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the ZenLedger Compliance Suite API
+  version: '1.0.0'
+  x-generated: '2026-09-05'
+  x-method: generated
+  x-source: openapi/zenledger-compliance-api-openapi.yml
+  x-note: >-
+    This Overlay records what API Evangelist added on top of ZenLedger's published contract. The base document is
+    itself derived from the provider's Postman collection; this overlay never mutates that file. Applying it adds
+    the runtime semantics ZenLedger documents in prose but does not encode in the contract — the OAuth 2.0 token
+    flow, the request-signing requirement on the two import operations, the fixed pagination sizes, the shared
+    response envelope, and the error-code namespace.
+extends: openapi/zenledger-compliance-api-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-profile: https://apis.io/provider/zenledger/
+    x-contract-provenance: derived-from-postman
+    x-provider-publishes-openapi: false
+- target: $.components.securitySchemes
+  update:
+    oauth2ClientCredentials:
+      type: oauth2
+      description: >-
+        The token flow ZenLedger documents in prose in the Authentication folder of the published collection.
+        Credentials are issued by ZenLedger; there is no self-serve key. Added by API Evangelist because the
+        collection encodes only the resulting bearer token, not the flow that produces it.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.zenledger.io/oauth/token
+          scopes:
+            public: The single scope value returned by the token endpoint.
+- target: $.paths['/compliance/api/v3/companies/{company_reference}/users/{user_id}/imports'].post
+  update:
+    x-request-signing:
+      required: true
+      signature_header: X-Signature
+      signature_algorithm: HMAC-SHA256
+      signature_encoding: hex
+      body_encryption: AES-256-CBC
+      envelope_fields: [data, iv, signature]
+      docs: https://docs.zenledger.io/compliance/v3/
+      note: >-
+        Documented in the Request Signature and Encryption folder, not on the operation. Recorded here so an agent
+        reading the contract alone cannot miss that this operation is not a plain JSON POST.
+    x-consequence: high
+    x-emits-webhooks: [IMPORT_STATUS_UPDATE, ADDRESS_SCREENING_REPORT]
+- target: $.paths['/compliance/api/v1/companies/{company_reference}/users/{user_id}/imports'].post
+  update:
+    x-request-signing:
+      required: true
+      signature_header: X-Signature
+      signature_algorithm: HMAC-SHA256
+      body_encryption: AES-256-CBC
+    x-version-anomaly: >-
+      This request sits in the v3 collection but targets a v1 path. Recorded as published, not corrected.
+    x-consequence: high
+    x-emits-webhooks: [IMPORT_STATUS_UPDATE, ADDRESS_SCREENING_REPORT]
+- target: $.paths['/compliance/api/v3/companies/{company_reference}/transactions'].get
+  update:
+    x-pagination:
+      style: page-number
+      param: page
+      page_size: 100
+      client_controllable: false
+- target: $.paths['/compliance/api/v3/companies/{company_reference}/users/{user_id}/transactions'].get
+  update:
+    x-pagination: {style: page-number, param: page, page_size: 100, client_controllable: false}
+- target: $.paths['/compliance/api/v3/companies/{company_reference}/holdings'].get
+  update:
+    x-pagination: {style: page-number, param: page, page_size: 20, client_controllable: false}
+- target: $.paths['/compliance/api/v3/companies/{company_reference}/users/{user_id}/holdings'].get
+  update:
+    x-pagination: {style: page-number, param: page, page_size: 20, client_controllable: false}
+- target: $.paths['/compliance/api/v3/companies/{company_reference}'].delete
+  update:
+    x-consequence: destructive
+    x-reversal: none-documented
+    x-retention-window: none-documented
+- target: $.paths['/compliance/api/v3/companies/{company_reference}/users/{user_id}'].delete
+  update:
+    x-consequence: destructive
+    x-reversal: none-documented
+    x-retention-window: none-documented
+- target: $.paths['/compliance/api/v3/companies/{company_reference}/users/{user_id}/holdings/{source_id}'].delete
+  update:
+    x-consequence: destructive
+    x-reversal: re-import via POST .../imports
+    x-retention-window: none-documented
+- target: $.paths['/compliance/api/v3/companies/{company_reference}/holdings/{source_id}/resume'].get
+  update:
+    x-side-effects: true
+    x-note: >-
+      A GET that mutates — it lifts the account's transaction import limit and re-triggers the import. Not safe to
+      retry blindly and not cacheable, despite the method.
+- target: $.paths['/compliance/api/v3/companies/{company_reference}/holdings/{source_id}/resync'].get
+  update:
+    x-side-effects: true
+    x-note: A GET that triggers a re-pull of the source. Not a safe method in practice.

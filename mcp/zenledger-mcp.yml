@@ -1,0 +1,378 @@
+generated: '2026-09-05'
+method: derived
+source: openapi/zenledger-compliance-api-openapi.yml, openapi/zenledger-aggregator-api-openapi.yml
+status: candidate
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: derived
+search_note: 'No MCP server exists. Searched 2026-09-05: no mcp.zenledger.io or api.zenledger.io/mcp host, no MCP
+  mention anywhere in either published API reference or on zenledger.io, no npm or PyPI package under the ZenLedger
+  name, nothing in github.com/zenledger-io, and no MCP entry in public directory searches. /.well-known/ai-plugin.json
+  returned 404 on zenledger.io and api.zenledger.io. The tool list below is a CANDIDATE derived by API Evangelist
+  from the operations of the two OpenAPI documents in this repo — it is a proposal, not a surface ZenLedger serves.
+  No endpoint URL is asserted, because none exists.'
+tool_count: 31
+tools:
+- name: compliance_jwt_request
+  title: JWT request
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: POST
+    path: /oauth/token
+    operationId: jwtRequest
+  read_only: false
+  inputs:
+  - body
+- name: compliance_get_companies
+  title: GET companies
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: GET
+    path: /compliance/api/v3/companies
+    operationId: getCompanies
+  read_only: true
+  inputs: []
+- name: compliance_create_company
+  title: CREATE company
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: POST
+    path: /compliance/api/v3/companies
+    operationId: createCompany
+  read_only: false
+  inputs:
+  - body
+- name: compliance_get_company
+  title: GET company
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: GET
+    path: /compliance/api/v3/companies/{company_reference}
+    operationId: getCompany
+  read_only: true
+  inputs:
+  - company_reference
+- name: compliance_delete_company
+  title: DELETE company
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: DELETE
+    path: /compliance/api/v3/companies/{company_reference}
+    operationId: deleteCompany
+  read_only: false
+  inputs:
+  - company_reference
+- name: compliance_update_company_details
+  title: UPDATE company details
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: PUT
+    path: /compliance/api/v3/companies/{company_reference}
+    operationId: updateCompanyDetails
+  read_only: false
+  inputs:
+  - company_reference
+  - body
+- name: compliance_get_company_users
+  title: GET company users
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: GET
+    path: /compliance/api/v3/companies/{company_reference}/users
+    operationId: getCompanyUsers
+  read_only: true
+  inputs:
+  - company_reference
+- name: compliance_create_company_user
+  title: CREATE company user
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: POST
+    path: /compliance/api/v3/companies/{company_reference}/users
+    operationId: createCompanyUser
+  read_only: false
+  inputs:
+  - company_reference
+  - body
+- name: compliance_get_company_user
+  title: GET company user
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: GET
+    path: /compliance/api/v3/companies/{company_reference}/users/{user_id}
+    operationId: getCompanyUser
+  read_only: true
+  inputs:
+  - company_reference
+  - user_id
+- name: compliance_update_user_details
+  title: UPDATE user details
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: PUT
+    path: /compliance/api/v3/companies/{company_reference}/users/{user_id}
+    operationId: updateUserDetails
+  read_only: false
+  inputs:
+  - company_reference
+  - user_id
+  - body
+- name: compliance_delete_company_user
+  title: DELETE company user
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: DELETE
+    path: /compliance/api/v3/companies/{company_reference}/users/{user_id}
+    operationId: deleteCompanyUser
+  read_only: false
+  inputs:
+  - company_reference
+  - user_id
+- name: compliance_get_transactions_for_user
+  title: GET transactions for user
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: GET
+    path: /compliance/api/v3/companies/{company_reference}/users/{user_id}/transactions
+    operationId: getTransactionsForUser
+  read_only: true
+  inputs:
+  - company_reference
+  - user_id
+  - currency_code
+  - date_from
+  - date_to
+  - transaction_date_from
+  - transaction_date_to
+  - source_id
+  - sorting_method
+  - page
+- name: compliance_get_transactions_for_all_user_of_a_company
+  title: GET transactions for all user of a company
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: GET
+    path: /compliance/api/v3/companies/{company_reference}/transactions
+    operationId: getTransactionsForAllUserOfACompany
+  read_only: true
+  inputs:
+  - company_reference
+  - page
+  - currency_code
+  - date_from
+  - date_to
+  - transaction_date_from
+  - transaction_date_to
+  - source_id
+  - sorting_method
+- name: compliance_get_holdings_for_user
+  title: GET holdings for user
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: GET
+    path: /compliance/api/v3/companies/{company_reference}/users/{user_id}/holdings
+    operationId: getHoldingsForUser
+  read_only: true
+  inputs:
+  - company_reference
+  - user_id
+  - currency_code
+  - date_from
+  - date_to
+  - page
+- name: compliance_get_holdings_for_user_by_source
+  title: GET holdings for user by source
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: GET
+    path: /compliance/api/v3/companies/{company_reference}/users/{user_id}/holdings/{source_id}
+    operationId: getHoldingsForUserBySource
+  read_only: true
+  inputs:
+  - company_reference
+  - user_id
+  - source_id
+- name: compliance_delete_user_source
+  title: DELETE user source
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: DELETE
+    path: /compliance/api/v3/companies/{company_reference}/users/{user_id}/holdings/{source_id}
+    operationId: deleteUserSource
+  read_only: false
+  inputs:
+  - company_reference
+  - user_id
+  - source_id
+- name: compliance_get_holdings_for_all_users_of_a_company
+  title: GET holdings for all users of a company
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: GET
+    path: /compliance/api/v3/companies/{company_reference}/holdings
+    operationId: getHoldingsForAllUsersOfACompany
+  read_only: true
+  inputs:
+  - company_reference
+  - page
+- name: compliance_get_resync_source
+  title: GET resync source
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: GET
+    path: /compliance/api/v3/companies/{company_reference}/holdings/{source_id}/resync
+    operationId: getResyncSource
+  read_only: true
+  inputs:
+  - company_reference
+  - source_id
+- name: compliance_get_resume_source
+  title: GET resume source
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: GET
+    path: /compliance/api/v3/companies/{company_reference}/holdings/{source_id}/resume
+    operationId: getResumeSource
+  read_only: true
+  inputs:
+  - company_reference
+  - source_id
+- name: compliance_get_polymarkets_for_user
+  title: GET polymarkets for user
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: GET
+    path: /compliance/api/v3/companies/{company_reference}/users/{user_id}/polymarkets
+    operationId: getPolymarketsForUser
+  read_only: true
+  inputs:
+  - company_reference
+  - user_id
+  - page
+- name: compliance_get_polymarkets_for_all_users_of_a_company
+  title: GET polymarkets for all users of a company
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: GET
+    path: /compliance/api/v3/companies/{company_reference}/polymarkets
+    operationId: getPolymarketsForAllUsersOfACompany
+  read_only: true
+  inputs:
+  - company_reference
+  - page
+- name: compliance_post_wallet
+  title: POST wallet
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: POST
+    path: /compliance/api/v3/companies/{company_reference}/users/{user_id}/imports
+    operationId: postWallet
+  read_only: false
+  inputs:
+  - company_reference
+  - user_id
+  - X-Signature
+  - body
+- name: compliance_post_exchange
+  title: POST exchange
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: POST
+    path: /compliance/api/v1/companies/{company_reference}/users/{user_id}/imports
+    operationId: postExchange
+  read_only: false
+  inputs:
+  - company_reference
+  - user_id
+  - X-Signature
+  - body
+- name: compliance_get_wallet_screening_report
+  title: GET Wallet Screening Report
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: GET
+    path: /compliance/api/v3/screening
+    operationId: getWalletScreeningReport
+  read_only: true
+  inputs:
+  - chain
+  - address
+- name: compliance_get_currencies
+  title: GET currencies
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: GET
+    path: /compliance/api/v3/currencies
+    operationId: getCurrencies
+  read_only: true
+  inputs:
+  - page
+- name: compliance_get_sources
+  title: GET sources
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: GET
+    path: /compliance/api/v3/sources
+    operationId: getSources
+  read_only: true
+  inputs:
+  - page
+- name: compliance_get_chains
+  title: GET chains
+  api: ZenLedger Compliance Suite API
+  rest:
+    method: GET
+    path: /compliance/api/v3/chains
+    operationId: getChains
+  read_only: true
+  inputs:
+  - page
+- name: aggregator_create_portfolio
+  title: CREATE portfolio
+  api: ZenLedger Aggregator Suite API
+  rest:
+    method: POST
+    path: /aggregators/api/v1/portfolios
+    operationId: createPortfolio
+  read_only: false
+  inputs:
+  - body
+- name: aggregator_taxes
+  title: Taxes
+  api: ZenLedger Aggregator Suite API
+  rest:
+    method: GET
+    path: /aggregators/api/v1/taxes
+    operationId: taxes
+  read_only: true
+  inputs:
+  - aggcode
+- name: aggregator_get_sources
+  title: GET sources
+  api: ZenLedger Aggregator Suite API
+  rest:
+    method: GET
+    path: /aggregators/api/v1/sources
+    operationId: getSources
+  read_only: true
+  inputs:
+  - page
+- name: aggregator_get_currencies
+  title: GET currencies
+  api: ZenLedger Aggregator Suite API
+  rest:
+    method: GET
+    path: /aggregators/api/v1/currencies
+    operationId: getCurrencies
+  read_only: true
+  inputs:
+  - page
+agent_fit_note: 'The Compliance Suite is a plausible MCP candidate: it is read-heavy (21 of 27 operations are GET),
+  the reads are reference and reporting calls an agent would want, and the destructive operations are few and clearly
+  named. Two frictions would need answering first — credentials are issued only through a sales conversation, and
+  the two import operations require an HMAC-SHA256 signature over an AES-256-CBC encrypted body, which is not something
+  a generic MCP client can construct.'

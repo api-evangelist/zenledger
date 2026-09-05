@@ -1,0 +1,132 @@
+# ZenLedger
+
+> Crypto tax and digital-asset accounting platform. Beyond the consumer tax product, ZenLedger operates two
+> documented B2B REST APIs on https://api.zenledger.io — the Compliance Suite (v3), a digital-asset trade-monitoring
+> and tax-compliance surface for financial institutions and enterprise compliance teams, and the Aggregator Suite
+> (v1), a partner surface that builds an aggregated portfolio and returns its tax calculation.
+
+Generated: 2026-09-05
+Method: generated
+Source: API Evangelist profile of ZenLedger, built from https://docs.zenledger.io/ and https://zenledger.io/
+Note: ZenLedger does not publish an llms.txt. Probed 2026-09-05 — https://zenledger.io/llms.txt returned 404 and
+https://docs.zenledger.io/llms.txt returned the static-site HTML catch-all, not a document. This file is generated
+by API Evangelist from the provider's own published material and is not served by ZenLedger.
+
+## What an agent needs to know first
+
+- There is NO self-serve API access. Credentials for both APIs are issued by ZenLedger through a sales conversation
+  ("previously facilitated by ZenLedger"). The consumer signup at app.zenledger.io grants no API access.
+- ZenLedger publishes no OpenAPI. Its machine-readable contract is a versioned Postman collection per API. The
+  OpenAPI documents in the API Evangelist profile are derived from those collections.
+- Both APIs share one host, one token endpoint and one response envelope.
+- No MCP server, no agent card, no GraphQL, no client SDK in any language, and no /.well-known documents.
+
+## Authentication
+
+- Token endpoint: POST https://api.zenledger.io/oauth/token
+- Grant: OAuth 2.0 client_credentials. Body is application/json:
+  {"client_id": "...", "client_secret": "...", "grant_type": "client_credentials"}
+- Returns access_token, token_type "Bearer", expires_in 1800, scope "public".
+- Present as: Authorization: Bearer {access_token} on every other call.
+- Token expires after 30 minutes. There is no refresh_token grant — repeat the client_credentials call.
+- Expired token returns error code ZENCS-AUTHGET-AA4 (Compliance) or ZENAGG-AUTHGET-AA4 (Aggregator).
+
+## Response envelope
+
+Every response, success and error alike, is wrapped:
+
+    {"api_version": "3.0", "data": [...], "pagination": {...}, "errors": {"code": "...", "message": "..."}}
+
+Check `errors` — some error conditions are returned with an HTTP 200.
+
+## Compliance Suite API (v3) — 27 operations
+
+Base: https://api.zenledger.io/compliance/api/v3
+Docs: https://docs.zenledger.io/compliance/v3/
+Collection: https://docs.zenledger.io/compliance/v3/compliance_api.postman_collection.json
+
+Resource tree is rooted at Company; every collection is available scoped to a user and rolled up to the company.
+
+- Companies: GET /companies, GET|POST|PUT|DELETE /companies/{company_reference}
+- Users: GET|POST /companies/{ref}/users, GET|PUT|DELETE /companies/{ref}/users/{user_id}
+- Transactions: GET /companies/{ref}/users/{user_id}/transactions, GET /companies/{ref}/transactions
+  Filters: currency_code, date_from, date_to, transaction_date_from, transaction_date_to, source_id,
+  sorting_method, page. Dates are UTC ISO-8601. 100 per page, not client-controllable.
+- Holdings (a user's connected sources): GET /companies/{ref}/users/{user_id}/holdings,
+  GET|DELETE .../holdings/{source_id}, GET /companies/{ref}/holdings. 20 per page.
+- Import recovery: GET /companies/{ref}/holdings/{source_id}/resync, .../resume
+  Both are GETs WITH SIDE EFFECTS — resume lifts the account's transaction import limit and re-triggers the import.
+- Polymarkets: GET /companies/{ref}/users/{user_id}/polymarkets, GET /companies/{ref}/polymarkets
+- Imports: POST /companies/{ref}/users/{user_id}/imports (wallet), and the exchange variant still on
+  /compliance/api/v1/companies/{ref}/users/{user_id}/imports
+  THESE TWO ARE NOT PLAIN JSON POSTS — the body must be AES-256-CBC encrypted and the request signed with an
+  HMAC-SHA256 X-Signature header. Envelope: {data, iv, signature}.
+- Wallet screening: GET /screening?chain={chain}&address={address}
+- Reference data: GET /currencies, GET /sources, GET /chains
+
+## Aggregator Suite API (v1) — 5 operations
+
+Base: https://api.zenledger.io/aggregators/api/v1
+Docs: https://docs.zenledger.io/aggregators/rest-api/v1/
+Collection: https://docs.zenledger.io/aggregators/rest-api/v1/aggregators_api.postman_collection.json
+
+- POST /portfolios — create an aggregated portfolio; returns an aggregation code (aggcode).
+- GET /taxes?aggcode={aggcode} — the tax calculation for that portfolio.
+- GET /sources, GET /currencies — reference data.
+
+No read, update or delete for a portfolio is published; the aggcode is the only handle.
+
+## Webhooks
+
+Registered per Company (not via an API) with `import_notification_url` and `wallet_screening_notification_url`,
+set on POST /companies or updated with PUT /companies/{ref}.
+
+- IMPORT_STATUS_UPDATE with import_status "complete" — import finished, carries transaction_count.
+- IMPORT_STATUS_UPDATE with import_status "limit-reached" — import stopped at the transaction cap (default
+  100,000), carries transaction_limit. SAME notification_type and SAME endpoint as "complete": switch on
+  import_status, not on notification_type, or you will treat a stopped import as a finished one.
+- ADDRESS_SCREENING_REPORT — sanctions/risk verdict for an address, sent before an import begins. Requires the
+  Wallet Screening feature to be enabled for the Enterprise. screening_status is "filed" or "clean".
+
+Retries on any non-200: 1m, 3m, 10m, 30m, 1h, then a final attempt at 24h.
+NO SIGNATURE IS DOCUMENTED on inbound webhooks — no HMAC header, no shared secret, no IP allowlist. A receiver has
+no published way to verify a notification came from ZenLedger. Import state can be polled from the `status` field
+on each source in a holdings response instead.
+
+## Errors
+
+Vendor codes, not RFC 9457. 45 documented: 39 ZENCS-* (Compliance) and 6 ZENAGG-* (Aggregator).
+Middle segment names resource and verb: AUTHGET, RSRCGET, CMPGET/CMPPST/CMPUPD/CMPDEL, USRGET/USRPST/USRUPD/USRDEL,
+HLDRSC, PARAMGET, PFLPST. Full catalog in the API Evangelist profile.
+
+## Not published
+
+- No rate limits. Neither reference mentions rate limiting, 429, X-RateLimit, RateLimit- or Retry-After, and no
+  error code covers throttling. There is no runtime backoff signal.
+- No idempotency. No Idempotency-Key, no client request id, no dedupe key on any of the ten mutating operations.
+- No sandbox, test mode, test credentials or dry-run parameter.
+- No deprecation policy, Sunset header, or retirement dates — although Compliance v1 and v2 are still served.
+- No changelog or release notes.
+- No CLI, no embeddable components, no client SDK.
+- No scopes reference; the token returns the single scope "public".
+
+## Compliance posture
+
+SOC 2 Type II claimed on https://zenledger.io/compliance/. Annual third-party penetration testing, annual risk
+assessments, quarterly access reviews, encryption at rest and in transit, published subprocessor list. Hosted on
+AWS and GCP, data in the United States. A bug bounty program runs at https://zenledger.io/security/ via a HubSpot
+submission form — but no /.well-known/security.txt is served on any host.
+
+## Links
+
+- Documentation hub: https://docs.zenledger.io/
+- Compliance Suite v3 reference: https://docs.zenledger.io/compliance/v3/README.md
+- Aggregator Suite v1 reference: https://docs.zenledger.io/aggregators/rest-api/v1/README.md
+- Status: https://status.zenledger.io/
+- Pricing (consumer product only; API is quote-only): https://zenledger.io/pricing/
+- Security: https://zenledger.io/security/
+- Subprocessors: https://zenledger.io/subprocessors/
+- Support: https://support.zenledger.io/en/
+- GitHub: https://github.com/zenledger-io
+- Terms: https://zenledger.io/terms-of-use/
+- Privacy: https://zenledger.io/privacy-policy/

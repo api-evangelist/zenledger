@@ -1,0 +1,158 @@
+generated: '2026-09-05'
+method: searched
+source: https://docs.zenledger.io/compliance/v3/compliance_api.postman_collection.json
+docs: https://docs.zenledger.io/compliance/v3/
+api: ZenLedger Compliance Suite API
+asyncapi_published: false
+asyncapi_note: >-
+  ZenLedger publishes no AsyncAPI document. Probed 2026-09-05: no /asyncapi.yaml, /asyncapi.json or event catalog
+  on api.zenledger.io or docs.zenledger.io, and nothing in github.com/zenledger-io. The event surface below is the
+  webhook catalog as ZenLedger documents it, in the "Webhooks and notifications" folder of the v3 Postman
+  collection. It is transcribed, not converted — no AsyncAPI has been authored on the provider's behalf.
+transport: HTTPS POST to a customer-registered endpoint
+direction: provider-to-customer
+subscription_model: >-
+  Endpoints are registered per Company, not per subscription and not through a webhook-management API. The URL is
+  set with the `import_notification_url` (import events) or `wallet_screening_notification_url` (screening events)
+  attribute on POST /companies, or updated later with PUT /companies/{company_reference}. There is no list, test,
+  rotate, or delete-subscription operation, and no way to enumerate what is currently registered other than reading
+  the company record back.
+delivery:
+  expected_response: HTTP 200
+  retry_policy: >-
+    If the endpoint answers anything other than 200, or does not answer, ZenLedger retries after 1 minute, 3
+    minutes, 10 minutes, 30 minutes, 1 hour, and a final retry after 24 hours, then stops.
+  retry_schedule: [1m, 3m, 10m, 30m, 1h, 24h]
+  max_attempts: 7
+  ordering_guarantee: not-documented
+  at_least_once: true
+  signature_verification: none-documented
+  signature_note: >-
+    ZenLedger documents no webhook signature, shared secret, HMAC header or timestamp on inbound notifications, and
+    no source IP allowlist. A receiver has no published way to verify that a POST to its notification URL came from
+    ZenLedger — which matters because the payload carries sanctions-screening verdicts. This is the most consequential
+    documentation gap on this record.
+  replay_endpoint: none
+event_count: 3
+events:
+- name: IMPORT_STATUS_UPDATE (complete)
+  notification_type: IMPORT_STATUS_UPDATE
+  trigger: A user's newly imported account has finished processing.
+  endpoint_attribute: import_notification_url
+  enabled_by_default: true
+  payload_fields:
+  - {name: notification_type, type: string, example: IMPORT_STATUS_UPDATE}
+  - {name: company_reference, type: string}
+  - {name: user_id, type: string}
+  - {name: source_id, type: string}
+  - {name: source_reference, type: string, example: coinbase}
+  - {name: import_status, type: string, example: complete}
+  - {name: transaction_count, type: integer, example: 7235}
+  example: |
+    {
+      "notification_type": "IMPORT_STATUS_UPDATE",
+      "company_reference": "company_reference",
+      "user_id": "7be47a6d-a1b7-43bf-a1b7f5b6-2973cd5e0859",
+      "source_id": "2973cd5e0859-a1b7-43bf-7be47a6d-97359cd5e082",
+      "source_reference": "coinbase",
+      "import_status": "complete",
+      "transaction_count": 7235
+    }
+- name: IMPORT_STATUS_UPDATE (limit-reached)
+  notification_type: IMPORT_STATUS_UPDATE
+  trigger: >-
+    An import hit the configured transaction import limit (default 100,000, set on the Company or inherited from the
+    Enterprise). ZenLedger stops the import for that account and sends this instead of the "complete" notification.
+  endpoint_attribute: import_notification_url
+  same_endpoint_as: IMPORT_STATUS_UPDATE (complete)
+  discriminator: import_status == "limit-reached"
+  recovery: >-
+    GET /compliance/api/v3/companies/{company_reference}/holdings/{source_id}/resume lifts the limit for that
+    account and re-triggers the import; already-imported transactions are de-duplicated. A standard "complete"
+    notification follows when it finishes.
+  payload_fields:
+  - {name: notification_type, type: string}
+  - {name: company_reference, type: string}
+  - {name: user_id, type: string}
+  - {name: source_id, type: string}
+  - {name: source_reference, type: string}
+  - {name: import_status, type: string, example: limit-reached}
+  - {name: transaction_count, type: integer}
+  - {name: transaction_limit, type: integer, note: 'Only present on this variant; the configured cap.'}
+  example: |
+    {
+      "notification_type": "IMPORT_STATUS_UPDATE",
+      "company_reference": "company_reference",
+      "user_id": "7be47a6d-a1b7-43bf-a1b7f5b6-2973cd5e0859",
+      "source_id": "2973cd5e0859-a1b7-43bf-7be47a6d-97359cd5e082",
+      "source_reference": "coinbase",
+      "import_status": "limit-reached",
+      "transaction_count": 1000,
+      "transaction_limit": 1000
+    }
+  consumer_warning: >-
+    Both variants share one notification_type and one endpoint. A consumer that switches on notification_type alone
+    will treat a stopped, incomplete import as a completed one. The discriminator is import_status.
+- name: ADDRESS_SCREENING_REPORT
+  notification_type: ADDRESS_SCREENING_REPORT
+  trigger: Sent before an import begins, carrying the sanctions/risk screening verdict for the imported address.
+  endpoint_attribute: wallet_screening_notification_url
+  enabled_by_default: false
+  availability: >-
+    Only if the Wallet Screening feature is enabled for the Enterprise (contact ZenLedger) and a destination
+    endpoint is set on the Company.
+  payload_fields:
+  - {name: notification_type, type: string, example: ADDRESS_SCREENING_REPORT}
+  - {name: company_reference, type: string}
+  - {name: user_id, type: string}
+  - {name: screening_status, type: string, enum: [filed, clean]}
+  - {name: screening_report, type: array}
+  - {name: 'screening_report[].blockchain', type: string, example: ETH}
+  - {name: 'screening_report[].address', type: string}
+  - {name: 'screening_report[].report_data', type: array, note: 'Objects with a description explaining the risk indicator, or stating that none was triggered.'}
+  - {name: 'screening_report[].owner_info', type: 'array|null', note: 'Attributed owner (name, url, legal_name) when known; null when clean.'}
+  status_semantics:
+    filed: The address matched a screening list — the published example cites the US Treasury OFAC sanction list.
+    clean: No risk indicator was triggered for this address.
+  example_sanctioned: |
+    {
+      "notification_type": "ADDRESS_SCREENING_REPORT",
+      "company_reference": "CompanyReference",
+      "user_id": "83b9c1ee-9df5-48e0-ac46-5ceec42a8a76",
+      "screening_status": "filed",
+      "screening_report": [
+        {
+          "blockchain": "ETH",
+          "address": "0x1da5821544e25c636c1417ba96ade4cf6d2f9b5a",
+          "report_data": [
+            { "description": "The address listed on the US Treasury Department's Office of Foreign Assets Control sanction list." }
+          ],
+          "owner_info": [
+            { "owner_info": [ { "name": "Bittrex.com", "url": "https://www.Bittrex.com", "legal_name": "Bittrex Global GmbH" } ] }
+          ]
+        }
+      ]
+    }
+  example_clean: |
+    {
+      "notification_type": "ADDRESS_SCREENING_REPORT",
+      "company_reference": "CompanyReference",
+      "user_id": "83b9c1ee-9df5-48e0-ac46-5ceec42a8a76",
+      "screening_status": "clean",
+      "screening_report": [
+        {
+          "blockchain": "ETH",
+          "address": "0x6ee1362b3d16d94d0afe122b0000f1c16f482d72",
+          "report_data": [ { "description": "No risk indicator has been triggered for this address" } ],
+          "owner_info": null
+        }
+      ]
+    }
+  shape_note: >-
+    owner_info is a doubly-nested array in the published example — an array of objects each carrying its own
+    `owner_info` array. Recorded as documented.
+related_polling_alternative:
+  note: >-
+    Import state is also readable synchronously — each source in a holdings response carries a `status` field, with
+    the values documented in the Import Status Glossary. A consumer that cannot accept an unsigned inbound webhook
+    can poll GET .../holdings instead.

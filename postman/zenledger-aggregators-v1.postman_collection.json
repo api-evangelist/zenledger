@@ -1,0 +1,1692 @@
+{
+	"info": {
+		"_postman_id": "8c32d310-6be3-47db-9e24-ce9bb564e583",
+		"name": "Aggregator Suite: REST API Reference",
+		"description": "This document describes the **REST API** and resources provided by the **Aggregator Suite**. The REST APIs are for developers who want to integrate the **Aggregator Suite** into other applications.\n\n**Aggregator Suite’s REST API** provides access to all suite resources via URI paths. To use a REST API, your application will make an HTTP request and parse the response. The response format is JSON. Your methods will be the standard **HTTP** methods like GET, PUT, POST and DELETE.\n\nBecause the REST API is based on open standards, you can use any web development language to access the API.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32476566"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "JWT request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"client_id\": \"{{oauth_client_id}}\",\n    \"client_secret\": \"{{oauth_client_secret}}\",\n    \"grant_type\": \"client_credentials\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/oauth/token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"oauth",
+								"token"
+							]
+						},
+						"description": "The server response can vary based on the validity of the provided POST body:\n\n- **Success (HTTP status 200):**\n    - **Headers:** The response includes various headers such as `Content-Type`, `Cache-Control`, `Expires`, and more.\n    - **Body:** The response body is a JSON object containing the `access_token`, `token_type`, `expires_in`, and `scope` fields. The `access_token` is the JWT that should be included in the `Authorization` header for subsequent API requests.\n- **Unauthorized (HTTP status 401):**\n    - **Headers:** The response includes various headers such as `Content-Type`, `Cache-Control`, `Expires`, and more.\n    - **Body:** The response body is a JSON object containing the `error` and `error_description` fields, indicating an invalid client or failed authentication.\n- **Bad Request (HTTP status 400):**\n    - **Headers:** The response includes various headers such as `Content-Type`, `Cache-Control`, `Expires`, and more.\n    - **Body:** The response body is a JSON object containing the `error` and `error_description` fields, indicating an invalid request."
+					},
+					"response": [
+						{
+							"name": "JWT request: success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"client_id\": \"{{oauth_client_id}}\",\n    \"client_secret\": \"{{oauth_client_secret}}\",\n    \"grant_type\": \"client_credentials\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.zenledger.io/oauth/token",
+									"protocol": "https",
+									"host": [
+										"api",
+										"zenledger",
+										"io"
+									],
+									"path": [
+										"oauth",
+										"token"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Wed, 14 Jun 2023 14:16:36 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "344"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "strict-origin-when-cross-origin"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-store"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, Accept-Encoding, Origin"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"c70b151d5f1894b0146cd6d420255f89\""
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "a62ce991-93e0-476d-8caa-251ec8daa949"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "0.060161"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "permissions-policy",
+									"value": "camera=(), microphone=(), geolocation=()"
+								},
+								{
+									"key": "referrer-policy",
+									"value": "strict-origin-when-cross-origin"
+								},
+								{
+									"key": "strict-transport-security",
+									"value": "max-age=63072000; includeSubdomains;"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "deny"
+								},
+								{
+									"key": "x-xss-protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7d73312b9eb08e54-KTM"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"access_token\": \"access_token\",\n    \"token_type\": \"Bearer\",\n    \"expires_in\": 1800,\n    \"scope\": \"public\",\n    \"created_at\": 1686752196\n}"
+						},
+						{
+							"name": "JWT request: invalid client",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "client_id",
+											"value": "{{oauth_client_id}}",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "client_secret",
+											"value": "{{oauth_client_secret}}",
+											"type": "text"
+										},
+										{
+											"key": "grant_type",
+											"value": "client_credentials",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/oauth/token",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"oauth",
+										"token"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "strict-origin-when-cross-origin"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-store"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "WWW-Authenticate",
+									"value": "Bearer realm=\"Doorkeeper\", error=\"invalid_client\", error_description=\"Client authentication failed due to unknown client, no client authentication included, or unsupported authentication method.\""
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, Origin"
+								},
+								{
+									"key": "X-Meta-Request-Version",
+									"value": "0.7.4"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "fc348002-f78c-4a82-be66-99757f373f63"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "0.048000"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"invalid_client\",\n    \"error_description\": \"Client authentication failed due to unknown client, no client authentication included, or unsupported authentication method.\"\n}"
+						},
+						{
+							"name": "JWT request: invalid request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "client_id",
+											"value": "{{oauth_client_id}}",
+											"type": "text"
+										},
+										{
+											"key": "client_secret",
+											"value": "{{oauth_client_secret}}",
+											"type": "text"
+										},
+										{
+											"key": "grant_type",
+											"value": "client_credentials",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/oauth/token",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"oauth",
+										"token"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "strict-origin-when-cross-origin"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-store"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "WWW-Authenticate",
+									"value": "Bearer realm=\"Doorkeeper\", error=\"invalid_request\", error_description=\"Missing required parameter: grant_type.\""
+								},
+								{
+									"key": "X-Meta-Request-Version",
+									"value": "0.7.4"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "35ae636c-91cd-41c0-b841-81e710986830"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "0.040856"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"invalid_request\",\n    \"error_description\": \"Missing required parameter: grant_type.\"\n}"
+						}
+					]
+				}
+			],
+			"description": "The **Aggregator Suite** API uses a **JSON Web Token** to secure all data requests. Each one of the requests needs to contain the **JWT** which has an expiration of 30 minutes and needs to be refreshed after that period of time.  \nTo request a **JWT** it is necessary to make a **GET** request to **api.zenledger.io/oauth/token** with the **credentials** previously facilitated by **ZenLedger**.  \nThis same resource will be used to **refresh** the token after expiration.\n\nHere is an example in **javascript** of how to request a **JWT**:\n\n``` javascript\nconst clientId = 'provided_client_id';\nconst clientSecret = 'provided_secret';\nconst tokenEndpoint = 'https://api.zenledger.io/oauth/token';\nconst requestOptions = {\n  method: 'POST',\n  headers: {\n    'Content-Type': 'application/json',\n  },\n  body: JSON.stringify({\n    client_id: clientId,\n    client_secret: clientSecret,\n    grant_type: 'client_credentials',\n  }),\n};\nfetch(tokenEndpoint, requestOptions)\n  .then((response) => {\n    if (!response.ok) {\n      throw new Error('Failed to obtain JWT token');\n    }\n    return response.json();\n  })\n  .then((data) => {\n    const token = data.access_token;\n    console.log('JWT Token:', token);\n    // You can now use the token for further requests.\n  })\n  .catch((error) => {\n    console.error('Error:', error);\n  });\n\n ```\n\nOnce the **JWT** is created you can use it for every other request to the API:\n\n``` javascript\nconst jwtToken = 'your-jwt-token';\nconst apiUrl = 'https://api.zenledger.io/aggregators/api/v1/sources';\nfetch(apiUrl, {\n  method: 'GET',\n  headers: {\n    'Content-Type': 'application/json'\n    'Authorization': 'Bearer ${jwtToken}''\n  }\n})\n  .then(response => response.json())\n  .then(response_data => {\n    // Handle the response data (list of sources)\n    console.log('source list:', response_data.data);\n  })\n  .catch(error => {\n    // Handle any errors\n    console.error('Error:', error);\n  });\n\n ```"
+		},
+		{
+			"name": "Portfolios",
+			"item": [
+				{
+					"name": "CREATE portfolio",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"portfolio\": [\n        {\n            \"blockchain\": \"ethereum\",\n            \"coin\": \"eth\",\n            \"address\": \"0xc5689793548164f7D6B5477EEE6697DF6F3C2843\",\n            \"display_name\": \"Eth wallet\"\n        },\n        {\n            \"blockchain\": \"bitcoin\",\n            \"coin\": \"btc\",\n            \"address\": \"3Df7budise9ws3vzPADMbN5XA4JJZ8BuUR\",\n            \"display_name\": \"BTC wallet\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/aggregators/api/v1/portfolios/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"aggregators",
+								"api",
+								"v1",
+								"portfolios",
+								""
+							]
+						},
+						"description": "### POST **/portfolios**\n\n**Creates** a new portfolio to be later linked to a new user.\n\nThis endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.\n\n### Request\n\n##### QUERY PARAMETERS\n\n> NONE\n\n##### BODY\n\n*In JSON format\n\n> **portfolio** `object` Object containing a list of wallets with the following properties.\n>\n>> **blockchain** (optional) `string` Blockchain of the wallet\n>>\n>> **coin** `string` Cryptocurrency symbol\n>>\n>> **address** `string` Wallet address.\n>>\n>> **display_name** (optional) `string` if set, Name used for identifying the source in UI.\n\n##### RESPONSE `200`\n\n##### RESPONSE DATA\n\n> **api_version** `string` Version of the targeted API\n>\n> **data** `string` Wrapper for response data (See response example)"
+					},
+					"response": [
+						{
+							"name": "CREATE portfolio: success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"portfolio\": [\n        {\n            \"blockchain\": \"ethereum\",\n            \"coin\": \"eth\",\n            \"address\": \"0xc5689793548164f7D6B5477EEE6697DF6F3C2843\",\n            \"display_name\": \"Eth wallet\"\n        },\n        {\n            \"blockchain\": \"bitcoin\",\n            \"coin\": \"btc\",\n            \"address\": \"3Df7budise9ws3vzPADMbN5XA4JJZ8BuUR\",\n            \"display_name\": \"BTC wallet\"\n        },\n        {\n            \"blockchain\": \"solana\",\n            \"coin\": \"sol\",\n            \"address\": \"GgsHXPpUETnviBWGp4etBJMg9aZuPFafAe5oGxVvQpar\",\n            \"display_name\": \"SOLANA wallet\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/aggregators/api/v1/portfolios/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"aggregators",
+										"api",
+										"v1",
+										"portfolios",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 02 Jun 2023 07:48:44 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "135"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "max-age=0, private, must-revalidate"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								},
+								{
+									"key": "Etag",
+									"value": "W/\"2feaa303b8a6862023a631a975a7da23\""
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "strict-origin-when-cross-origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, Accept-Encoding, Origin"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "bef041f6-771e-4287-87a0-5dd94142a202"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "0.069032"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7d0e187fec685b9e-FRA"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"api_version\": \"1.0\",\n    \"data\": {\n        \"signup_url\": \"https://app.zenledger.io/new_sign_up?aggref=AGGREF&aggcode=AGGREF7bfa64c5d52e\",\n        \"aggcode\": \"AGGREF7bfa64c5d52e\"\n    }\n}"
+						},
+						{
+							"name": "CREATE portfolio: can not create",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"portfolio\": [\n        {\n            \"blockchain\": \"ethereum\",\n            \"coin\": \"eth\",\n            \"address\": \"0xc5689793548164f7D6B5477EEE6697DF6F3C2843\",\n            \"display_name\": \"Eth wallet\"\n        },\n        {\n            \"blockchain\": \"bitcoin\",\n            \"coin\": \"btc\",\n            \"address\": \"3Df7budise9ws3vzPADMbN5XA4JJZ8BuUR\",\n            \"display_name\": \"BTC wallet\"\n        },\n        {\n            \"blockchain\": \"solana\",\n            \"coin\": \"sol\",\n            \"address\": \"GgsHXPpUETnviBWGp4etBJMg9aZuPFafAe5oGxVvQpar\",\n            \"display_name\": \"SOLANA wallet\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/aggregators/api/v1/portfolios/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"aggregators",
+										"api",
+										"v1",
+										"portfolios",
+										""
+									]
+								}
+							},
+							"status": "Unprocessable Entity",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 02 Jun 2023 07:34:37 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "124"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "strict-origin-when-cross-origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, Accept-Encoding, Origin"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "5351155d-fe22-4133-a64f-64d4b9bf62c1"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "0.052252"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7d0e03d1ae0569a3-FRA"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"api_version\": \"1.0\",\n    \"data\": [],\n    \"errors\": {\n        \"code\": \"ZENAGG-PFLPST-AA1\",\n        \"message\": \"Could not create portfolio\"\n    }\n}"
+						}
+					]
+				}
+			],
+			"description": "The Portfolios API resource allows to create wallet portfolios.\n\n1. **Create Portfolio Endpoint**: This POST endpoint allows for the creation of new portfolios, requiring authentication via a bearer token.\n    \n\nThese endpoints form the basis of portfolio data management in the application, adhering to standard HTTP protocols and returning appropriate status codes based on the request's success or failure."
+		},
+		{
+			"name": "Taxes",
+			"item": [
+				{
+					"name": "Taxes",
+					"request": {
+						"auth": {
+							"type": "bearer"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/aggregators/api/v1/taxes/?aggcode=heybelugaca48dacb783c",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"aggregators",
+								"api",
+								"v1",
+								"taxes",
+								""
+							],
+							"query": [
+								{
+									"key": "aggcode",
+									"value": "heybelugaca48dacb783c"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "GET Taxes: complete",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/aggregators/api/v1/taxes/?aggcode=AGGREF7bfa64c5d52e",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"aggregators",
+										"api",
+										"v1",
+										"taxes",
+										""
+									],
+									"query": [
+										{
+											"key": "aggcode",
+											"value": "AGGREF7bfa64c5d52e"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"api_version\": \"1.0\",\n    \"data\": {\n        \"status\": \"complete\",\n        \"capital_gains\": {\n            \"long_term\": {\n                \"gain\": 4561.27,\n                \"proceeds\": 8896.72,\n                \"cost_basis\": 4335.46\n            },\n            \"short_term\": {\n                \"gain\": 60.82,\n                \"proceeds\": 8323.98,\n                \"cost_basis\": 8263.16\n            }\n        }\n    }\n}"
+						},
+						{
+							"name": "GET Taxes: in-progress",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/aggregators/api/v1/taxes/?aggcode=AGGREF7bfa64c5d52e",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"aggregators",
+										"api",
+										"v1",
+										"taxes",
+										""
+									],
+									"query": [
+										{
+											"key": "aggcode",
+											"value": "AGGREF7bfa64c5d52e"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"api_version\": \"1.0\",\n    \"data\": {\n        \"status\": \"in-progress\"\n    }\n}"
+						}
+					]
+				}
+			],
+			"description": "The Taxes API resource allows to retrieve tax summary.\n\n1. **GET Taxes Endpoint**: This GET endpoint allows for retrieval of tax summary, requiring authentication via a bearer token.\n    \n\nThese endpoints form the basis of tax summary reports, adhering to standard HTTP protocols and returning appropriate status codes based on the request's success or failure."
+		},
+		{
+			"name": "Supported Exchanges and Wallets",
+			"item": [
+				{
+					"name": "GET sources",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/aggregators/api/v1/sources?page=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"aggregators",
+								"api",
+								"v1",
+								"sources"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						},
+						"description": "### GET **/sources**\n\n**Returns** a paginated list of supported wallets by making a GET request to the path `/aggregators/api/v1/sources` on the base URL.\n\nThis endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.\n\n> *Results paginated with 100 elements per page\n\n### Request\n\n##### QUERY PARAMETERS\n\n> **page** `number` Specific page requested for the paginated results\n\n##### RESPONSE `200`\n\n##### RESPONSE DATA\n\n> **api_version** `string` Version of the targeted API\n>\n> **data** `string` Wrapper for response data (See response example)"
+					},
+					"response": [
+						{
+							"name": "GET sources: success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/aggregators/api/v1/sources?page=1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"aggregators",
+										"api",
+										"v1",
+										"sources"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 04 Jul 2023 07:11:17 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "strict-origin-when-cross-origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, Accept-Encoding, Origin"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1ffd1d2f24f891c8073d5d77182c4e17\""
+								},
+								{
+									"key": "Cache-Control",
+									"value": "max-age=0, private, must-revalidate"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "a39d705a-d35a-49eb-832d-13bf071bebcb"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "0.117811"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Content-Security-Policy",
+									"value": "frame-ancestors 'self' https://example.com;"
+								},
+								{
+									"key": "Expires",
+									"value": "-1"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "permissions-policy",
+									"value": "camera=(), microphone=(), geolocation=()"
+								},
+								{
+									"key": "referrer-policy",
+									"value": "strict-origin-when-cross-origin"
+								},
+								{
+									"key": "strict-transport-security",
+									"value": "max-age=63072000; includeSubdomains;"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-xss-protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7e158da11a448e51-KTM"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"api_version\": \"1.0\",\n    \"data\": {\n        \"sources\": [\n            {\n                \"reference\": \"btc-wallet\",\n                \"name\": \"BTC Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"eth-wallet\",\n                \"name\": \"ETH Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"ltc-wallet\",\n                \"name\": \"LTC Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"abra\",\n                \"name\": \"Abra\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"jaxx\",\n                \"name\": \"Jaxx\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"ledger-nano\",\n                \"name\": \"Ledger Nano\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"keep-key\",\n                \"name\": \"Keep Key\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"ledger-blue\",\n                \"name\": \"Ledger Blue\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"bitlox\",\n                \"name\": \"Bitlox\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"bitlox-digital\",\n                \"name\": \"Bitlox Digital\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"exodus\",\n                \"name\": \"Exodus\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"copay\",\n                \"name\": \"Copay\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"mycelium\",\n                \"name\": \"Mycelium\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"my-ether-wallet\",\n                \"name\": \"MyEtherWallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"bit-pay\",\n                \"name\": \"BitPay\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"electrum\",\n                \"name\": \"Electrum\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"airbitz\",\n                \"name\": \"Airbitz\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"brd\",\n                \"name\": \"BRD\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"freewallet\",\n                \"name\": \"Freewallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"infinito-wallet\",\n                \"name\": \"Infinito Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"idex\",\n                \"name\": \"Idex\",\n                \"type\": \"exchange\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"coinomi\",\n                \"name\": \"Coinomi\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"ada-wallet\",\n                \"name\": \"ADA Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"daedalus\",\n                \"name\": \"Daedalus\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"bancor-network\",\n                \"name\": \"Bancor Network\",\n                \"type\": \"exchange\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"binance-dex\",\n                \"name\": \"Binance DEX\",\n                \"type\": \"exchange\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"xtz-wallet\",\n                \"name\": \"XTZ Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"zec-wallet\",\n                \"name\": \"ZEC Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"vet-wallet\",\n                \"name\": \"VET Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"ont-wallet\",\n                \"name\": \"ONT Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"ark-wallet\",\n                \"name\": \"ARK Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"dcr-wallet\",\n                \"name\": \"DCR Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"rdd-wallet\",\n                \"name\": \"RDD Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"atom-wallet\",\n                \"name\": \"ATOM Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"coinswitch\",\n                \"name\": \"Coinswitch\",\n                \"type\": \"exchange\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"trust-wallet\",\n                \"name\": \"Trust Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"metamask\",\n                \"name\": \"Metamask\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"ETH\"\n            },\n            {\n                \"reference\": \"mycrypto\",\n                \"name\": \"Mycrypto\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"ETH\"\n            },\n            {\n                \"reference\": \"uniswap\",\n                \"name\": \"Uniswap\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"dharma\",\n                \"name\": \"Dharma\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"compound\",\n                \"name\": \"Compound\",\n                \"type\": \"exchange\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"dgb-wallet\",\n                \"name\": \"DGB Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"vtc-wallet\",\n                \"name\": \"VTC Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"waves-wallet\",\n                \"name\": \"WAVES Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"sys-wallet\",\n                \"name\": \"SYS Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"zil-wallet\",\n                \"name\": \"ZIL Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"ZIL\"\n            },\n            {\n                \"reference\": \"aion-wallet\",\n                \"name\": \"AION Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"algo-wallet\",\n                \"name\": \"ALGO Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"ALGO\"\n            },\n            {\n                \"reference\": \"one-wallet\",\n                \"name\": \"ONE Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"xvg-wallet\",\n                \"name\": \"XVG Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"zerion\",\n                \"name\": \"Zerion\",\n                \"type\": \"exchange\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"aave\",\n                \"name\": \"Aave\",\n                \"type\": \"exchange\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"synthetix\",\n                \"name\": \"Synthetix\",\n                \"type\": \"exchange\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"1inch-exchange\",\n                \"name\": \"1inch.exchange\",\n                \"type\": \"exchange\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"balancer\",\n                \"name\": \"Balancer\",\n                \"type\": \"exchange\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"dot-wallet\",\n                \"name\": \"DOT Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"zapper-fi\",\n                \"name\": \"Zapper.fi\",\n                \"type\": \"exchange\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"iris-wallet\",\n                \"name\": \"IRIS Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"kava-wallet\",\n                \"name\": \"KAVA Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"sushiswap\",\n                \"name\": \"Sushiswap\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"coinbase-wallet\",\n                \"name\": \"Coinbase Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"curve\",\n                \"name\": \"Curve\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"paraswap\",\n                \"name\": \"Paraswap\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"ledger-hw\",\n                \"name\": \"Ledger HW\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"binance-chain\",\n                \"name\": \"Binance Chain\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"BSC\"\n            },\n            {\n                \"reference\": \"polygon\",\n                \"name\": \"Polygon\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"MATIC\"\n            },\n            {\n                \"reference\": \"matic-wallet\",\n                \"name\": \"MATIC Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"bsc-wallet\",\n                \"name\": \"BSC Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"pancake-swap\",\n                \"name\": \"PancakeSwap\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"BSC\"\n            },\n            {\n                \"reference\": \"avalanche\",\n                \"name\": \"Avalanche\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"AVAX\"\n            },\n            {\n                \"reference\": \"avax-wallet\",\n                \"name\": \"AVAX Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"fantom\",\n                \"name\": \"Fantom\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"FTM\"\n            },\n            {\n                \"reference\": \"ftm-wallet\",\n                \"name\": \"FTM Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"FTM\"\n            },\n            {\n                \"reference\": \"atomic\",\n                \"name\": \"Atomic\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"game-stop-wallet\",\n                \"name\": \"GameStop Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"bit-keep\",\n                \"name\": \"BitKeep\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"qredo\",\n                \"name\": \"Qredo\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"math-wallet\",\n                \"name\": \"MathWallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"coin98\",\n                \"name\": \"Coin98\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"phantom\",\n                \"name\": \"Phantom\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"SOL\"\n            },\n            {\n                \"reference\": \"sol-wallet\",\n                \"name\": \"SOL Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"solana\",\n                \"name\": \"Solana\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"SOL\"\n            },\n            {\n                \"reference\": \"torus\",\n                \"name\": \"Torus\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"SOL\"\n            },\n            {\n                \"reference\": \"solflare\",\n                \"name\": \"Solflare\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"SOL\"\n            },\n            {\n                \"reference\": \"safepal\",\n                \"name\": \"Safepal\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"SOL\"\n            },\n            {\n                \"reference\": \"sollet\",\n                \"name\": \"Sollet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"SOL\"\n            },\n            {\n                \"reference\": \"token-pocket\",\n                \"name\": \"Token Pocket\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"SOL\"\n            },\n            {\n                \"reference\": \"slope\",\n                \"name\": \"Slope\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"SOL\"\n            },\n            {\n                \"reference\": \"clover\",\n                \"name\": \"Clover\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"SOL\"\n            },\n            {\n                \"reference\": \"glow\",\n                \"name\": \"Glow\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"SOL\"\n            },\n            {\n                \"reference\": \"arbitrum\",\n                \"name\": \"Arbitrum\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"ARB\"\n            },\n            {\n                \"reference\": \"arb-wallet\",\n                \"name\": \"ARB Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"optimism\",\n                \"name\": \"Optimism\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"OP\"\n            },\n            {\n                \"reference\": \"op-wallet\",\n                \"name\": \"OP Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"unisat\",\n                \"name\": \"Unisat\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"btc_od-wallet\",\n                \"name\": \"BTC_OD Wallet\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": null\n            },\n            {\n                \"reference\": \"base\",\n                \"name\": \"Base Chain\",\n                \"type\": \"wallet\",\n                \"api\": false,\n                \"csv\": false,\n                \"oauth\": false,\n                \"address\": true,\n                \"pass_phrase\": false,\n                \"default_coin\": \"BASE\"\n            }\n        ]\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"total_entries\": 97,\n        \"total_pages\": 1\n    }\n}"
+						},
+						{
+							"name": "GET sources: invalid token",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/aggregators/api/v1/sources?page=1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"aggregators",
+										"api",
+										"v1",
+										"sources"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 27 Jun 2023 06:18:17 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "strict-origin-when-cross-origin"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-store"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store"
+								},
+								{
+									"key": "WWW-Authenticate",
+									"value": "Bearer realm=\"Doorkeeper\", error=\"invalid_token\", error_description=\"The access token is invalid\""
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, Accept-Encoding, Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "23104c54-4185-4e34-93b6-f57a5a5a3cfa"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "0.013134"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Expires",
+									"value": "-1"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "permissions-policy",
+									"value": "camera=(), microphone=(), geolocation=()"
+								},
+								{
+									"key": "referrer-policy",
+									"value": "strict-origin-when-cross-origin"
+								},
+								{
+									"key": "strict-transport-security",
+									"value": "max-age=63072000; includeSubdomains;"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "deny"
+								},
+								{
+									"key": "x-xss-protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "_cfuvid=7H9PZrCAZ3HPw6XpTsIlCIeLN5JFDp5XGNS55L.rsQI-1687846697227-0-604800000; path=/; domain=.zenledger.io; HttpOnly; Secure; SameSite=None"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7ddb925f6f1b9e77-KTM"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"api_version\": \"1.0\",\n    \"data\": [],\n    \"errors\": {\n        \"code\": \"ZENAGG-AUTHGET-AA4\",\n        \"message\": \"Invalid OAuth token\"\n    }\n}"
+						}
+					]
+				}
+			],
+			"description": "The sources resource in the Aggregators API provides information about retrieving the list of supported wallet providers. By making a **GET** request to the `/aggregators/api/v1/sources` endpoint, you can retrieve the details of available sources. The request requires authentication using a bearer token.\n\nPlease note that the response example for this endpoint will contain the API version and a data object containing an array of sources. Each currency object includes a reference, name, type and other useful attributes.\n\nUse this information to integrate and work with the supported sources of the Aggregators API."
+		},
+		{
+			"name": "Supported Currencies",
+			"item": [
+				{
+					"name": "GET currencies",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/aggregators/api/v1/currencies?page=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"aggregators",
+								"api",
+								"v1",
+								"currencies"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						},
+						"description": "### GET **/currencies**\n\n**Returns** a paginated list of supported cryptocurrencies by making a GET request to the path `/aggregators/api/v1/currencies` on the base URL.\n\nThis endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.\n\n> *Results paginated with 100 elements per page\n\n### Request\n\n##### QUERY PARAMETERS\n\n> **page** `number` Specific page requested for the paginated results\n\n##### RESPONSE `200`\n\n##### RESPONSE DATA\n\n> **api_version** `string` Version of the targeted API\n>\n> **data** `string` Wrapper for response data (See response example)"
+					},
+					"response": [
+						{
+							"name": "GET currencies: success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/aggregators/api/v1/currencies?page=42",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"aggregators",
+										"api",
+										"v1",
+										"currencies"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "42"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 04 Jul 2023 07:11:17 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "strict-origin-when-cross-origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, Accept-Encoding, Origin"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1ffd1d2f24f891c8073d5d77182c4e17\""
+								},
+								{
+									"key": "Cache-Control",
+									"value": "max-age=0, private, must-revalidate"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "a39d705a-d35a-49eb-832d-13bf071bebcb"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "0.117811"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Content-Security-Policy",
+									"value": "frame-ancestors 'self' https://example.com;"
+								},
+								{
+									"key": "Expires",
+									"value": "-1"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "permissions-policy",
+									"value": "camera=(), microphone=(), geolocation=()"
+								},
+								{
+									"key": "referrer-policy",
+									"value": "strict-origin-when-cross-origin"
+								},
+								{
+									"key": "strict-transport-security",
+									"value": "max-age=63072000; includeSubdomains;"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-xss-protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7e158da11a448e51-KTM"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"api_version\": \"1.0\",\n    \"data\": {\n        \"currencies\": [\n            {\n                \"reference\": \"council-of-apes\",\n                \"name\": \"Council of Apes\",\n                \"symbol\": \"COAPE\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x55006895f398d7713d69081144b19d8c9022b582\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"counosx\",\n                \"name\": \"CounosX\",\n                \"symbol\": \"CCXX\",\n                \"blockchains\": []\n            },\n            {\n                \"reference\": \"counterparty\",\n                \"name\": \"Counterparty\",\n                \"symbol\": \"XCP\",\n                \"blockchains\": []\n            },\n            {\n                \"reference\": \"county-metaverse\",\n                \"name\": \"County Metaverse\",\n                \"symbol\": \"COUNTY\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x1967cabd079fcdd363a044f1444bf00a94558a2f\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"couponbay\",\n                \"name\": \"CouponBay\",\n                \"symbol\": \"CUP\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x3209d14ff61766359e64aceff91877cec2ad968e\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cousin-doge\",\n                \"name\": \"Cousin Doge\",\n                \"symbol\": \"COUSINDOGE\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0xda8df4506de8e110cc216937945963bab380a615\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"coution-live\",\n                \"name\": \"COUTION LIVE\",\n                \"symbol\": \"CTL\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"tron\",\n                        \"contract\": \"tdaogsywy3wwuyktk8z1fxsa8nxnmdfk9a\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"covalent\",\n                \"name\": \"Covalent\",\n                \"symbol\": \"CQT\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0xd417144312dbf50465b1c641d016962017ef6240\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"covalent-cova\",\n                \"name\": \"Cova Unity\",\n                \"symbol\": \"COVA\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0xb37a769b37224449d92aac57de379e1267cd3b00\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"covenant-child\",\n                \"name\": \"Covenant\",\n                \"symbol\": \"COVN\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x19ac2659599fd01c853de846919544276ad26f50\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"covercompared\",\n                \"name\": \"CoverCompared\",\n                \"symbol\": \"CVR\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x3c03b4ec9477809072ff9cc9292c9b25d4a8e6c6\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cover-protocol\",\n                \"name\": \"Cover Protocol\",\n                \"symbol\": \"COVER\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x4688a8b1f292fdab17e9a90c8bc379dc1dbd8713\"\n                    },\n                    {\n                        \"platform\": \"fantom\",\n                        \"contract\": \"0xb01e8419d842beebf1b70a7b5f7142abbaf7159d\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"covesting\",\n                \"name\": \"Covesting\",\n                \"symbol\": \"COV\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0xada86b1b313d1d5267e3fc0bb303f0a2b66d0ea7\"\n                    },\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x0f237db17aa4e6de062e6f052bd9c805789b01c3\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"covey\",\n                \"name\": \"Covey\",\n                \"symbol\": \"$CVY\",\n                \"blockchains\": []\n            },\n            {\n                \"reference\": \"covicoin\",\n                \"name\": \"CoviCoin\",\n                \"symbol\": \"CVC\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0xc6f0a9b75fa529dcc0f90459e30684e7ed9a9ea6\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"covid-19-recovery-token\",\n                \"name\": \"COVID-19 Recovery Token\",\n                \"symbol\": \"COVDR\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0xdb8afb917a2d4848ee5b3bed7f6c0bab0555427d\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"covid-doge\",\n                \"name\": \"Covid Doge\",\n                \"symbol\": \"COVID DOGE\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0xae1f20ca661ec552c0664a73ad5e5963824f92e1\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"covid-slice\",\n                \"name\": \"Covid Slice\",\n                \"symbol\": \"COVID19\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x8d5eb659959c68bd78a4f6f2ecccbbcb8c2cfb79\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"covid-token\",\n                \"name\": \"Covid Token\",\n                \"symbol\": \"COVIDTOKEN\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x23c28e9346c82228fb2b62b20b6fe5d75989f5b2\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cow--4\",\n                \"name\": \"COWRY\",\n                \"symbol\": \"COW\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0xb149dd64ea4b173e5fc9ecf77bd380418695185d\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cowboy-snake\",\n                \"name\": \"Cowboy Snake\",\n                \"symbol\": \"COWS\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x33b48893b8f119fb45f431b36f830a9584804201\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cow-inu\",\n                \"name\": \"Cow Inu\",\n                \"symbol\": \"CI\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0xceafc372af7fddccbfd28f10329710e58bb2f970\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cow-protocol\",\n                \"name\": \"CoW Protocol\",\n                \"symbol\": \"COW\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0xdef1ca1fb7fbcdc777520aa7f396b4e015f497ab\"\n                    },\n                    {\n                        \"platform\": \"xdai\",\n                        \"contract\": \"0x177127622c4a00f3d409b75571e12cb3c8973d3c\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cowrie\",\n                \"name\": \"Cowrie\",\n                \"symbol\": \"COWRIE\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0xde51d1599339809cafb8194189ce67d5bdca9e9e\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cowry\",\n                \"name\": \"COWRY\",\n                \"symbol\": \"COW\",\n                \"blockchains\": []\n            },\n            {\n                \"reference\": \"coxswap\",\n                \"name\": \"Coxswap\",\n                \"symbol\": \"COX\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x17fea92ca2e7570d07b63ecd6b698e01386555a4\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"coxswap-2\",\n                \"name\": \"Coxswap\",\n                \"symbol\": \"COX\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x2266cfa689da2186f307f2dd8beafa12a4ad9709\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cpc--4\",\n                \"name\": \"CryptoPerformance Coin\",\n                \"symbol\": \"CPC\",\n                \"blockchains\": []\n            },\n            {\n                \"reference\": \"cpchain\",\n                \"name\": \"CPChain\",\n                \"symbol\": \"CPC\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0xfae4ee59cdd86e3be9e8b90b53aa866327d7c090\"\n                    },\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"cpc-fed\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cplay-network\",\n                \"name\": \"CPLAY Network\",\n                \"symbol\": \"CPLAY\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x740e08e52542df19d7f2f9cbf3924ac0bfe53071\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cpos-cloud-payment\",\n                \"name\": \"CPOS Cloud Payment\",\n                \"symbol\": \"CPOS\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0xc0dc5adfae1dada9111f376810d772cabd9b6f13\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cprop\",\n                \"name\": \"CPROP\",\n                \"symbol\": \"CPROP\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x0fb843d37aa2a99db8d81af9fe2f0a6485c7c002\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cpuchain\",\n                \"name\": \"CPUchain\",\n                \"symbol\": \"CPU\",\n                \"blockchains\": []\n            },\n            {\n                \"reference\": \"cpucoin\",\n                \"name\": \"CPUcoin\",\n                \"symbol\": \"CPU\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x6d52dfefb16bb9cdc78bfca09061e44574886626\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crabada\",\n                \"name\": \"Crabada\",\n                \"symbol\": \"CRA\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"avalanche\",\n                        \"contract\": \"0xa32608e873f9ddef944b24798db69d80bbb4d1ed\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crabada-amulet\",\n                \"name\": \"Crabada Amulet\",\n                \"symbol\": \"CRAM\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"avalanche\",\n                        \"contract\": \"0xd2cd7a59aa8f8fdc68d01b1e8a95747730b927d3\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crab-market\",\n                \"name\": \"Crab Market\",\n                \"symbol\": \"CRAB\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x24bcec1afda63e622a97f17cff9a61ffcfd9b735\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crab-rave-token\",\n                \"name\": \"Crab Rave Token\",\n                \"symbol\": \"CRABS\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x2c9715d6d95443c3bdf29e473ad168ff6fa6627d\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crabstrike\",\n                \"name\": \"CrabStrike\",\n                \"symbol\": \"CST\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x3993453b9587e06a0e925727fd844d2d2babd39f\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cracle\",\n                \"name\": \"Cracle\",\n                \"symbol\": \"CRA\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x0fc0b3f6f5c769c138088266ac21760ab33f76ca\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cradle-of-sins\",\n                \"name\": \"Cradle of Sins\",\n                \"symbol\": \"COS\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x4d9f39f7cb7c7444335077223ceef33dbb58096f\"\n                    },\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x4d9f39f7cb7c7444335077223ceef33dbb58096f\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crafting-finance\",\n                \"name\": \"Crafting Finance\",\n                \"symbol\": \"CRF\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x508df5aa4746be37b5b6a69684dfd8bdc322219d\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"craft-network\",\n                \"name\": \"Craft network\",\n                \"symbol\": \"CFT\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"icon\",\n                        \"contract\": \"cx2e6d0fc0eca04965d06038c8406093337f085fcf\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cramer-coin\",\n                \"name\": \"Cramer Coin\",\n                \"symbol\": \"CRAMER\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x64df3aab3b21cc275bb76c4a581cf8b726478ee0\"\n                    },\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x64df3aab3b21cc275bb76c4a581cf8b726478ee0\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crane-miners\",\n                \"name\": \"TheCraneMiners\",\n                \"symbol\": \"CRANE\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x8c85a0e86f37ca231463ead62a40350d7bf7cef0\"\n                    },\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x8c85a0e86f37ca231463ead62a40350d7bf7cef0\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cranx-chain\",\n                \"name\": \"GranX Chain\",\n                \"symbol\": \"GRANX\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0xbd668ec47e10d3bf23b1d68139e545162a0dfcfa\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cratos\",\n                \"name\": \"Cratos\",\n                \"symbol\": \"CRTS\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x678e840c640f619e17848045d23072844224dd37\"\n                    },\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x678e840c640f619e17848045d23072844224dd37\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crave\",\n                \"name\": \"Crave\",\n                \"symbol\": \"CRAVE\",\n                \"blockchains\": []\n            },\n            {\n                \"reference\": \"crazy-bunny\",\n                \"name\": \"Crazy Bunny\",\n                \"symbol\": \"CRAZYBUNNY\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x48ed9372169ef0bf2b901bbe45e52b6a6b8f1ecc\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crazy-bunny-equity-token\",\n                \"name\": \"Crazy Bunny Equity Token\",\n                \"symbol\": \"CBUNNY\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0xaec23008b1098e39c0f8de90bf7431d185efe8b3\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crazy-internet-coin\",\n                \"name\": \"Crazy Internet Coin\",\n                \"symbol\": \"CIC\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0xad640689e6950b7453729a4686edb3fdfd754616\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crazyminer\",\n                \"name\": \"CrazyMiner\",\n                \"symbol\": \"PWR\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0xd52efe1039d706722b3d696e74ad4095dc3d3860\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crazy-rich-coin\",\n                \"name\": \"Crazy Rich Coin\",\n                \"symbol\": \"CRC\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0xc23fa49b581fff9a3ea7e49d0504b06d07c6ff2a\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crazysharo\",\n                \"name\": \"CrazySharo\",\n                \"symbol\": \"SHARO\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x7f3daf301c629bfa243cbba6654370d929379657\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crazy-tiger\",\n                \"name\": \"Crazy Tiger\",\n                \"symbol\": \"CRAZYTIGER\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0xedd52d44de950ccc3b2e6abdf0da8e99bb0ec480\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crazytime\",\n                \"name\": \"CrazyTime\",\n                \"symbol\": \"CRAZYTIME\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x94241428e0e36df628e0c2485bc0e158a5da3362\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crazy-treasure-token\",\n                \"name\": \"Crazy Treasure Token\",\n                \"symbol\": \"CTT\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0xf56783b3a4fa5f09efca962bd4bab1f5fadd9ab9\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crb-coin\",\n                \"name\": \"CRB Coin\",\n                \"symbol\": \"CRB\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x518afa06aeca8dd0946b89a565e51f5a91d81176\"\n                    },\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x2fd8bc03d9e827f77fac20b5130ee98b7f80149d\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crd-network\",\n                \"name\": \"CRD Network\",\n                \"symbol\": \"CRD\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0xcaaa93712bdac37f736c323c93d4d5fdefcc31cc\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crdt\",\n                \"name\": \"CRDT\",\n                \"symbol\": \"CRDT\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0xdaab5e695bb0e8ce8384ee56ba38fa8290618e52\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cre8r-dao\",\n                \"name\": \"CRE8R DAO\",\n                \"symbol\": \"CRE8R\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0xaa61d5dec73971cd4a026ef2820bb87b4a4ed8d6\"\n                    },\n                    {\n                        \"platform\": \"fantom\",\n                        \"contract\": \"0x2ad402655243203fcfa7dcb62f8a08cc2ba88ae0\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cream\",\n                \"name\": \"Creamcoin\",\n                \"symbol\": \"CRM\",\n                \"blockchains\": []\n            },\n            {\n                \"reference\": \"cream-2\",\n                \"name\": \"Cream\",\n                \"symbol\": \"CREAM\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x2ba592f78db6436527729929aaf6c908497cb200\"\n                    },\n                    {\n                        \"platform\": \"sora\",\n                        \"contract\": \"0x00521ad5caeadc2e3e04be4d4ebb0b7c8c9b71ba657c2362a3953490ebc81410\"\n                    },\n                    {\n                        \"platform\": \"arbitrum-one\",\n                        \"contract\": \"0xf4d48ce3ee1ac3651998971541badbb9a14d7234\"\n                    },\n                    {\n                        \"platform\": \"fantom\",\n                        \"contract\": \"0x657a1861c15a3ded9af0b6799a195a249ebdcbc6\"\n                    },\n                    {\n                        \"platform\": \"energi\",\n                        \"contract\": \"0x1cca61099dcebe517f8cac58f27218e7aff2d3bf\"\n                    },\n                    {\n                        \"platform\": \"solana\",\n                        \"contract\": \"9iwfhhe7bjkno4eb1wx3p4uyjjen9roglt4bvmdzzoin\"\n                    },\n                    {\n                        \"platform\": \"solana\",\n                        \"contract\": \"5fu5uugbjpuvdbveb3a1jtnirl8rxtiyesmwvkjtunqv\"\n                    },\n                    {\n                        \"platform\": \"near-protocol\",\n                        \"contract\": \"2ba592f78db6436527729929aaf6c908497cb200.factory.bridge.near\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"creama\",\n                \"name\": \"Creama\",\n                \"symbol\": \"CREAMA\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"avalanche\",\n                        \"contract\": \"0x3947146f331b9ef6448064c6311cdd24d9467a1a\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cream-eth2\",\n                \"name\": \"Cream ETH 2\",\n                \"symbol\": \"CRETH2\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0xcbc1065255cbc3ab41a6868c22d1f1c573ab89fd\"\n                    },\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x49d72e3973900a195a155a46441f0c08179fdb64\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"creamlands\",\n                \"name\": \"Creamlands\",\n                \"symbol\": \"CREAM\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"hedera-hashgraph\",\n                        \"contract\": \"0.0.926385\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"creampye\",\n                \"name\": \"Creampye [OLD]\",\n                \"symbol\": \"PYE\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0xaad87f47cdea777faf87e7602e91e3a6afbe4d57\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cream-shares\",\n                \"name\": \"IceCream Shares\",\n                \"symbol\": \"CSHARE\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"avalanche\",\n                        \"contract\": \"0x155f794b56353533e0afbf76e1b1fc57dfad5bd7\"\n                    },\n                    {\n                        \"platform\": \"avalanche\",\n                        \"contract\": \"0x155f794b56353533e0afbf76e1b1fc57dfad5bd7\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cream-wormhole\",\n                \"name\": \"Cream (Wormhole)\",\n                \"symbol\": \"CREAM\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"solana\",\n                        \"contract\": \"hihxl2im6l6p1oqoseiixdj3phpynxvskh9a2ddqlvdh\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"creamy\",\n                \"name\": \"Creamy\",\n                \"symbol\": \"CREAMY\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"solana\",\n                        \"contract\": \"creampddimxxj2ztcwp5wmetba4nyakcrtbeqtsktqhe\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"create\",\n                \"name\": \"Create\",\n                \"symbol\": \"CT\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0xa85c461c66038ffc8433e2a961339b7f36656e16\"\n                    },\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0xa85c461c66038ffc8433e2a961339b7f36656e16\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"creaticles\",\n                \"name\": \"Creaticles\",\n                \"symbol\": \"CRE8\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0xc36b4311b21fc0c2ead46f1ea6ce97c9c4d98d3d\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"creativecoin\",\n                \"name\": \"CREA\",\n                \"symbol\": \"CREA\",\n                \"blockchains\": []\n            },\n            {\n                \"reference\": \"creator-platform\",\n                \"name\": \"Creator Platform\",\n                \"symbol\": \"CTR\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x923b83c26b3809d960ff80332ed00aa46d7ed375\"\n                    },\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0xd6cce248263ea1e2b8cb765178c944fc16ed0727\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"creator-protocol\",\n                \"name\": \"Creator Protocol\",\n                \"symbol\": \"CRE\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0xc2c14affaddee38d7375c400d144251a87d2c34a\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"creature_hunters\",\n                \"name\": \"Creature Hunters\",\n                \"symbol\": \"CHTS\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x1cdb9b4465f4e65b93d0ad802122c7c9279975c9\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"creda\",\n                \"name\": \"CreDA\",\n                \"symbol\": \"CREDA\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"arbitrum-one\",\n                        \"contract\": \"0xc136e6b376a9946b156db1ed3a34b08afdaed76d\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"cred-coin-pay\",\n                \"name\": \"CRED COIN PAY\",\n                \"symbol\": \"CRED\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0xfc76ba9157ee5d079de8c1e969ee54096aaa6c9c\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"credefi\",\n                \"name\": \"Credefi\",\n                \"symbol\": \"CREDI\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0xae6e307c3fe9e922e5674dbd7f830ed49c014c6b\"\n                    },\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x2235e79086dd23135119366da45851c741874e5b\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"credefi-wormhole\",\n                \"name\": \"Credefi (Wormhole)\",\n                \"symbol\": \"CREDI\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"terra\",\n                        \"contract\": \"terra18xyl0ees6ueyhkhn0mjdtrm82e393ult2dazl3\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"credi--1\",\n                \"name\": \"CREDI\",\n                \"symbol\": \"CREDI\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0xae6e307c3fe9e922e5674dbd7f830ed49c014c6b\"\n                    },\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0xae6e307c3fe9e922e5674dbd7f830ed49c014c6b\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"credit\",\n                \"name\": \"TerraCredit\",\n                \"symbol\": \"CREDIT\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x9d440a8dc5ae7dd4f6b406b78340856838c3e5da\"\n                    },\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0xc9308bcf5fa46d728422753d2d5afbc5cdb66b03\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"credit-2\",\n                \"name\": \"PROXI DeFi\",\n                \"symbol\": \"CREDIT\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0xc4cb5793bd58bad06bf51fb37717b86b02cbe8a4\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"creditcoin-2\",\n                \"name\": \"Creditcoin\",\n                \"symbol\": \"CTC\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0xa3ee21c306a700e682abcdfe9baa6a08f3820419\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"credit-printer\",\n                \"name\": \"Credit Printer\",\n                \"symbol\": \"CREDITP\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"fantom\",\n                        \"contract\": \"0x5e5aabc95380b38c014fdc5e602c5183177fcca4\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"credits\",\n                \"name\": \"CREDITS\",\n                \"symbol\": \"CS\",\n                \"blockchains\": []\n            },\n            {\n                \"reference\": \"credit-suisse-inu\",\n                \"name\": \"Credit Suisse Inu\",\n                \"symbol\": \"CSI\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x74bff2018687b8a1ff7132e13cd4fdc763725bcf\"\n                    },\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x74bff2018687b8a1ff7132e13cd4fdc763725bcf\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"creditum\",\n                \"name\": \"Creditum\",\n                \"symbol\": \"CREDIT\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"fantom\",\n                        \"contract\": \"0x77128dfdd0ac859b33f44050c6fa272f34872b5e\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"credmark\",\n                \"name\": \"Credmark\",\n                \"symbol\": \"CMK\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x68cfb82eacb9f198d508b514d898a403c449533e\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"creds\",\n                \"name\": \"Creds\",\n                \"symbol\": \"CREDS\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0xc13f4f0f865bac08f62654b57e38669ebc4747a3\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crema-finance\",\n                \"name\": \"Crema Finance\",\n                \"symbol\": \"CRM\",\n                \"blockchains\": []\n            },\n            {\n                \"reference\": \"cremation-coin\",\n                \"name\": \"Cremation Coin\",\n                \"symbol\": \"CREMAT\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0xb8501a9a9aaae239a2490f44e00b284baa0b131a\"\n                    },\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x8b9f7e9586633ca4abffb1f746da8daed7849cb2\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"creo-engine\",\n                \"name\": \"Creo Engine\",\n                \"symbol\": \"CREO\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"binance-smart-chain\",\n                        \"contract\": \"0x9521728bf66a867bc65a93ece4a543d817871eb7\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crescent-network\",\n                \"name\": \"Crescent Network\",\n                \"symbol\": \"CRE\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"cosmos\",\n                        \"contract\": \"ucre\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crescentswap-moonlight\",\n                \"name\": \"Crescentswap Moonlight\",\n                \"symbol\": \"MNLT\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"arbitrum-one\",\n                        \"contract\": \"0x0a1694716de67c98f61942b2cab7df7fe659c87a\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crespo\",\n                \"name\": \"Crespo\",\n                \"symbol\": \"CSO\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x5ecb025e51415dba9fd272c551076357cf4069f5\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"creta-world\",\n                \"name\": \"Creta World\",\n                \"symbol\": \"CRETA\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"polygon-pos\",\n                        \"contract\": \"0x202655af326de310491cb54f120e02ee0da92b55\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"creth2--1\",\n                \"name\": \"Cream ETH Token\",\n                \"symbol\": \"CRETH2\",\n                \"blockchains\": [\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x49d72e3973900a195a155a46441f0c08179fdb64\"\n                    },\n                    {\n                        \"platform\": \"ethereum\",\n                        \"contract\": \"0x49d72e3973900a195a155a46441f0c08179fdb64\"\n                    }\n                ]\n            },\n            {\n                \"reference\": \"crevacoin\",\n                \"name\": \"Crevacoin\",\n                \"symbol\": \"CREVA\",\n                \"blockchains\": []\n            },\n            {\n                \"reference\": \"crex-token\",\n                \"name\": \"Crex Token\",\n                \"symbol\": \"CREX\",\n                \"blockchains\": []\n            }\n        ]\n    },\n    \"meta\": {\n        \"current_page\": 42,\n        \"total_entries\": 20048,\n        \"total_pages\": 201\n    }\n}"
+						},
+						{
+							"name": "GET currencies: invalid token",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/aggregators/api/v1/currencies?page=42",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"aggregators",
+										"api",
+										"v1",
+										"currencies"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "42"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 27 Jun 2023 06:18:17 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "strict-origin-when-cross-origin"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-store"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store"
+								},
+								{
+									"key": "WWW-Authenticate",
+									"value": "Bearer realm=\"Doorkeeper\", error=\"invalid_token\", error_description=\"The access token is invalid\""
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, Accept-Encoding, Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "23104c54-4185-4e34-93b6-f57a5a5a3cfa"
+								},
+								{
+									"key": "X-Runtime",
+									"value": "0.013134"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Expires",
+									"value": "-1"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "permissions-policy",
+									"value": "camera=(), microphone=(), geolocation=()"
+								},
+								{
+									"key": "referrer-policy",
+									"value": "strict-origin-when-cross-origin"
+								},
+								{
+									"key": "strict-transport-security",
+									"value": "max-age=63072000; includeSubdomains;"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "deny"
+								},
+								{
+									"key": "x-xss-protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "_cfuvid=7H9PZrCAZ3HPw6XpTsIlCIeLN5JFDp5XGNS55L.rsQI-1687846697227-0-604800000; path=/; domain=.zenledger.io; HttpOnly; Secure; SameSite=None"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7ddb925f6f1b9e77-KTM"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"api_version\": \"1.0\",\n    \"data\": [],\n    \"errors\": {\n        \"code\": \"ZENAGG-AUTHGET-AA4\",\n        \"message\": \"Invalid OAuth token\"\n    }\n}"
+						}
+					]
+				}
+			],
+			"description": "The currencies resource in the Aggregators API provides information about retrieving the list of supported currencies. By making a **GET** request to the `/aggregators/api/v1/currencies` endpoint, you can retrieve the details of available currencies. The request requires authentication using a bearer token.\n\nPlease note that the response example for this endpoint will contain the API version and a data object containing an array of currencies. Each currency object includes a reference, code, and name.\n\nUse this information to integrate and work with the supported currencies of the Aggregators Suite API."
+		},
+		{
+			"name": "Error Codes",
+			"item": [
+				{
+					"name": "Glossary",
+					"request": {
+						"method": "ERROR CODE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "ZENAGG-AUTHGET-AA1",
+									"description": "Forbidden",
+									"type": "text"
+								},
+								{
+									"key": "ZENAGG-AUTHGET-AA2",
+									"description": "Unauthorised",
+									"type": "text"
+								},
+								{
+									"key": "ZENAGG-AUTHGET-AA3",
+									"description": "Invalid Api key",
+									"type": "text"
+								},
+								{
+									"key": "ZENAGG-AUTHGET-AA4",
+									"description": "Invalid OAuth token",
+									"type": "text"
+								},
+								{
+									"key": "ZENAGG-RSRCGET-AA1",
+									"description": "Resource not found",
+									"type": "text"
+								},
+								{
+									"key": "ZENAGG-PFLPST-AA1",
+									"description": "Could not create portfolio",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "The Aggregators API includes specific error codes to indicate and describe various issues and errors that may occur during API interactions. To help you quickly identify and understand these error codes, we have provided a glossary below. This table contains commonly encountered error codes along with their corresponding meanings. Refer to this table for efficient troubleshooting when working with our Aggregators API."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "oauth_client_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "oauth_client_secret",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"value": "",
+			"type": "string"
+		}
+	]
+}

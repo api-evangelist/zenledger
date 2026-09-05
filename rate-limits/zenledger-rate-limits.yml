@@ -1,0 +1,46 @@
+generated: '2026-09-05'
+method: searched
+source: https://docs.zenledger.io/compliance/v3/README.md
+docs: https://docs.zenledger.io/compliance/v3/
+limit_count: 0
+rate_limits: []
+response_headers: []
+exhaustion_status: null
+retry_after: false
+note: >-
+  ZenLedger publishes no rate limits for either API. Neither the Compliance Suite v3 reference nor the Aggregator
+  Suite v1 reference contains the strings "rate limit", "429", "X-RateLimit", "RateLimit-" or "Retry-After";
+  no saved example response in either Postman collection carries a rate-limit header; and neither error glossary
+  defines a throttling code (the 45 published codes cover auth, routing, resource lookup and validation only).
+  An integrator therefore has no runtime backoff signal: an agent cannot tell how many requests it may make, cannot
+  read remaining budget off a response, and has no documented status code to treat as retryable. Recorded as an
+  honest zero.
+probe_note: >-
+  Not probed live. Both APIs reject unauthenticated requests and credentials are issued only through a sales
+  conversation, so an observed-header measurement is not available without an account.
+volume_limits_that_are_published:
+- name: Transaction import limit
+  kind: data-volume-cap
+  not_a_rate_limit: true
+  default: 100000
+  unit: transactions per import
+  scope: per account (source), configured on the Company or inherited from the Enterprise
+  behaviour: >-
+    When a new import reaches the cap, ZenLedger stops the import for that account and sends an IMPORT_STATUS_UPDATE
+    webhook with import_status "limit-reached" and a transaction_limit field, instead of the usual "complete"
+    notification. The stopped import is continued through GET
+    /compliance/api/v3/companies/{company_reference}/holdings/{source_id}/resume, which lifts the limit for that
+    account and re-triggers the import; already-imported transactions are de-duplicated.
+  source: https://docs.zenledger.io/compliance/v3/compliance_api.postman_collection.json (Webhooks and notifications)
+- name: Maximum number of active companies
+  kind: account-cap
+  not_a_rate_limit: true
+  value: unpublished
+  signal: Error code ZENCS-CMPPST-AA3 "Maximum number of active companies limit exceeded"
+- name: Maximum number of active users
+  kind: account-cap
+  not_a_rate_limit: true
+  value: unpublished
+  signal: Error code ZENCS-USRPST-AA8 "Maximum number of active users limit exceeded"
+pagination_caps:
+  note: Fixed page sizes act as an implicit per-response cap — 100 elements for transactions, polymarkets and currencies; 20 for holdings. Not client-controllable. See conventions/zenledger-conventions.yml.

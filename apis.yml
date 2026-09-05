@@ -1,23 +1,174 @@
 aid: zenledger
 name: ZenLedger
-description: 'ZenLedger is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  ZenLedger is a Seattle-founded crypto tax and digital-asset accounting company whose platform ingests transactions
+  from 400+ exchanges, 100+ DeFi protocols and 10+ NFT marketplaces to calculate cost basis, capital gains and
+  income, and generate US tax forms. Beyond the consumer product it operates two documented B2B REST APIs on
+  api.zenledger.io: the Compliance Suite API (v3), a digital-asset trade-monitoring surface built with COMPLY for
+  financial institutions and enterprise compliance teams that registers companies and users, imports wallets and
+  exchange accounts, returns normalized transactions and holdings, and screens blockchain addresses against
+  sanctions lists; and the Aggregator Suite API (v1), a partner surface that builds an aggregated portfolio from a
+  set of accounts and returns the resulting tax calculation. Both authenticate with OAuth 2.0 client_credentials
+  JWTs and are documented as versioned Postman collections at docs.zenledger.io.
 url: https://raw.githubusercontent.com/api-evangelist/zenledger/refs/heads/main/apis.yml
+image: https://zenledger.io/wp-content/uploads/2023/07/ZenLedger-OpenGraph.png
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
-specificationVersion: '0.20'
+position: Producing
+specificationVersion: '0.23'
 created: '2026-09-05'
 modified: '2026-09-05'
 tags:
-- Company
-apis: []
+  - Crypto Tax
+  - Digital Assets
+  - Tax Compliance
+  - Blockchain Analytics
+  - RegTech
+  - Accounting
+  - Sanctions Screening
+  - Financial Services
+  - Portfolio Aggregation
+  - Cryptocurrency
+tags_raw:
+  - crypto-tax
+  - digital-assets
+  - tax-compliance
+  - blockchain-analytics
+  - regtech
+  - accounting
+  - sanctions-screening
+  - financial-services
+  - portfolio-aggregation
+  - cryptocurrency
+apis:
+  - aid: zenledger:zenledger-compliance-suite-api
+    name: ZenLedger Compliance Suite API
+    description: >-
+      Digital-asset trade-monitoring and crypto tax-compliance REST API (v3) for financial institutions and
+      enterprise compliance teams. Registers companies and their users, imports exchange accounts and wallets over a
+      signed and AES-256 encrypted request, returns normalized transactions and per-source holdings, screens
+      blockchain addresses against sanctions lists, exposes Polymarket positions, and serves supported currency,
+      source and chain reference data. Authenticated with an OAuth 2.0 client_credentials JWT that expires in 30
+      minutes. Import completion, import-limit and wallet-screening events are delivered as webhooks.
+    humanURL: https://docs.zenledger.io/compliance/v3/
+    baseURL: https://api.zenledger.io
+    tags:
+      - Tax Compliance
+      - Sanctions Screening
+      - Digital Assets
+      - RegTech
+      - Blockchain Analytics
+    tags_raw:
+      - tax-compliance
+      - sanctions-screening
+      - digital-assets
+      - regtech
+      - blockchain-analytics
+    properties:
+      - type: OpenAPI
+        url: openapi/zenledger-compliance-api-openapi.yml
+      - type: Postman
+        url: postman/zenledger-compliance-v3.postman_collection.json
+      - type: Documentation
+        url: https://docs.zenledger.io/compliance/v3/
+      - type: APIReference
+        url: https://docs.zenledger.io/compliance/v3/README.md
+      - type: Overlay
+        url: overlays/zenledger-compliance-api-overlay.yaml
+      - type: Webhooks
+        url: asyncapi/zenledger-compliance-webhooks.yml
+  - aid: zenledger:zenledger-aggregator-suite-api
+    name: ZenLedger Aggregator Suite API
+    description: >-
+      Partner/aggregator REST API (v1) that creates an aggregated portfolio from a set of exchange and wallet
+      accounts, returns the resulting tax calculation for that portfolio by aggregation code, and serves the
+      supported source and currency reference data. Authenticated with the same OAuth 2.0 client_credentials JWT as
+      the Compliance Suite.
+    humanURL: https://docs.zenledger.io/aggregators/rest-api/v1/
+    baseURL: https://api.zenledger.io
+    tags:
+      - Portfolio Aggregation
+      - Crypto Tax
+      - Digital Assets
+    tags_raw:
+      - portfolio-aggregation
+      - crypto-tax
+      - digital-assets
+    properties:
+      - type: OpenAPI
+        url: openapi/zenledger-aggregator-api-openapi.yml
+      - type: Postman
+        url: postman/zenledger-aggregators-v1.postman_collection.json
+      - type: Documentation
+        url: https://docs.zenledger.io/aggregators/rest-api/v1/
+      - type: APIReference
+        url: https://docs.zenledger.io/aggregators/rest-api/v1/README.md
+      - type: Overlay
+        url: overlays/zenledger-aggregator-api-overlay.yaml
 maintainers:
-- FN: Kin Lane
-  email: kin@apievangelist.com
-- FN: APIs.json
-  email: info@apis.io
+  - FN: Kin Lane
+    email: kin@apievangelist.com
+  - FN: APIs.json
+    email: info@apis.io
 common:
-- type: Website
-  url: https://forgeglobal.com/zenledger_stock/
+  - type: Website
+    url: https://zenledger.io/
+  - type: DeveloperPortal
+    url: https://docs.zenledger.io/
+  - type: Documentation
+    url: https://docs.zenledger.io/
+  - type: APIReference
+    url: https://docs.zenledger.io/compliance/v3/README.md
+  - type: Postman
+    url: postman/zenledger-compliance-v3.postman_collection.json
+  - type: GitHubOrganization
+    url: https://github.com/zenledger-io
+  - type: Support
+    url: https://support.zenledger.io/en/
+  - type: Pricing
+    url: https://zenledger.io/pricing/
+  - type: TermsOfService
+    url: https://zenledger.io/terms-of-use/
+  - type: PrivacyPolicy
+    url: https://zenledger.io/privacy-policy/
+  - type: StatusPage
+    url: https://status.zenledger.io/
+  - type: Authentication
+    url: authentication/zenledger-authentication.yml
+  - type: Conventions
+    url: conventions/zenledger-conventions.yml
+  - type: ErrorCatalog
+    url: errors/zenledger-error-codes.yml
+  - type: Lifecycle
+    url: lifecycle/zenledger-lifecycle.yml
+  - type: DataModel
+    url: data-model/zenledger-data-model.yml
+  - type: Conformance
+    url: conformance/zenledger-conformance.yml
+  - type: Compliance
+    url: conformance/zenledger-conformance.yml
+  - type: Security
+    url: security/zenledger-vulnerability-disclosure.yml
+  - type: VulnerabilityDisclosure
+    url: security/zenledger-vulnerability-disclosure.yml
+  - type: TrustCenter
+    url: security/zenledger-trust-center.yml
+  - type: DomainSecurity
+    url: security/zenledger-domain-security.yml
+  - type: Packages
+    url: packages/zenledger-packages.yml
+  - type: Plans
+    url: plans/zenledger-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/zenledger-rate-limits.yml
+  - type: X-MCPServerCandidate
+    url: mcp/zenledger-mcp.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: LLMsTxt
+    url: llms/zenledger-llms.txt
+x-enrichment:
+  date: '2026-09-05'
+  status: enriched
+  artifacts_added: 27
+  pass: local-v3

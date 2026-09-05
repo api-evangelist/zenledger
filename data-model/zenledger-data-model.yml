@@ -1,0 +1,188 @@
+generated: '2026-09-05'
+method: derived
+source: openapi/zenledger-compliance-api-openapi.yml, openapi/zenledger-aggregator-api-openapi.yml
+enriched_from: https://docs.zenledger.io/compliance/v3/README.md
+schema_note: >-
+  The published Postman collections carry example bodies, not JSON Schemas, so the derived OpenAPI documents type
+  every payload as a generic object. The entity graph below is derived from the URL hierarchy, the documented URI
+  and query parameters, and the field names visible in the published example responses and webhook payloads. Field
+  types are recorded only where the reference states them.
+identifier_style: >-
+  No prefixed identifiers. `company_reference` is a customer-chosen string that must be unique per account
+  (a duplicate returns ZENCS-CMPPST-AA2). `user_id` and `source_id` are UUIDs in every published example.
+  The Aggregator Suite uses an `aggcode` with an observed AGGREF-prefixed form (AGGREF7bfa64c5d52e).
+entities:
+- name: Company
+  path: /compliance/api/v3/companies/{company_reference}
+  key: company_reference
+  key_type: string (customer-assigned, unique per account)
+  description: The enterprise tenant. Everything else in the Compliance Suite hangs off a company.
+  operations: [getCompanies, getCompany, createCompany, updateCompanyDetails, deleteCompany]
+  notable_fields:
+  - name: import_notification_url
+    description: Webhook endpoint for IMPORT_STATUS_UPDATE notifications. Set on create or update.
+  - name: wallet_screening_notification_url
+    description: Webhook endpoint for ADDRESS_SCREENING_REPORT notifications. Requires the feature to be enabled for the Enterprise.
+  - name: transaction import limit
+    description: Per-account cap on transactions per import; defaults to 100,000 and is inherited from the Enterprise when unset.
+  relationships:
+  - {type: has_many, target: User, via: '/companies/{company_reference}/users'}
+  - {type: has_many, target: Transaction, via: '/companies/{company_reference}/transactions'}
+  - {type: has_many, target: Holding, via: '/companies/{company_reference}/holdings'}
+  - {type: has_many, target: Polymarket, via: '/companies/{company_reference}/polymarkets'}
+  - {type: belongs_to, target: Enterprise, via: inherited configuration}
+- name: Enterprise
+  path: null
+  description: >-
+    Implicit parent of Company. Never addressable as a resource — there is no /enterprises path — but it is named
+    as the scope that owns the default transaction import limit and the wallet-screening feature flag. Recorded
+    because a consumer must know that some limits are set above the company they can see.
+  operations: []
+  relationships:
+  - {type: has_many, target: Company, via: account configuration}
+- name: User
+  path: /compliance/api/v3/companies/{company_reference}/users/{user_id}
+  key: user_id
+  key_type: uuid
+  description: An end user tracked under a company; the subject of imports, holdings and transactions.
+  operations: [getCompanyUsers, getCompanyUser, createCompanyUser, updateUserDetails, deleteCompanyUser]
+  notable_fields:
+  - name: email
+    description: Unique per company; a duplicate returns ZENCS-USRPST-AA2.
+  - name: disabled
+    description: Inferred from error ZENCS-USRGET-AA3 "Requested user is disabled". No operation to set or clear it is published.
+  relationships:
+  - {type: belongs_to, target: Company, via: company_reference}
+  - {type: has_many, target: Holding, via: '/users/{user_id}/holdings'}
+  - {type: has_many, target: Transaction, via: '/users/{user_id}/transactions'}
+  - {type: has_many, target: Polymarket, via: '/users/{user_id}/polymarkets'}
+  - {type: has_many, target: Import, via: '/users/{user_id}/imports'}
+- name: Source
+  aka: Holding source
+  path: /compliance/api/v3/companies/{company_reference}/users/{user_id}/holdings/{source_id}
+  key: source_id
+  key_type: uuid
+  description: >-
+    A connected exchange account or wallet belonging to a user, together with its balances and its import state.
+    "Holdings" is the collection of a user's sources; a single source is the addressable unit.
+  operations: [getHoldingsForUser, getHoldingsForUserBySource, getHoldingsForAllUsersOfACompany, deleteUserSource, getResyncSource, getResumeSource]
+  notable_fields:
+  - name: status
+    description: Import state. Values are enumerated in the Import Status Glossary; three distinct failure causes are documented.
+  - name: source_reference
+    description: The exchange or wallet identifier, e.g. "coinbase". Drawn from the supported-sources reference data.
+  relationships:
+  - {type: belongs_to, target: User, via: user_id}
+  - {type: belongs_to, target: SupportedSource, via: source_reference}
+  - {type: has_many, target: Transaction, via: source_id filter}
+- name: Import
+  path: /compliance/api/v3/companies/{company_reference}/users/{user_id}/imports
+  description: >-
+    The act of connecting a wallet or an exchange account to a user. Two variants — POST wallet and POST exchange —
+    and the exchange variant is the one collection request still targeting a v1 path. Both require an HMAC-SHA256
+    X-Signature and an AES-256-CBC encrypted body.
+  operations: [postWallet, postExchange]
+  notable_fields:
+  - name: type
+    description: '"exchange" in the published example.'
+  - name: exchange_reference
+    description: 'e.g. "coinbase".'
+  - name: access_token / refresh_token / password / private_key / key_name
+    description: Exchange credentials or wallet key material. This is why the endpoint is signed and encrypted.
+  relationships:
+  - {type: belongs_to, target: User, via: user_id}
+  - {type: has_one, target: Source, via: created on completion}
+  emits: [IMPORT_STATUS_UPDATE, ADDRESS_SCREENING_REPORT]
+- name: Transaction
+  path: /compliance/api/v3/companies/{company_reference}/users/{user_id}/transactions
+  description: A normalized crypto transaction, classified into a documented taxonomy.
+  operations: [getTransactionsForUser, getTransactionsForAllUserOfACompany]
+  page_size: 100
+  filters: [currency_code, date_from, date_to, transaction_date_from, transaction_date_to, source_id, sorting_method, page]
+  taxonomy:
+    super_types: [buy, sell, trade]
+    classes:
+    - name: Deposits
+      description: A crypto asset enters the account without being paired as a trade.
+      subtype_count: 18
+      subtypes: [airdrop, buy, dividend_received, fork, gift_received, receive, interest_received, masternode, mined, misc_reward, nft_in, nft_mint, nft_mint_no_mint_fee, payment, self_transfer, staking_return, staking_reward, fiat_deposit]
+    - name: Withdrawals
+      description: A crypto asset leaves the account without a crypto asset received in return.
+      subtype_count: 12
+      subtypes: [donation_501c3, fee, gift_sent, lost, Send, nft_out, purchase, self_transfer, sell, staking_lockup, stolen, fiat_withdrawal]
+    - name: Trades
+      description: Crypto assets traded for other crypto assets.
+      subtype_count: 16
+      subtypes: [liquidity_pool, liquidity_pool_enter, liquidity_pool_exit, margin_trade, margin_trading_gain, margin_trading_loss, margin_trading_fee, margin_trading_rollover, nft_mint, nft_trade, swap, staking_lockup, staking_return, trade, fiat_withdrawal]
+    note: >-
+      The taxonomy is the most valuable thing in this contract for an integrator, because each subtype carries its
+      own stated tax treatment (income vs cost-basis vs non-taxable). Several values appear under more than one
+      class — self_transfer, staking_lockup, staking_return, nft_mint and fiat_withdrawal — so a consumer cannot
+      infer the class from the subtype alone and must read the class field.
+  relationships:
+  - {type: belongs_to, target: User, via: user_id}
+  - {type: belongs_to, target: Source, via: source_id}
+  - {type: belongs_to, target: Currency, via: currency_code}
+- name: Polymarket
+  path: /compliance/api/v3/companies/{company_reference}/users/{user_id}/polymarkets
+  description: Polymarket prediction-market positions held by a user, carried as a first-class resource alongside transactions.
+  operations: [getPolymarketsForUser, getPolymarketsForAllUsersOfACompany]
+  page_size: 100
+  relationships:
+  - {type: belongs_to, target: User, via: user_id}
+- name: ScreeningReport
+  path: /compliance/api/v3/screening
+  description: >-
+    Sanctions and risk screening for a blockchain address. Read synchronously with chain + address query
+    parameters, and also pushed as an ADDRESS_SCREENING_REPORT webhook before an import begins.
+  operations: [getWalletScreeningReport]
+  query_params: [chain, address]
+  notable_fields:
+  - {name: screening_status, description: 'filed (matched a list) or clean (no indicator triggered).'}
+  - {name: 'screening_report[].report_data', description: Risk-indicator descriptions, e.g. the OFAC SDN listing.}
+  - {name: 'screening_report[].owner_info', description: Attributed owner — name, url, legal_name — when known.}
+  relationships:
+  - {type: belongs_to, target: Chain, via: chain}
+- name: Currency
+  path: /compliance/api/v3/currencies
+  aggregator_path: /aggregators/api/v1/currencies
+  description: Supported currency reference data. An unsupported code returns ZENCS-PARAMGET-AA1.
+  operations: [getCurrencies]
+  page_size: 100
+  kind: reference-data
+- name: SupportedSource
+  path: /compliance/api/v3/sources
+  aggregator_path: /aggregators/api/v1/sources
+  description: Supported exchanges and wallets. An unknown source id returns ZENCS-PARAMGET-AA3.
+  operations: [getSources]
+  kind: reference-data
+- name: Chain
+  path: /compliance/api/v3/chains
+  description: Supported blockchains. An unsupported chain returns ZENCS-PARAMGET-AA6; a missing one, ZENCS-PARAMGET-AA5.
+  operations: [getChains]
+  kind: reference-data
+- name: Portfolio
+  api: ZenLedger Aggregator Suite API
+  path: /aggregators/api/v1/portfolios
+  description: An aggregated portfolio built from a set of exchange and wallet accounts. Created only; no read, update or delete is published.
+  operations: [createPortfolio]
+  produces: aggcode
+  relationships:
+  - {type: has_one, target: TaxCalculation, via: aggcode}
+- name: TaxCalculation
+  api: ZenLedger Aggregator Suite API
+  path: /aggregators/api/v1/taxes
+  description: The tax calculation for an aggregated portfolio, retrieved by aggregation code.
+  operations: [taxes]
+  query_params: [aggcode]
+  relationships:
+  - {type: belongs_to, target: Portfolio, via: aggcode}
+graph_summary:
+  root: Company
+  depth: 4
+  path_shape: /companies/{company_reference}/users/{user_id}/holdings/{source_id}
+  note: >-
+    The Compliance Suite is a strict containment tree rooted at Company, and every collection is available both
+    scoped to a user and rolled up to the company. The Aggregator Suite is a separate, flat two-entity graph
+    (Portfolio -> TaxCalculation) that shares only the token endpoint and the two reference-data collections.
+  cross_api_shared: [Currency, SupportedSource]

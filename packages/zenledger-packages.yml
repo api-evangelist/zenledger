@@ -1,0 +1,85 @@
+generated: '2026-09-05'
+method: searched
+source: >-
+  registry.npmjs.org, pypi.org, rubygems.org, crates.io, proxy.golang.org, github.com/zenledger-io, and the
+  published API references at docs.zenledger.io
+official_sdk_count: 0
+package_count: 3
+finding: >-
+  ZenLedger publishes NO client SDK for either of its APIs, in any language. Neither the Compliance Suite v3
+  reference nor the Aggregator Suite v1 reference links a client library; both teach integration with raw fetch()
+  examples in JavaScript and TypeScript. Registry searches on 2026-09-05 returned nothing first-party: npm returned
+  a single unrelated third-party result, PyPI 404s on `zenledger`, RubyGems and crates.io return empty result sets.
+  The GitHub organization github.com/zenledger-io holds 19 repositories, but they are internal Go/Ruby utilities
+  and forks of third-party exchange API clients (Kraken, Binance, Coinbase, Bitfinex, Gemini, HitBTC, Cryptopia,
+  QuadrigaCX) that ZenLedger uses to ingest data FROM exchanges — they are not clients FOR the ZenLedger API. The
+  three Go modules below are resolvable through the Go module proxy, which is what makes them packages at all;
+  ZenLedger does not present them as SDKs and none wraps the published API. No SDKs pointer is emitted on this
+  record, because there is no SDK.
+registries_probed:
+- registry: npm
+  query: zenledger
+  first_party_results: 0
+- registry: pypi
+  query: zenledger
+  status: 404
+  first_party_results: 0
+- registry: rubygems
+  query: zenledger
+  first_party_results: 0
+- registry: crates.io
+  query: zenledger
+  first_party_results: 0
+- registry: proxy.golang.org
+  query: github.com/zenledger-io/*
+  first_party_results: 3
+- registry: maven-central
+  query: zenledger
+  first_party_results: 0
+- registry: nuget
+  query: zenledger
+  first_party_results: 0
+packages:
+- name: github.com/zenledger-io/zazen
+  language: Go
+  registry: proxy.golang.org
+  registry_url: https://proxy.golang.org/github.com/zenledger-io/zazen/@latest
+  repo: https://github.com/zenledger-io/zazen
+  official: true
+  wraps_zenledger_api: false
+  description: "\"Zen microservices\" — internal Go microservice code, not a client for the published REST APIs."
+  version: v0.0.0-20240412195318-8e9adcae088e
+  published: '2024-04-12'
+  note: Pseudo-version only; no tagged release. Untagged means consumers cannot pin a semantic version.
+- name: github.com/zenledger-io/go-utils
+  language: Go
+  registry: proxy.golang.org
+  registry_url: https://proxy.golang.org/github.com/zenledger-io/go-utils/@latest
+  repo: https://github.com/zenledger-io/go-utils
+  official: true
+  wraps_zenledger_api: false
+  description: Shared helper code between ZenLedger Go projects.
+  version: v1.0.2
+  published: '2022-03-24'
+- name: github.com/zenledger-io/go-env
+  language: Go
+  registry: proxy.golang.org
+  registry_url: https://proxy.golang.org/github.com/zenledger-io/go-env/@latest
+  repo: https://github.com/zenledger-io/go-env
+  official: true
+  wraps_zenledger_api: false
+  description: A simple package to fetch environment variables.
+  version: v1.0.0
+  published: '2020-05-27'
+decay_signal:
+  assessment: >-
+    There is no first-party SDK to decay. The only dated first-party publishing signal available is the internal Go
+    modules, whose newest release is 2024-04-12 and whose two tagged modules last shipped in 2022 and 2020 — none
+    of which tracks the API. The integration surface a customer actually consumes is the Postman collection, which
+    is current (it documents Polymarket positions and the import-limit webhook), so the absence of an SDK is a
+    deliberate posture rather than an abandoned one.
+integration_path:
+  documented: [raw HTTPS with fetch (JavaScript), raw HTTPS with axios (TypeScript), Postman collection import]
+  postman:
+  - postman/zenledger-compliance-v3.postman_collection.json
+  - postman/zenledger-aggregators-v1.postman_collection.json
