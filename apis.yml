@@ -26,7 +26,7 @@ tags:
   - RegTech
   - Accounting
   - Sanctions Screening
-  - Financial Services
+  - Financial-Services
   - Portfolio Aggregation
   - Cryptocurrency
 tags_raw:
@@ -41,76 +41,328 @@ tags_raw:
   - portfolio-aggregation
   - cryptocurrency
 apis:
-  - aid: zenledger:zenledger-compliance-suite-api
-    name: ZenLedger Compliance Suite API
-    description: >-
-      Digital-asset trade-monitoring and crypto tax-compliance REST API (v3) for financial institutions and
-      enterprise compliance teams. Registers companies and their users, imports exchange accounts and wallets over a
-      signed and AES-256 encrypted request, returns normalized transactions and per-source holdings, screens
-      blockchain addresses against sanctions lists, exposes Polymarket positions, and serves supported currency,
-      source and chain reference data. Authenticated with an OAuth 2.0 client_credentials JWT that expires in 30
-      minutes. Import completion, import-limit and wallet-screening events are delivered as webhooks.
-    humanURL: https://docs.zenledger.io/compliance/v3/
-    baseURL: https://api.zenledger.io
-    tags:
-      - Tax Compliance
-      - Sanctions Screening
-      - Digital Assets
-      - RegTech
-      - Blockchain Analytics
-    tags_raw:
-      - tax-compliance
-      - sanctions-screening
-      - digital-assets
-      - regtech
-      - blockchain-analytics
-    properties:
-      - type: OpenAPI
-        url: openapi/zenledger-compliance-api-openapi.yml
-      - type: Postman
-        url: postman/zenledger-compliance-v3.postman_collection.json
-      - type: Documentation
-        url: https://docs.zenledger.io/compliance/v3/
-      - type: APIReference
-        url: https://docs.zenledger.io/compliance/v3/README.md
-      - type: Overlay
-        url: overlays/zenledger-compliance-api-overlay.yaml
-      - type: Webhooks
-        url: asyncapi/zenledger-compliance-webhooks.yml
-  - aid: zenledger:zenledger-aggregator-suite-api
-    name: ZenLedger Aggregator Suite API
-    description: >-
-      Partner/aggregator REST API (v1) that creates an aggregated portfolio from a set of exchange and wallet
-      accounts, returns the resulting tax calculation for that portfolio by aggregation code, and serves the
-      supported source and currency reference data. Authenticated with the same OAuth 2.0 client_credentials JWT as
-      the Compliance Suite.
-    humanURL: https://docs.zenledger.io/aggregators/rest-api/v1/
-    baseURL: https://api.zenledger.io
-    tags:
-      - Portfolio Aggregation
-      - Crypto Tax
-      - Digital Assets
-    tags_raw:
-      - portfolio-aggregation
-      - crypto-tax
-      - digital-assets
-    properties:
-      - type: OpenAPI
-        url: openapi/zenledger-aggregator-api-openapi.yml
-      - type: Postman
-        url: postman/zenledger-aggregators-v1.postman_collection.json
-      - type: Documentation
-        url: https://docs.zenledger.io/aggregators/rest-api/v1/
-      - type: APIReference
-        url: https://docs.zenledger.io/aggregators/rest-api/v1/README.md
-      - type: Overlay
-        url: overlays/zenledger-aggregator-api-overlay.yaml
+- aid: zenledger:zenledger-authentication-api
+  name: ZenLedger Authentication API
+  description: OAuth 2.0 client_credentials token issuance.
+  humanURL: https://docs.zenledger.io/compliance/v3/
+  baseURL: https://api.zenledger.io
+  tags:
+  - Authentication
+  properties:
+  - type: OpenAPI
+    url: openapi/zenledger-authentication-api-openapi.yml
+  - type: Postman
+    url: postman/zenledger-compliance-v3.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/compliance/v3/
+  - type: APIReference
+    url: https://docs.zenledger.io/compliance/v3/README.md
+  - type: Webhooks
+    url: asyncapi/zenledger-compliance-webhooks.yml
+  - type: Postman
+    url: postman/zenledger-aggregators-v1.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/
+  - type: APIReference
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/README.md
+- aid: zenledger:zenledger-companies-api
+  name: ZenLedger Companies API
+  description: Enterprise tenants registered under the Compliance Suite account.
+  humanURL: https://docs.zenledger.io/compliance/v3/
+  baseURL: https://api.zenledger.io
+  tags:
+  - Companies
+  properties:
+  - type: OpenAPI
+    url: openapi/zenledger-companies-api-openapi.yml
+  - type: Postman
+    url: postman/zenledger-compliance-v3.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/compliance/v3/
+  - type: APIReference
+    url: https://docs.zenledger.io/compliance/v3/README.md
+  - type: Webhooks
+    url: asyncapi/zenledger-compliance-webhooks.yml
+  - type: Postman
+    url: postman/zenledger-aggregators-v1.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/
+  - type: APIReference
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/README.md
+- aid: zenledger:zenledger-holdings-api
+  name: ZenLedger Holdings API
+  description: Per-source balances and import state for a user or company.
+  humanURL: https://docs.zenledger.io/compliance/v3/
+  baseURL: https://api.zenledger.io
+  tags:
+  - Holdings
+  properties:
+  - type: OpenAPI
+    url: openapi/zenledger-holdings-api-openapi.yml
+  - type: Postman
+    url: postman/zenledger-compliance-v3.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/compliance/v3/
+  - type: APIReference
+    url: https://docs.zenledger.io/compliance/v3/README.md
+  - type: Webhooks
+    url: asyncapi/zenledger-compliance-webhooks.yml
+  - type: Postman
+    url: postman/zenledger-aggregators-v1.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/
+  - type: APIReference
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/README.md
+- aid: zenledger:zenledger-imports-api
+  name: ZenLedger Imports API
+  description: Wallet and exchange-account import (signed and encrypted).
+  humanURL: https://docs.zenledger.io/compliance/v3/
+  baseURL: https://api.zenledger.io
+  tags:
+  - Imports
+  properties:
+  - type: OpenAPI
+    url: openapi/zenledger-imports-api-openapi.yml
+  - type: Postman
+    url: postman/zenledger-compliance-v3.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/compliance/v3/
+  - type: APIReference
+    url: https://docs.zenledger.io/compliance/v3/README.md
+  - type: Webhooks
+    url: asyncapi/zenledger-compliance-webhooks.yml
+  - type: Postman
+    url: postman/zenledger-aggregators-v1.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/
+  - type: APIReference
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/README.md
+- aid: zenledger:zenledger-polymarkets-api
+  name: ZenLedger Polymarkets API
+  description: Polymarket prediction-market positions.
+  humanURL: https://docs.zenledger.io/compliance/v3/
+  baseURL: https://api.zenledger.io
+  tags:
+  - Polymarkets
+  properties:
+  - type: OpenAPI
+    url: openapi/zenledger-polymarkets-api-openapi.yml
+  - type: Postman
+    url: postman/zenledger-compliance-v3.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/compliance/v3/
+  - type: APIReference
+    url: https://docs.zenledger.io/compliance/v3/README.md
+  - type: Webhooks
+    url: asyncapi/zenledger-compliance-webhooks.yml
+  - type: Postman
+    url: postman/zenledger-aggregators-v1.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/
+  - type: APIReference
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/README.md
+- aid: zenledger:zenledger-portfolios-api
+  name: ZenLedger Portfolios API
+  description: Create an aggregated portfolio from a set of accounts.
+  humanURL: https://docs.zenledger.io/compliance/v3/
+  baseURL: https://api.zenledger.io
+  tags:
+  - Portfolios
+  properties:
+  - type: OpenAPI
+    url: openapi/zenledger-portfolios-api-openapi.yml
+  - type: Postman
+    url: postman/zenledger-compliance-v3.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/compliance/v3/
+  - type: APIReference
+    url: https://docs.zenledger.io/compliance/v3/README.md
+  - type: Webhooks
+    url: asyncapi/zenledger-compliance-webhooks.yml
+  - type: Postman
+    url: postman/zenledger-aggregators-v1.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/
+  - type: APIReference
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/README.md
+- aid: zenledger:zenledger-supported-chains-api
+  name: ZenLedger Supported Chains API
+  description: Supported blockchain reference data.
+  humanURL: https://docs.zenledger.io/compliance/v3/
+  baseURL: https://api.zenledger.io
+  tags:
+  - Supported Chains
+  properties:
+  - type: OpenAPI
+    url: openapi/zenledger-supported-chains-api-openapi.yml
+  - type: Postman
+    url: postman/zenledger-compliance-v3.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/compliance/v3/
+  - type: APIReference
+    url: https://docs.zenledger.io/compliance/v3/README.md
+  - type: Webhooks
+    url: asyncapi/zenledger-compliance-webhooks.yml
+  - type: Postman
+    url: postman/zenledger-aggregators-v1.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/
+  - type: APIReference
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/README.md
+- aid: zenledger:zenledger-supported-currencies-api
+  name: ZenLedger Supported Currencies API
+  description: Currency reference data.
+  humanURL: https://docs.zenledger.io/compliance/v3/
+  baseURL: https://api.zenledger.io
+  tags:
+  - Supported Currencies
+  properties:
+  - type: OpenAPI
+    url: openapi/zenledger-supported-currencies-api-openapi.yml
+  - type: Postman
+    url: postman/zenledger-compliance-v3.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/compliance/v3/
+  - type: APIReference
+    url: https://docs.zenledger.io/compliance/v3/README.md
+  - type: Webhooks
+    url: asyncapi/zenledger-compliance-webhooks.yml
+  - type: Postman
+    url: postman/zenledger-aggregators-v1.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/
+  - type: APIReference
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/README.md
+- aid: zenledger:zenledger-supported-exchanges-and-wallets-api
+  name: ZenLedger Supported Exchanges and Wallets API
+  description: Supported exchange/wallet source reference data.
+  humanURL: https://docs.zenledger.io/compliance/v3/
+  baseURL: https://api.zenledger.io
+  tags:
+  - Supported Exchanges and Wallets
+  properties:
+  - type: OpenAPI
+    url: openapi/zenledger-supported-exchanges-and-wallets-api-openapi.yml
+  - type: Postman
+    url: postman/zenledger-compliance-v3.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/compliance/v3/
+  - type: APIReference
+    url: https://docs.zenledger.io/compliance/v3/README.md
+  - type: Webhooks
+    url: asyncapi/zenledger-compliance-webhooks.yml
+  - type: Postman
+    url: postman/zenledger-aggregators-v1.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/
+  - type: APIReference
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/README.md
+- aid: zenledger:zenledger-taxes-api
+  name: ZenLedger Taxes API
+  description: Retrieve the tax calculation for an aggregated portfolio.
+  humanURL: https://docs.zenledger.io/compliance/v3/
+  baseURL: https://api.zenledger.io
+  tags:
+  - Taxes
+  properties:
+  - type: OpenAPI
+    url: openapi/zenledger-taxes-api-openapi.yml
+  - type: Postman
+    url: postman/zenledger-compliance-v3.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/compliance/v3/
+  - type: APIReference
+    url: https://docs.zenledger.io/compliance/v3/README.md
+  - type: Webhooks
+    url: asyncapi/zenledger-compliance-webhooks.yml
+  - type: Postman
+    url: postman/zenledger-aggregators-v1.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/
+  - type: APIReference
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/README.md
+- aid: zenledger:zenledger-transactions-api
+  name: ZenLedger Transactions API
+  description: Normalized crypto transactions for a user or across a company.
+  humanURL: https://docs.zenledger.io/compliance/v3/
+  baseURL: https://api.zenledger.io
+  tags:
+  - Transactions
+  properties:
+  - type: OpenAPI
+    url: openapi/zenledger-transactions-api-openapi.yml
+  - type: Postman
+    url: postman/zenledger-compliance-v3.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/compliance/v3/
+  - type: APIReference
+    url: https://docs.zenledger.io/compliance/v3/README.md
+  - type: Webhooks
+    url: asyncapi/zenledger-compliance-webhooks.yml
+  - type: Postman
+    url: postman/zenledger-aggregators-v1.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/
+  - type: APIReference
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/README.md
+- aid: zenledger:zenledger-users-api
+  name: ZenLedger Users API
+  description: End users tracked under a company.
+  humanURL: https://docs.zenledger.io/compliance/v3/
+  baseURL: https://api.zenledger.io
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/zenledger-users-api-openapi.yml
+  - type: Postman
+    url: postman/zenledger-compliance-v3.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/compliance/v3/
+  - type: APIReference
+    url: https://docs.zenledger.io/compliance/v3/README.md
+  - type: Webhooks
+    url: asyncapi/zenledger-compliance-webhooks.yml
+  - type: Postman
+    url: postman/zenledger-aggregators-v1.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/
+  - type: APIReference
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/README.md
+- aid: zenledger:zenledger-wallet-screening-api
+  name: ZenLedger Wallet Screening API
+  description: Sanctions and risk screening for a blockchain address.
+  humanURL: https://docs.zenledger.io/compliance/v3/
+  baseURL: https://api.zenledger.io
+  tags:
+  - Wallet Screening
+  properties:
+  - type: OpenAPI
+    url: openapi/zenledger-wallet-screening-api-openapi.yml
+  - type: Postman
+    url: postman/zenledger-compliance-v3.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/compliance/v3/
+  - type: APIReference
+    url: https://docs.zenledger.io/compliance/v3/README.md
+  - type: Webhooks
+    url: asyncapi/zenledger-compliance-webhooks.yml
+  - type: Postman
+    url: postman/zenledger-aggregators-v1.postman_collection.json
+  - type: Documentation
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/
+  - type: APIReference
+    url: https://docs.zenledger.io/aggregators/rest-api/v1/README.md
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
   - FN: APIs.json
     email: info@apis.io
 common:
+  - type: Overlay
+    url: overlays/zenledger-compliance-api-overlay.yaml
+  - type: Overlay
+    url: overlays/zenledger-aggregator-api-overlay.yaml
   - type: Website
     url: https://zenledger.io/
   - type: DeveloperPortal
