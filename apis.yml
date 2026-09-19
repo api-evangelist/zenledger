@@ -119,6 +119,8 @@ apis:
   humanURL: https://docs.zenledger.io/compliance/v3/
   baseURL: https://api.zenledger.io
   tags:
+  - Import
+  tags_raw:
   - Imports
   properties:
   - type: OpenAPI
@@ -167,6 +169,8 @@ apis:
   humanURL: https://docs.zenledger.io/compliance/v3/
   baseURL: https://api.zenledger.io
   tags:
+  - Portfolio
+  tags_raw:
   - Portfolios
   properties:
   - type: OpenAPI
@@ -263,6 +267,8 @@ apis:
   humanURL: https://docs.zenledger.io/compliance/v3/
   baseURL: https://api.zenledger.io
   tags:
+  - Tax
+  tags_raw:
   - Taxes
   properties:
   - type: OpenAPI
@@ -287,6 +293,8 @@ apis:
   humanURL: https://docs.zenledger.io/compliance/v3/
   baseURL: https://api.zenledger.io
   tags:
+  - Transaction
+  tags_raw:
   - Transactions
   properties:
   - type: OpenAPI
@@ -311,6 +319,8 @@ apis:
   humanURL: https://docs.zenledger.io/compliance/v3/
   baseURL: https://api.zenledger.io
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
