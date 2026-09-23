@@ -1,0 +1,46 @@
+openapi: 3.2.0
+info:
+  title: ZenLedger Aggregator Suite Taxes API
+  version: v1
+  description: REST surface of the ZenLedger Aggregator Suite — the partner/aggregator API for creating a portfolio from a set of exchange and wallet accounts, retrieving the resulting tax calculation, and reading the supported source and currency reference data.
+  contact:
+    name: ZenLedger
+    url: https://zenledger.io/contact-us/
+    email: support@zenledger.io
+  termsOfService: https://zenledger.io/legal/
+  x-generated-by: API Evangelist enrichment pipeline (derived from the provider-published Postman collection)
+  x-source: postman/zenledger-aggregators-v1.postman_collection.json
+  x-source-url: https://docs.zenledger.io/aggregators/rest-api/v1/aggregators_api.postman_collection.json
+servers:
+- url: https://api.zenledger.io
+  description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io in every saved example response.
+tags:
+- name: Taxes
+  description: Retrieve the tax calculation for an aggregated portfolio.
+paths:
+  /aggregators/api/v1/taxes:
+    get:
+      operationId: taxes
+      summary: Taxes
+      tags:
+      - Taxes
+      parameters:
+      - name: aggcode
+        in: query
+        required: false
+        schema:
+          type: string
+        example: heybelugaca48dacb783c
+      responses:
+        '200':
+          description: Successful response. The published collection carries no example body for this request.
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/aggregators/api/v1/taxes/?aggcode=heybelugaca48dacb783c'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT bearer token obtained from POST /oauth/token using the OAuth 2.0 client_credentials grant with the client_id and client_secret ZenLedger issues. The token expires after 30 minutes (expires_in 1800) and must be refreshed at the same endpoint.

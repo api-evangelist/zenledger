@@ -1,0 +1,651 @@
+openapi: 3.2.0
+info:
+  title: ZenLedger Compliance Suite Transactions API
+  version: v3
+  description: REST surface of the ZenLedger Compliance Suite — the digital-asset trade-monitoring and crypto tax-compliance API financial institutions and enterprises use to register companies and users, import exchange accounts and wallets, read normalized transactions and holdings, screen wallet addresses against sanctions lists, and look up the supported currencies, sources and chains.
+  contact:
+    name: ZenLedger
+    url: https://zenledger.io/contact-us/
+    email: support@zenledger.io
+  termsOfService: https://zenledger.io/legal/
+  x-generated-by: API Evangelist enrichment pipeline (derived from the provider-published Postman collection)
+  x-source: postman/zenledger-compliance-v3.postman_collection.json
+  x-source-url: https://docs.zenledger.io/compliance/v3/compliance_api.postman_collection.json
+servers:
+- url: https://api.zenledger.io
+  description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io in every saved example response.
+tags:
+- name: Transactions
+  description: Normalized crypto transactions for a user or across a company.
+paths:
+  /compliance/api/v3/companies/{company_reference}/users/{user_id}/transactions:
+    get:
+      operationId: getTransactionsForUser
+      summary: GET transactions for user
+      description: '### GET **/companies/{companyReference}/users/{userId}/transactions**
+
+
+        **Returns** a list of the user''s transactions by making a GET request to the path `/companies/{company_reference}/users/{user_id}/transactions` on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        > *Results paginated with 100 elements per page
+
+
+        ### Request
+
+
+        ##### URi PARAMETERS
+
+
+        > **companyReference** `string` The ID of a specific company
+
+        >
+
+        > **userId** `string` The ID of a specific user
+
+
+        ##### QUERY PARAMETERS
+
+
+        > **currency_code** `string` Filter transactions by currency code
+
+        >
+
+        > **date_from** `string` Specific cut-off date for the transactions list (beginning of the list) specific for the date when the transactions were imported into ZenLedger
+
+        >
+
+        > **date_to** `string` Specific cut-off date for the transactions list (end of the list) specific for the date when the transactions were imported into ZenLedger
+
+        >
+
+        > **transaction_date_from** `string` Specific cut-off date for the transactions list (beginning of the list) specific for the date when the transactions took place
+
+        >
+
+        > **transaction_date_to** `string` Specific cut-off date for the transactions list (end of the list) specific for the date when the transactions took place
+
+        >
+
+        > **source_id** `number` Specific source to show only transactions from a specific wallet/exchange
+
+        >
+
+        > **sorting_method** `string` Sorting method used to order the returned list of transactions. This can be set to **transaction_timestamps** or **import_timestamp**. If not set, the default sorting date will be the transaction date.
+
+        >
+
+        > **page** `number` Specific page requested for the paginated results
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Transactions
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific user
+      - name: currency_code
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Filter transactions by currency code
+      - name: date_from
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Specific cut-off date for the transactions list (beginning of the list) specific for the date when the transactions were imported into ZenLedger
+      - name: date_to
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Specific cut-off date for the transactions list (end of the list) specific for the date when the transactions were imported into ZenLedger
+      - name: transaction_date_from
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Specific cut-off date for the transactions list (beginning of the list) specific for the date when the transactions took place
+      - name: transaction_date_to
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Specific cut-off date for the transactions list (end of the list) specific for the date when the transactions took place
+      - name: source_id
+        in: query
+        required: false
+        schema:
+          type: number
+        description: Specific source to show only transactions from a specific wallet/exchange
+      - name: sorting_method
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Sorting method used to order the returned list of transactions. This can be set to **transaction_timestamps** or **import_timestamp**. If not set, the default sorting date will be the transaction date.
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: number
+        description: Specific page requested for the paginated results
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_transactions_for_user_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      transactions:
+                      - reference: fd8592122083e87d7d3aafdc8acce4c1
+                        import_timestamp: '2026-01-09T13:23:19Z'
+                        transaction_timestamp: '2025-12-25T11:31:36Z'
+                        transaction_super_type: sell
+                        transaction_type: fee
+                        transaction_hash: 4eb1Fuh2F1Csg1HmRNTy8QKT41c9WdLnVSo5sTct8vViZXoTZcuf84JfjsG8dg8PBY5dnNeqAw4rZV4sD7Mko9zQ
+                        amount_incoming: 0.0006088244047619051
+                        currency_incoming: USD
+                        currency_incoming_contract_address: 7wxahljatdzbaz7hyrifpypgppbckiyhf6haxuzsbonk
+                        currency_incoming_is_spam: false
+                        amount_outgoing: 5.0e-06
+                        currency_outgoing: SOL
+                        currency_outgoing_contract_address: null
+                        currency_outgoing_is_spam: false
+                        fee_amount: 0.0
+                        fee_currency: USD
+                        source_name: SOL Wallet
+                        source_id: 95721263-a907-4cbe-8ad9-9c6e337d94cb
+                        source_reference: sol-wallet
+                        transaction_id: 4eb1Fuh2F1Csg1HmRNTy8QKT41c9WdLnVSo5sTct8vViZXoTZcuf84JfjsG8dg8PBY5dnNeqAw4rZV4sD7Mko9zQ
+                        subtotal_fiat: 0.0
+                        total_fiat: 0.0
+                        address_from: null
+                        address_to: null
+                        chain_info:
+                        - id: null
+                          name: Solana
+                      - reference: ff0b41eacc027fc94e8229bf2e1a5eaa
+                        import_timestamp: '2026-01-09T13:23:11Z'
+                        transaction_timestamp: '2025-12-25T11:31:37Z'
+                        transaction_super_type: sell
+                        transaction_type: fee
+                        transaction_hash: 2PwDAFr4aWrJW926WosRHbJBnzodme6vPTMjPsjDTzJUtKfCWnKpgWd3oveSFhHCRUp4Pzgw5YnSBtqZa2Mqp1Bt
+                        amount_incoming: 0.0006088244047619051
+                        currency_incoming: USD
+                        currency_incoming_contract_address: 7wxahljatdzbaz7hyrifpypgppbckiyhf6haxuzsbonk
+                        currency_incoming_is_spam: false
+                        amount_outgoing: 5.0e-06
+                        currency_outgoing: SOL
+                        currency_outgoing_contract_address: null
+                        currency_outgoing_is_spam: false
+                        fee_amount: 0.0
+                        fee_currency: USD
+                        source_name: SOL Wallet
+                        source_id: 95721263-a907-4cbe-8ad9-9c6e337d94cb
+                        source_reference: sol-wallet
+                        transaction_id: 2PwDAFr4aWrJW926WosRHbJBnzodme6vPTMjPsjDTzJUtKfCWnKpgWd3oveSFhHCRUp4Pzgw5YnSBtqZa2Mqp1Bt
+                        subtotal_fiat: 0.0
+                        total_fiat: 0.0
+                        address_from: null
+                        address_to: null
+                        chain_info:
+                        - id: null
+                          name: Solana
+                      - reference: e03caa7f6756ff61171b4b45bf58c5ed
+                        import_timestamp: '2026-01-09T13:23:11Z'
+                        transaction_timestamp: '2025-12-25T11:31:47Z'
+                        transaction_super_type: sell
+                        transaction_type: fee
+                        transaction_hash: 3EGVXeWd5Hgt7wdYUWTGH62bKf9aDcBaCwUTmwqupce2ivfy4JFRfAkjNPqv1bwHozUhpCeVkkexDAgiT3jRXBCy
+                        amount_incoming: 0.0006088244047619051
+                        currency_incoming: USD
+                        currency_incoming_contract_address: 7wxahljatdzbaz7hyrifpypgppbckiyhf6haxuzsbonk
+                        currency_incoming_is_spam: false
+                        amount_outgoing: 5.0e-06
+                        currency_outgoing: SOL
+                        currency_outgoing_contract_address: null
+                        currency_outgoing_is_spam: false
+                        fee_amount: 0.0
+                        fee_currency: USD
+                        source_name: SOL Wallet
+                        source_id: 95721263-a907-4cbe-8ad9-9c6e337d94cb
+                        source_reference: sol-wallet
+                        transaction_id: 3EGVXeWd5Hgt7wdYUWTGH62bKf9aDcBaCwUTmwqupce2ivfy4JFRfAkjNPqv1bwHozUhpCeVkkexDAgiT3jRXBCy
+                        subtotal_fiat: 0.0
+                        total_fiat: 0.0
+                        address_from: null
+                        address_to: null
+                        chain_info:
+                        - id: null
+                          name: Solana
+                      - reference: df401174d759930db9ea3fb1f97f33b4
+                        import_timestamp: '2026-01-09T13:23:11Z'
+                        transaction_timestamp: '2025-12-25T11:31:47Z'
+                        transaction_super_type: sell
+                        transaction_type: fee
+                        transaction_hash: 21yqa7B3NVFy9rscQVwhvUNhC2RYwj6zXDn8YPD4tvdP9r8qhADdbdJ5xssq8Fpw2Nh7WaAuv7ja35Dct2V4zT9v
+                        amount_incoming: 0.0006088244047619051
+                        currency_incoming: USD
+                        currency_incoming_contract_address: 7wxahljatdzbaz7hyrifpypgppbckiyhf6haxuzsbonk
+                        currency_incoming_is_spam: false
+                        amount_outgoing: 5.0e-06
+                        currency_outgoing: SOL
+                        currency_outgoing_contract_address: null
+                        currency_outgoing_is_spam: false
+                        fee_amount: 0.0
+                        fee_currency: USD
+                        source_name: SOL Wallet
+                        source_id: 95721263-a907-4cbe-8ad9-9c6e337d94cb
+                        source_reference: sol-wallet
+                        transaction_id: 21yqa7B3NVFy9rscQVwhvUNhC2RYwj6zXDn8YPD4tvdP9r8qhADdbdJ5xssq8Fpw2Nh7WaAuv7ja35Dct2V4zT9v
+                        subtotal_fiat: 0.0
+                        total_fiat: 0.0
+                        address_from: null
+                        address_to: null
+                        chain_info:
+                        - id: null
+                          name: Solana
+                      - reference: 4de3bc14ad28e802c0f484dc3594fed4
+                        import_timestamp: '2026-01-09T13:23:11Z'
+                        transaction_timestamp: '2025-12-25T11:31:49Z'
+                        transaction_super_type: sell
+                        transaction_type: fee
+                        transaction_hash: 2y4UUDjjJhFNoLy9RP4yNjQuUp3ednPY7amrjPWNwvD1W7gDyr2LqJDgtAkKhnBVNWZjQXoBLBo7QT9GU776BAhL
+                        amount_incoming: 0.0006088244047619051
+                        currency_incoming: USD
+                        currency_incoming_contract_address: 7wxahljatdzbaz7hyrifpypgppbckiyhf6haxuzsbonk
+                        currency_incoming_is_spam: false
+                        amount_outgoing: 5.0e-06
+                        currency_outgoing: SOL
+                        currency_outgoing_contract_address: null
+                        currency_outgoing_is_spam: false
+                        fee_amount: 0.0
+                        fee_currency: USD
+                        source_name: SOL Wallet
+                        source_id: 95721263-a907-4cbe-8ad9-9c6e337d94cb
+                        source_reference: sol-wallet
+                        transaction_id: 2y4UUDjjJhFNoLy9RP4yNjQuUp3ednPY7amrjPWNwvD1W7gDyr2LqJDgtAkKhnBVNWZjQXoBLBo7QT9GU776BAhL
+                        subtotal_fiat: 0.0
+                        total_fiat: 0.0
+                        address_from: null
+                        address_to: null
+                        chain_info:
+                        - id: null
+                          name: Solana
+                    meta:
+                      current_page: 1
+                      total_entries: 5
+                      total_pages: 1
+                GET_transactions_for_user_empty_response:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      transactions: []
+                    meta:
+                      current_page: 1
+                      total_entries: 0
+                      total_pages: 0
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_transactions_for_user_user_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-USRGET-AA2
+                      message: Could not find user
+                GET_transactions_for_user_company_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPGET-AA3
+                      message: Could not find company
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/users/{{user_id}}/transactions'
+  /compliance/api/v3/companies/{company_reference}/transactions:
+    get:
+      operationId: getTransactionsForAllUserOfACompany
+      summary: GET transactions for all user of a company
+      description: '### GET **/companies/{companyReference}/transactions**
+
+
+        **Returns** a list of all the users of a company with all their transactions by making a GET request to the path `/companies/{company_reference}/transactions` on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        > *Results paginated with 100 elements per page
+
+
+        ### Request
+
+
+        ##### URi PARAMETERS
+
+
+        > **companyReference** `string` The ID of a specific company
+
+
+        ##### QUERY PARAMETERS
+
+
+        > **currency_code** `string` Filter transactions by currency code
+
+        >
+
+        > **date_from** `string` Specific cut-off date for the transactions list (beginning of the list) specific for the date when the transactions were imported into ZenLedger
+
+        >
+
+        > **date_to** `string` Specific cut-off date for the transactions list (end of the list) specific for the date when the transactions were imported into ZenLedger
+
+        >
+
+        > **transaction_date_from** `string` Specific cut-off date for the transactions list (beginning of the list) specific for the date when the transactions took place
+
+        >
+
+        > **transaction_date_to** `string` Specific cut-off date for the transactions list (end of the list) specific for the date when the transactions took place
+
+        >
+
+        > **source_id** `number` Specific source to show only transactions from a specific wallet/exchange
+
+        >
+
+        > **sorting_method** `string` Sorting method used to order the returned list of transactions. This can be set to **transaction_timestamps** or **import_timestamp**. If not set, the default sorting date will be the transaction date.
+
+        >
+
+        > **page** `number` Specific page requested for the paginated results
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Transactions
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: number
+        description: Specific page requested for the paginated results
+        example: '30'
+      - name: currency_code
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Filter transactions by currency code
+      - name: date_from
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Specific cut-off date for the transactions list (beginning of the list) specific for the date when the transactions were imported into ZenLedger
+      - name: date_to
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Specific cut-off date for the transactions list (end of the list) specific for the date when the transactions were imported into ZenLedger
+      - name: transaction_date_from
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Specific cut-off date for the transactions list (beginning of the list) specific for the date when the transactions took place
+      - name: transaction_date_to
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Specific cut-off date for the transactions list (end of the list) specific for the date when the transactions took place
+      - name: source_id
+        in: query
+        required: false
+        schema:
+          type: number
+        description: Specific source to show only transactions from a specific wallet/exchange
+      - name: sorting_method
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Sorting method used to order the returned list of transactions. This can be set to **transaction_timestamps** or **import_timestamp**. If not set, the default sorting date will be the transaction date.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_transactions_for_all_user_of_a_company_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      transactions:
+                      - reference: 643e2e8d95fe5018093a467fd1c293cc
+                        import_timestamp: '2026-01-09T13:24:13Z'
+                        transaction_timestamp: '2025-12-25T09:56:24Z'
+                        transaction_super_type: sell
+                        transaction_type: fee
+                        transaction_hash: 2UzNWFvee8n52hiv2q6VFC5XCKSJoCWgE1fbYCbmmcYBYJuTqKDoYkPiBrWjVuFaRb4yqGExoYdPC7wcVEVAvnhC
+                        amount_incoming: 0.00061017445652174
+                        currency_incoming: USD
+                        currency_incoming_contract_address: 7wxahljatdzbaz7hyrifpypgppbckiyhf6haxuzsbonk
+                        currency_incoming_is_spam: false
+                        amount_outgoing: 5.0e-06
+                        currency_outgoing: SOL
+                        currency_outgoing_contract_address: null
+                        currency_outgoing_is_spam: false
+                        fee_amount: 0.0
+                        fee_currency: USD
+                        source_name: SOL Wallet
+                        source_id: 95721263-a907-4cbe-8ad9-9c6e337d94cb
+                        source_reference: sol-wallet
+                        transaction_id: 2UzNWFvee8n52hiv2q6VFC5XCKSJoCWgE1fbYCbmmcYBYJuTqKDoYkPiBrWjVuFaRb4yqGExoYdPC7wcVEVAvnhC
+                        subtotal_fiat: 0.0
+                        total_fiat: 0.0
+                        address_from: null
+                        address_to: null
+                        chain_info:
+                        - id: null
+                          name: Solana
+                        user_id: 57f96bf7-3062-4a2c-8940-63926c8ee5fb
+                      - reference: 0601597997f2e0b4c5faa0491d2b6825
+                        import_timestamp: '2026-01-09T13:24:32Z'
+                        transaction_timestamp: '2025-12-25T09:56:25Z'
+                        transaction_super_type: sell
+                        transaction_type: fee
+                        transaction_hash: Ca2L9bf72es4pCsdnyjcZRajWbEwZS4oaFQH5c5DjF58U7K4ZtGDqU2sYpa8LMN43GS3mhi6gP2kBbtBXfgvhBe
+                        amount_incoming: 0.00061017445652174
+                        currency_incoming: USD
+                        currency_incoming_contract_address: 7wxahljatdzbaz7hyrifpypgppbckiyhf6haxuzsbonk
+                        currency_incoming_is_spam: false
+                        amount_outgoing: 5.0e-06
+                        currency_outgoing: SOL
+                        currency_outgoing_contract_address: null
+                        currency_outgoing_is_spam: false
+                        fee_amount: 0.0
+                        fee_currency: USD
+                        source_name: SOL Wallet
+                        source_id: 95721263-a907-4cbe-8ad9-9c6e337d94cb
+                        source_reference: sol-wallet
+                        transaction_id: Ca2L9bf72es4pCsdnyjcZRajWbEwZS4oaFQH5c5DjF58U7K4ZtGDqU2sYpa8LMN43GS3mhi6gP2kBbtBXfgvhBe
+                        subtotal_fiat: 0.0
+                        total_fiat: 0.0
+                        address_from: null
+                        address_to: null
+                        chain_info:
+                        - id: null
+                          name: Solana
+                        user_id: 57f96bf7-3062-4a2c-8940-63926c8ee5fb
+                      - reference: 1404aa5ffddd768ec52f504460989a67
+                        import_timestamp: '2026-01-09T13:24:32Z'
+                        transaction_timestamp: '2025-12-25T09:56:25Z'
+                        transaction_super_type: sell
+                        transaction_type: fee
+                        transaction_hash: 5QAd8UVsv18dsVhDzWcsChZT7uSeEkp9sduC8mosYunLQd8cWAykh6yFqW4cfP6HNqhFRTkX5WFNzUN7PzEZqt9m
+                        amount_incoming: 0.00061017445652174
+                        currency_incoming: USD
+                        currency_incoming_contract_address: 7wxahljatdzbaz7hyrifpypgppbckiyhf6haxuzsbonk
+                        currency_incoming_is_spam: false
+                        amount_outgoing: 5.0e-06
+                        currency_outgoing: SOL
+                        currency_outgoing_contract_address: null
+                        currency_outgoing_is_spam: false
+                        fee_amount: 0.0
+                        fee_currency: USD
+                        source_name: SOL Wallet
+                        source_id: 95721263-a907-4cbe-8ad9-9c6e337d94cb
+                        source_reference: sol-wallet
+                        transaction_id: 5QAd8UVsv18dsVhDzWcsChZT7uSeEkp9sduC8mosYunLQd8cWAykh6yFqW4cfP6HNqhFRTkX5WFNzUN7PzEZqt9m
+                        subtotal_fiat: 0.0
+                        total_fiat: 0.0
+                        address_from: null
+                        address_to: null
+                        chain_info:
+                        - id: null
+                          name: Solana
+                        user_id: 57f96bf7-3062-4a2c-8940-63926c8ee5fb
+                      - reference: 91aec8f39288565b58b29ef42fcb619b
+                        import_timestamp: '2026-01-09T13:24:02Z'
+                        transaction_timestamp: '2025-12-25T09:56:26Z'
+                        transaction_super_type: sell
+                        transaction_type: fee
+                        transaction_hash: 4EcNH9Kp7kX8rbZngrR8QHFcgjUto8pvwjkNtuhwjPczXcnjMZMbtnGmS9Ke9VfYu5y5UNiBtXbremFoHY1dLzPC
+                        amount_incoming: 0.00061017445652174
+                        currency_incoming: USD
+                        currency_incoming_contract_address: 7wxahljatdzbaz7hyrifpypgppbckiyhf6haxuzsbonk
+                        currency_incoming_is_spam: false
+                        amount_outgoing: 5.0e-06
+                        currency_outgoing: SOL
+                        currency_outgoing_contract_address: null
+                        currency_outgoing_is_spam: false
+                        fee_amount: 0.0
+                        fee_currency: USD
+                        source_name: SOL Wallet
+                        source_id: 95721263-a907-4cbe-8ad9-9c6e337d94cb
+                        source_reference: sol-wallet
+                        transaction_id: 4EcNH9Kp7kX8rbZngrR8QHFcgjUto8pvwjkNtuhwjPczXcnjMZMbtnGmS9Ke9VfYu5y5UNiBtXbremFoHY1dLzPC
+                        subtotal_fiat: 0.0
+                        total_fiat: 0.0
+                        address_from: null
+                        address_to: null
+                        chain_info:
+                        - id: null
+                          name: Solana
+                        user_id: 57f96bf7-3062-4a2c-8940-63926c8ee5fb
+                      - reference: cabb8f4a67e7b36b61f275e5e4ad331f
+                        import_timestamp: '2026-01-09T13:24:02Z'
+                        transaction_timestamp: '2025-12-25T09:56:26Z'
+                        transaction_super_type: sell
+                        transaction_type: fee
+                        transaction_hash: 44JevPUgtoiHMiXHCFZm9sUSqirf1x4QWdTw1PnLP43wSCUvLmPXTkAo6objMzWLgqYuJFfEhAbgtPG9XAh6JvLE
+                        amount_incoming: 0.00061017445652174
+                        currency_incoming: USD
+                        currency_incoming_contract_address: 7wxahljatdzbaz7hyrifpypgppbckiyhf6haxuzsbonk
+                        currency_incoming_is_spam: false
+                        amount_outgoing: 5.0e-06
+                        currency_outgoing: SOL
+                        currency_outgoing_contract_address: null
+                        currency_outgoing_is_spam: false
+                        fee_amount: 0.0
+                        fee_currency: USD
+                        source_name: SOL Wallet
+                        source_id: 95721263-a907-4cbe-8ad9-9c6e337d94cb
+                        source_reference: sol-wallet
+                        transaction_id: 44JevPUgtoiHMiXHCFZm9sUSqirf1x4QWdTw1PnLP43wSCUvLmPXTkAo6objMzWLgqYuJFfEhAbgtPG9XAh6JvLE
+                        subtotal_fiat: 0.0
+                        total_fiat: 0.0
+                        address_from: null
+                        address_to: null
+                        chain_info:
+                        - id: null
+                          name: Solana
+                        user_id: 57f96bf7-3062-4a2c-8940-63926c8ee5fb
+                    meta:
+                      current_page: 1
+                      total_entries: 6
+                      total_pages: 1
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_transactions_for_all_user_of_a_company_company_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPGET-AA3
+                      message: Could not find company
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/transactions?page=30'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT bearer token obtained from POST /oauth/token using the OAuth 2.0 client_credentials grant with the client_id and client_secret ZenLedger issues. The token expires after 30 minutes (expires_in 1800) and must be refreshed at the same endpoint.

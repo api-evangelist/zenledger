@@ -1,0 +1,472 @@
+openapi: 3.2.0
+info:
+  title: ZenLedger Compliance Suite Companies API
+  version: v3
+  description: REST surface of the ZenLedger Compliance Suite — the digital-asset trade-monitoring and crypto tax-compliance API financial institutions and enterprises use to register companies and users, import exchange accounts and wallets, read normalized transactions and holdings, screen wallet addresses against sanctions lists, and look up the supported currencies, sources and chains.
+  contact:
+    name: ZenLedger
+    url: https://zenledger.io/contact-us/
+    email: support@zenledger.io
+  termsOfService: https://zenledger.io/legal/
+  x-generated-by: API Evangelist enrichment pipeline (derived from the provider-published Postman collection)
+  x-source: postman/zenledger-compliance-v3.postman_collection.json
+  x-source-url: https://docs.zenledger.io/compliance/v3/compliance_api.postman_collection.json
+servers:
+- url: https://api.zenledger.io
+  description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io in every saved example response.
+tags:
+- name: Companies
+  description: Enterprise tenants registered under the Compliance Suite account.
+paths:
+  /compliance/api/v3/companies:
+    get:
+      operationId: getCompanies
+      summary: GET companies
+      description: '### GET **/companies**
+
+
+        **Returns** a list of all active companies that exist in the system by making a GET request to the path `/compliance/api/v3/companies` on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        ### Request
+
+
+        ##### QUERY PARAMETERS
+
+
+        > NONE
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Companies
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_companies_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                    - reference: tu7vS9DL6gLqrAwMikRJ
+                      name: A Company
+                      created_at: '2023-06-01T17:13:01.087Z'
+                      updated_at: '2023-06-01T17:13:01.087Z'
+                    - reference: FSOLPzrHGKiiZinvKOrn
+                      name: Another Company
+                      created_at: '2023-06-01T17:31:35.194Z'
+                      updated_at: '2023-06-01T17:31:35.194Z'
+                    - reference: c5KqB1RoKMOmuc15Mz9B
+                      name: New name of company
+                      created_at: '2023-06-01T17:33:05.828Z'
+                      updated_at: '2023-06-01T19:44:58.498Z'
+                    - reference: 1RoKc155KqBMz9BMOmu
+                      name: Company Name
+                      created_at: '2023-06-02T07:48:44.305Z'
+                      updated_at: '2023-06-02T07:48:44.305Z'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_companies_unauthorized:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                    - code: ZENCS-AUTHGET-AA2
+                      message: Unauthorised
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies'
+    post:
+      operationId: createCompany
+      summary: CREATE company
+      description: '### POST **/companies**
+
+
+        All API requests to this endpoint must be **signed and encrypted** to ensure integrity and security. The signing process is explained in the **Request Signature and Encryption** section and ensures that the request is authenticated and has not been tampered with. Encryption protects sensitive data during transmission.
+
+
+        **Creates** a new company which is linked to the enterprise by making a POST request to the `/compliance/api/v3/companies/` endpoint is used to create a new company in the system.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        ### Request
+
+
+        ##### QUERY PARAMETERS
+
+
+        > NONE
+
+
+        ##### BODY
+
+
+        *In JSON format
+
+
+        > **name** (optional) `string` Legal name of the company
+
+        >
+
+        > **reference** `string` Own company reference
+
+        >
+
+        > **import_notification_url** (optional) `string` if set, Webhook notifications will be sent here after each import completed. For security reasons, this value will never be returned by the API.
+
+        >
+
+        > **domain_target_url** (optional) `string` This parameter is required for proper functioning of the Iframe integration. When importing accounts via Iframe, the integration uses postMessage to communicate with the parent window. This attribute should be set to the domain where the parent application (the Iframe container) is hosted — for example, https://app.partnerdomain.com. It ensures messages are correctly delivered and received between the Iframe and its parent.
+
+        >
+
+        > Alternatively, the value "default" can be used. In that case, the domain will be set to the parent enterprise’s default_url, if defined, at the time the request is received by ZenLedger.
+
+        >
+
+        > * For security reasons, this value will never be returned in API responses.
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Companies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+            example:
+              name: Company Name
+              reference: '{{company_reference}}'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                CREATE_company_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      reference: tu7vS9DL6gLqrAwMikRJ
+                      name: Company Name
+                      created_at: '2023-06-02T07:48:44.305Z'
+                      updated_at: '2023-06-02T07:48:44.305Z'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                CREATE_company_duplicate_id:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPPST-AA2
+                      message: Duplicated External ID for company
+                CREATE_company_reference_not_allowed:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPPST-AA1
+                      message: Could not add company
+                CREATE_company_active_companies_limit_reached:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPPST-AA3
+                      message: Maximum number of active companies limit exceeded
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/'
+  /compliance/api/v3/companies/{company_reference}:
+    get:
+      operationId: getCompany
+      summary: GET company
+      description: '### GET **/companies/**{companyReference}
+
+
+        **Returns** the details of the requested company by making a GET request to the path `/compliance/api/v3/companies/{company_reference}` on the base URL
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        ### Request
+
+
+        ##### QUERY PARAMETERS
+
+
+        > NONE
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Companies
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Path variable company_reference (from the Postman collection URL template).
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_company_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      reference: c155KqBMz9Bc155KqBMz9B
+                      name: company name
+                      created_at: '2023-05-31T08:14:43.332Z'
+                      updated_at: '2023-05-31T08:14:43.332Z'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_company_company_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPGET-AA3
+                      message: Could not find company
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}'
+    delete:
+      operationId: deleteCompany
+      summary: DELETE company
+      description: '### DELETE **/companies/**{companyReference}
+
+
+        **Deletes** a company which is linked to the enterprise by making a DELETE request to the `/compliance/api/v3/companies/{company_reference}` endpoint.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        ### Request
+
+
+        ##### QUERY PARAMETERS
+
+
+        > NONE
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Companies
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Path variable company_reference (from the Postman collection URL template).
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                DELETE_company_success:
+                  value:
+                    api_version: '3.0'
+                    data: []
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                DELETE_company_company_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPGET-AA3
+                      message: Could not find company
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}'
+    put:
+      operationId: updateCompanyDetails
+      summary: UPDATE company details
+      description: '### PUT **/companies**
+
+
+        All API requests to this endpoint must be **signed and encrypted** to ensure integrity and security. The signing process is explained in the **Request Signature and Encryption** section and ensures that the request is authenticated and has not been tampered with. Encryption protects sensitive data during transmission.
+
+
+        **Updates** the details of a company by making a PUT request to the path `/compliance/api/v3/companies/{company_reference}` on the base URL
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        ### Request
+
+
+        ##### QUERY PARAMETERS
+
+
+        > NONE
+
+
+        ##### BODY
+
+
+        *In JSON format
+
+
+        > **name** (optional) `string` Legal name of the company
+
+        >
+
+        > **import_notification_url** (optional) `string` if set, Webhook notifications will be sent here after each import completed
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Companies
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Path variable company_reference (from the Postman collection URL template).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+            example:
+              name: New Company Name
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                UPDATE_company_details_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      reference: Company Reference
+                      name: New Company Name
+                      created_at: '2023-06-01T12:30:24.409Z'
+                      updated_at: '2023-06-01T12:45:13.749Z'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                UPDATE_company_details_company_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPGET-AA3
+                      message: Could not find company
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT bearer token obtained from POST /oauth/token using the OAuth 2.0 client_credentials grant with the client_id and client_secret ZenLedger issues. The token expires after 30 minutes (expires_in 1800) and must be refreshed at the same endpoint.

@@ -1,0 +1,161 @@
+openapi: 3.2.0
+info:
+  title: ZenLedger Compliance Suite Wallet Screening API
+  version: v3
+  description: REST surface of the ZenLedger Compliance Suite — the digital-asset trade-monitoring and crypto tax-compliance API financial institutions and enterprises use to register companies and users, import exchange accounts and wallets, read normalized transactions and holdings, screen wallet addresses against sanctions lists, and look up the supported currencies, sources and chains.
+  contact:
+    name: ZenLedger
+    url: https://zenledger.io/contact-us/
+    email: support@zenledger.io
+  termsOfService: https://zenledger.io/legal/
+  x-generated-by: API Evangelist enrichment pipeline (derived from the provider-published Postman collection)
+  x-source: postman/zenledger-compliance-v3.postman_collection.json
+  x-source-url: https://docs.zenledger.io/compliance/v3/compliance_api.postman_collection.json
+servers:
+- url: https://api.zenledger.io
+  description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io in every saved example response.
+tags:
+- name: Wallet Screening
+  description: Sanctions and risk screening for a blockchain address.
+paths:
+  /compliance/api/v3/screening:
+    get:
+      operationId: getWalletScreeningReport
+      summary: GET Wallet Screening Report
+      description: '### GET **/**screening
+
+
+        **Returns** a wallet screening report by making a GET request to the path `/screening` on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        There are two versions of the screening service available: **standard** and **extended**.
+
+        The standard version provides a basic background check, while the extended version returns a more comprehensive report with detailed risk insights and additional metadata.
+
+
+        > The version used is determined by your service tier and it can only be enabled on request.
+
+
+        ### Request
+
+
+        ##### URi PARAMETERS
+
+
+        > NONE
+
+
+        ##### QUERY PARAMETERS
+
+
+        > **chain** `string` **Extended version only.** Base coin of the Blockchain to check. The background check is run on all blockchains but a base chain is required
+
+        >
+
+        > **address** `string` Wallet address to check
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Wallet Screening
+      parameters:
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: '**Extended version only.** Base coin of the Blockchain to check. The background check is run on all blockchains but a base chain is required'
+        example: '{{chain}}'
+      - name: address
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Wallet address to check
+        example: '{{address}}'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_Standard_Wallet_Screening_Report_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      screening_report:
+                        status: filed
+                        details:
+                        - category: sanctioned entity
+                          name: 'SANCTIONED ENTITY: OFAC SDN Secondeye Solution 2021-04-15 1da5821544e25c636c1417ba96ade4cf6d2f9b5a'
+                        - category: sanctions
+                          name: 'SANCTIONS: OFAC SDN Secondeye Solution 2021-04-15 1da5821544e25c636c1417ba96ade4cf6d2f9b5a'
+                GET_Extended_Wallet_Screening_Report_success_Copy:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      screening_report:
+                        blockchain: ETH
+                        address: '0x1da5821544e25c636c1417ba96ade4cf6d2f9b5a'
+                        sanctioned_or_investigated: true
+                        details:
+                        - report_data:
+                          - description: The address listed on the US Treasury Department's Office of Foreign Assets Control sanction list.
+                          owner_info:
+                          - owner_info:
+                            - name: Bittrex.com
+                              url: https://www.Bittrex.com
+                              legal_name: Bittrex Global GmbH
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_Wallet_Screening_Report_chain_not_supported:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-PARAMGET-AA6
+                      message: chain not supported
+                GET_Wallet_Screening_Report_chain_not_provided:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-PARAMGET-AA5
+                      message: chain not provided
+                GET_Wallet_Screening_Report_address_not_provided:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-PARAMGET-AA4
+                      message: address not provided
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/screening?chain={{chain}}&address={{address}}'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT bearer token obtained from POST /oauth/token using the OAuth 2.0 client_credentials grant with the client_id and client_secret ZenLedger issues. The token expires after 30 minutes (expires_in 1800) and must be refreshed at the same endpoint.

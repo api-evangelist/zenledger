@@ -1,0 +1,49 @@
+{
+  "provider": "zenledger",
+  "sources": [
+    "_original/zenledger-aggregator-api-openapi.yml",
+    "_original/zenledger-compliance-api-openapi.yml"
+  ],
+  "outputs": [
+    "zenledger-authentication-api-openapi.yml",
+    "zenledger-portfolios-api-openapi.yml",
+    "zenledger-supported-currencies-api-openapi.yml",
+    "zenledger-supported-exchanges-and-wallets-api-openapi.yml",
+    "zenledger-taxes-api-openapi.yml",
+    "zenledger-companies-api-openapi.yml",
+    "zenledger-holdings-api-openapi.yml",
+    "zenledger-imports-api-openapi.yml",
+    "zenledger-polymarkets-api-openapi.yml",
+    "zenledger-supported-chains-api-openapi.yml",
+    "zenledger-transactions-api-openapi.yml",
+    "zenledger-users-api-openapi.yml",
+    "zenledger-wallet-screening-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "zenledger-aggregator-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "zenledger-compliance-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "tag 'Authentication' spans 2 source specs (zenledger-aggregator-api-openapi.yml, zenledger-compliance-api-openapi.yml): per-path servers applied",
+    "tag 'Supported Currencies' spans 2 source specs (zenledger-aggregator-api-openapi.yml, zenledger-compliance-api-openapi.yml): per-path servers applied",
+    "tag 'Supported Exchanges and Wallets' spans 2 source specs (zenledger-aggregator-api-openapi.yml, zenledger-compliance-api-openapi.yml): per-path servers applied",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "zenledger-authentication-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zenledger-companies-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zenledger-holdings-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zenledger-imports-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zenledger-polymarkets-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zenledger-portfolios-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zenledger-supported-chains-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zenledger-supported-currencies-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zenledger-supported-exchanges-and-wallets-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zenledger-taxes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zenledger-transactions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zenledger-users-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zenledger-wallet-screening-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

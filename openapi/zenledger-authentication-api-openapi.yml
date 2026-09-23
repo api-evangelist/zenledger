@@ -1,0 +1,109 @@
+openapi: 3.2.0
+info:
+  title: Zenledger Authentication API
+  contact:
+    name: ZenLedger
+    url: https://zenledger.io/contact-us/
+    email: support@zenledger.io
+  termsOfService: https://zenledger.io/legal/
+  x-generated-by: API Evangelist enrichment pipeline (derived from the provider-published Postman collection)
+  x-refined-note:
+  - x-source differs across the merged source definitions and was not carried
+  - x-source-url differs across the merged source definitions and was not carried
+  version: '1.0'
+  description: 'Operations tagged Authentication across 2 of this provider''s published API definitions: zenledger-aggregator-api-openapi.yml, zenledger-compliance-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.zenledger.io
+  description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io in every saved example response.
+tags:
+- name: Authentication
+  description: OAuth 2.0 client_credentials token issuance.
+paths:
+  /oauth/token:
+    post:
+      operationId: jwtRequest
+      summary: JWT request
+      description: 'The server response can vary based on the validity of the provided POST body:
+
+
+        - **Success (HTTP status 200):**
+
+        - **Headers:** The response includes various headers such as `Content-Type`, `Cache-Control`, `Expires`, and more.
+
+        - **Body:** The response body is a JSON object containing the `access_token`, `token_type`, `expires_in`, and `scope` fields. The `access_token` is the JWT that should be included in the `Authorization` header for subsequent API requests.
+
+        - **Unauthorized (HTTP status 401):**
+
+        - **Headers:** The response includes various headers such as `Content-Type`, `Cache-Control`, `Expires`, and more.
+
+        - **Body:** The response body is a JSON object containing the `error` and `error_description` fields, indicating an invalid client or failed authentication.
+
+        - **Bad Request (HTTP status 400):**
+
+        - **Headers:** The response includes various headers such as `Content-Type`, `Cache-Control`, `Expires`, and more.
+
+        - **Body:** The response body is a JSON object containing the `error` and `error_description` fields, indicating an invalid request.'
+      tags:
+      - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+            example:
+              client_id: '{{oauth_client_id}}'
+              client_secret: '{{oauth_client_secret}}'
+              grant_type: client_credentials
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                JWT_request_success:
+                  value:
+                    access_token: access_token
+                    token_type: Bearer
+                    expires_in: 1800
+                    scope: public
+                    created_at: 1686752196
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                JWT_request_invalid_client:
+                  value:
+                    error: invalid_client
+                    error_description: Client authentication failed due to unknown client, no client authentication included, or unsupported authentication method.
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                JWT_request_invalid_request:
+                  value:
+                    error: invalid_request
+                    error_description: 'Missing required parameter: grant_type.'
+      security: []
+      x-postman-request: '{{base_url}}/oauth/token'
+    servers:
+    - url: https://api.zenledger.io
+      description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io in every saved example response.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT bearer token obtained from POST /oauth/token using the OAuth 2.0 client_credentials grant with the client_id and client_secret ZenLedger issues. The token expires after 30 minutes (expires_in 1800) and must be refreshed at the same endpoint.
+x-refined-from:
+- zenledger-aggregator-api-openapi.yml
+- zenledger-compliance-api-openapi.yml

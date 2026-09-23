@@ -1,0 +1,370 @@
+openapi: 3.2.0
+info:
+  title: ZenLedger Compliance Suite Polymarkets API
+  version: v3
+  description: REST surface of the ZenLedger Compliance Suite — the digital-asset trade-monitoring and crypto tax-compliance API financial institutions and enterprises use to register companies and users, import exchange accounts and wallets, read normalized transactions and holdings, screen wallet addresses against sanctions lists, and look up the supported currencies, sources and chains.
+  contact:
+    name: ZenLedger
+    url: https://zenledger.io/contact-us/
+    email: support@zenledger.io
+  termsOfService: https://zenledger.io/legal/
+  x-generated-by: API Evangelist enrichment pipeline (derived from the provider-published Postman collection)
+  x-source: postman/zenledger-compliance-v3.postman_collection.json
+  x-source-url: https://docs.zenledger.io/compliance/v3/compliance_api.postman_collection.json
+servers:
+- url: https://api.zenledger.io
+  description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io in every saved example response.
+tags:
+- name: Polymarkets
+  description: Polymarket prediction-market positions.
+paths:
+  /compliance/api/v3/companies/{company_reference}/users/{user_id}/polymarkets:
+    get:
+      operationId: getPolymarketsForUser
+      summary: GET polymarkets for user
+      description: '### GET **/companies/{companyReference}/users/{userId}/polymarkets**
+
+
+        **Returns** a list of the Polymarkets participated in by the user by making a GET request to the path `/companies/{company_reference}/users/{user_id}/polymarkets` on the base URL.
+
+
+        Polymarkets represent prediction markets interacted with by users through their connected or uploaded accounts.
+
+
+        This endpoint requires authentication via a bearer token, provided in the `Authorization` header of the request.
+
+
+        > \*Results paginated with 100 elements per page
+
+
+        ### Request
+
+
+        ##### URI PARAMETERS
+
+
+        > **companyReference** `string` The ID of a specific company
+
+
+        > **userId** `string` The ID of a specific user
+
+
+        ##### QUERY PARAMETERS
+
+
+        > **page** `integer` Page number for paginated results
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+
+        > **data** `array` List of polymarkets associated with the user
+
+
+        > **pagination** `object` Pagination metadata for the response'
+      tags:
+      - Polymarkets
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific user
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Page number for paginated results
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_polymarkets_for_user_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                    - markets:
+                      - condition_id: '0x1de721694086a3b2593b8c3913dbd170ae1f4a61d38a8d51aa867cd926dd2303'
+                        market_slug: bitcoin-above-80k-on-may-12
+                        question: Will the price of Bitcoin be above $80,000 on May 12?
+                        description: 'This market will resolve to "Yes" if the Binance 1 minute candle for BTC/USDT 12:00 in the ET timezone (noon) on the date specified in the title has a final "Close" price higher than the price specified in the title. Otherwise, this market will resolve to "No".
+
+
+                          The resolution source for this market is Binance, specifically the BTC/USDT "Close" prices currently available at https://www.binance.com/en/trade/BTC_USDT with "1m" and "Candles" selected on the top bar.
+
+
+                          Please note that this market is about the price according to Binance BTC/USDT, not according to other exchanges or trading pairs.
+
+
+                          Price precision is determined by the number of decimal places in the source.'
+                      - condition_id: '0xb177f77bde742b8abb6613454f5a5cda050ae86db87392ecf2bf496e68ca7531'
+                        market_slug: bitcoin-above-78k-on-may-12
+                        question: Will the price of Bitcoin be above $78,000 on May 12?
+                        description: 'This market will resolve to "Yes" if the Binance 1 minute candle for BTC/USDT 12:00 in the ET timezone (noon) on the date specified in the title has a final "Close" price higher than the price specified in the title. Otherwise, this market will resolve to "No".
+
+
+                          The resolution source for this market is Binance, specifically the BTC/USDT "Close" prices currently available at https://www.binance.com/en/trade/BTC_USDT with "1m" and "Candles" selected on the top bar.
+
+
+                          Please note that this market is about the price according to Binance BTC/USDT, not according to other exchanges or trading pairs.
+
+
+                          Price precision is determined by the number of decimal places in the source.'
+                      - condition_id: '0x8b6b886672c56ecd63520ae0a7407695cb4ed9eece6eedeceb02a8678d1ac78f'
+                        market_slug: bitcoin-above-70k-on-may-7
+                        question: Will the price of Bitcoin be above $70,000 on May 7?
+                        description: 'This market will resolve to "Yes" if the Binance 1 minute candle for BTC/USDT 12:00 in the ET timezone (noon) on the date specified in the title has a final "Close" price higher than the price specified in the title. Otherwise, this market will resolve to "No".
+
+
+                          The resolution source for this market is Binance, specifically the BTC/USDT "Close" prices currently available at https://www.binance.com/en/trade/BTC_USDT with "1m" and "Candles" selected on the top bar.
+
+
+                          Please note that this market is about the price according to Binance BTC/USDT, not according to other exchanges or trading pairs.
+
+
+                          Price precision is determined by the number of decimal places in the source.'
+                      - condition_id: '0xa58e4ada1b3e17170156f10fad5768b9a27536015b2841ca9318c430754da746'
+                        market_slug: bitcoin-above-72k-on-may-7
+                        question: Will the price of Bitcoin be above $72,000 on May 7?
+                        description: 'This market will resolve to "Yes" if the Binance 1 minute candle for BTC/USDT 12:00 in the ET timezone (noon) on the date specified in the title has a final "Close" price higher than the price specified in the title. Otherwise, this market will resolve to "No".
+
+
+                          The resolution source for this market is Binance, specifically the BTC/USDT "Close" prices currently available at https://www.binance.com/en/trade/BTC_USDT with "1m" and "Candles" selected on the top bar.
+
+
+                          Please note that this market is about the price according to Binance BTC/USDT, not according to other exchanges or trading pairs.
+
+
+                          Price precision is determined by the number of decimal places in the source.'
+                      - condition_id: '0x661e0ccb8f22ef89f8d18291facb5ef394afd37b3168ba4069a21eb20c4a9270'
+                        market_slug: bitcoin-above-80k-on-may-7
+                        question: Will the price of Bitcoin be above $80,000 on May 7?
+                        description: 'This market will resolve to "Yes" if the Binance 1 minute candle for BTC/USDT 12:00 in the ET timezone (noon) on the date specified in the title has a final "Close" price higher than the price specified in the title. Otherwise, this market will resolve to "No".
+
+
+                          The resolution source for this market is Binance, specifically the BTC/USDT "Close" prices currently available at https://www.binance.com/en/trade/BTC_USDT with "1m" and "Candles" selected on the top bar.
+
+
+                          Please note that this market is about the price according to Binance BTC/USDT, not according to other exchanges or trading pairs.
+
+
+                          Price precision is determined by the number of decimal places in the source.'
+                GET_polymarkets_for_user_empty_response:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      markets: {}
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_polymarkets_for_user_user_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-USRGET-AA2
+                      message: Could not find user
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/users/{{user_id}}/polymarkets'
+  /compliance/api/v3/companies/{company_reference}/polymarkets:
+    get:
+      operationId: getPolymarketsForAllUsersOfACompany
+      summary: GET polymarkets for all users of a company
+      description: '### GET **/companies/{companyReference}/polymarkets**
+
+
+        **Returns** a list of all users of a company together with the Polymarkets they have participated in by making a GET request to the path `/companies/{company_reference}/polymarkets` on the base URL.
+
+
+        Polymarkets represent prediction markets interacted with by users through their connected or uploaded accounts.
+
+
+        This endpoint requires authentication via a bearer token, provided in the `Authorization` header of the request.
+
+
+        > \*Results paginated with 20 elements per page
+
+
+        ### Request
+
+
+        ##### URI PARAMETERS
+
+
+        > **companyReference** `string` The ID of a specific company
+
+
+        ##### QUERY PARAMETERS
+
+
+        > **page** `integer` Specific page requested for the paginated results
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+
+        > **data** `array` List of company users and their associated markets
+
+
+        > **pagination** `object` Pagination metadata for the response'
+      tags:
+      - Polymarkets
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Specific page requested for the paginated results
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_polymarkets_for_all_users_of_a_company_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                    - users:
+                      - id: 83b9c1ee-9df5-48e0-ac46-5ceec42a8a76
+                        markets:
+                        - condition_id: '0x1de721694086a3b2593b8c3913dbd170ae1f4a61d38a8d51aa867cd926dd2303'
+                          market_slug: bitcoin-above-80k-on-may-12
+                          question: Will the price of Bitcoin be above $80,000 on May 12?
+                          description: 'This market will resolve to "Yes" if the Binance 1 minute candle for BTC/USDT 12:00 in the ET timezone (noon) on the date specified in the title has a final "Close" price higher than the price specified in the title. Otherwise, this market will resolve to "No".
+
+
+                            The resolution source for this market is Binance, specifically the BTC/USDT "Close" prices currently available at https://www.binance.com/en/trade/BTC_USDT with "1m" and "Candles" selected on the top bar.
+
+
+                            Please note that this market is about the price according to Binance BTC/USDT, not according to other exchanges or trading pairs.
+
+
+                            Price precision is determined by the number of decimal places in the source.'
+                        - condition_id: '0xb177f77bde742b8abb6613454f5a5cda050ae86db87392ecf2bf496e68ca7531'
+                          market_slug: bitcoin-above-78k-on-may-12
+                          question: Will the price of Bitcoin be above $78,000 on May 12?
+                          description: 'This market will resolve to "Yes" if the Binance 1 minute candle for BTC/USDT 12:00 in the ET timezone (noon) on the date specified in the title has a final "Close" price higher than the price specified in the title. Otherwise, this market will resolve to "No".
+
+
+                            The resolution source for this market is Binance, specifically the BTC/USDT "Close" prices currently available at https://www.binance.com/en/trade/BTC_USDT with "1m" and "Candles" selected on the top bar.
+
+
+                            Please note that this market is about the price according to Binance BTC/USDT, not according to other exchanges or trading pairs.
+
+
+                            Price precision is determined by the number of decimal places in the source.'
+                      - id: 1ee83b9c-48e0-ac46-ac46-5cee8a76c42a
+                        markets:
+                        - condition_id: '0xa58e4ada1b3e17170156f10fad5768b9a27536015b2841ca9318c430754da746'
+                          market_slug: bitcoin-above-72k-on-may-7
+                          question: Will the price of Bitcoin be above $72,000 on May 7?
+                          description: 'This market will resolve to "Yes" if the Binance 1 minute candle for BTC/USDT 12:00 in the ET timezone (noon) on the date specified in the title has a final "Close" price higher than the price specified in the title. Otherwise, this market will resolve to "No".
+
+
+                            The resolution source for this market is Binance, specifically the BTC/USDT "Close" prices currently available at https://www.binance.com/en/trade/BTC_USDT with "1m" and "Candles" selected on the top bar.
+
+
+                            Please note that this market is about the price according to Binance BTC/USDT, not according to other exchanges or trading pairs.
+
+
+                            Price precision is determined by the number of decimal places in the source.'
+                        - condition_id: '0x8b6b886672c56ecd63520ae0a7407695cb4ed9eece6eedeceb02a8678d1ac78f'
+                          market_slug: bitcoin-above-70k-on-may-7
+                          question: Will the price of Bitcoin be above $70,000 on May 7?
+                          description: 'This market will resolve to "Yes" if the Binance 1 minute candle for BTC/USDT 12:00 in the ET timezone (noon) on the date specified in the title has a final "Close" price higher than the price specified in the title. Otherwise, this market will resolve to "No".
+
+
+                            The resolution source for this market is Binance, specifically the BTC/USDT "Close" prices currently available at https://www.binance.com/en/trade/BTC_USDT with "1m" and "Candles" selected on the top bar.
+
+
+                            Please note that this market is about the price according to Binance BTC/USDT, not according to other exchanges or trading pairs.
+
+
+                            Price precision is determined by the number of decimal places in the source.'
+                      - id: 842a3b8a-48e0-48e0-ac46-5642a8aceec7
+                        markets:
+                        - condition_id: '0x661e0ccb8f22ef89f8d18291facb5ef394afd37b3168ba4069a21eb20c4a9270'
+                          market_slug: bitcoin-above-80k-on-may-7
+                          question: Will the price of Bitcoin be above $80,000 on May 7?
+                          description: 'This market will resolve to "Yes" if the Binance 1 minute candle for BTC/USDT 12:00 in the ET timezone (noon) on the date specified in the title has a final "Close" price higher than the price specified in the title. Otherwise, this market will resolve to "No".
+
+
+                            The resolution source for this market is Binance, specifically the BTC/USDT "Close" prices currently available at https://www.binance.com/en/trade/BTC_USDT with "1m" and "Candles" selected on the top bar.
+
+
+                            Please note that this market is about the price according to Binance BTC/USDT, not according to other exchanges or trading pairs.
+
+
+                            Price precision is determined by the number of decimal places in the source.'
+                    meta:
+                      current_page: 1
+                      total_entries: 1
+                      total_pages: 1
+                GET_polymarkets_for_all_users_of_a_company_empty_response:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      markets: {}
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_polymarkets_for_all_users_of_a_company_company_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPGET-AA3
+                      message: Could not find company
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/polymarkets'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT bearer token obtained from POST /oauth/token using the OAuth 2.0 client_credentials grant with the client_id and client_secret ZenLedger issues. The token expires after 30 minutes (expires_in 1800) and must be refreshed at the same endpoint.

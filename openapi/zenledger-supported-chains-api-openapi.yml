@@ -1,0 +1,142 @@
+openapi: 3.2.0
+info:
+  title: ZenLedger Compliance Suite Supported Chains API
+  version: v3
+  description: REST surface of the ZenLedger Compliance Suite — the digital-asset trade-monitoring and crypto tax-compliance API financial institutions and enterprises use to register companies and users, import exchange accounts and wallets, read normalized transactions and holdings, screen wallet addresses against sanctions lists, and look up the supported currencies, sources and chains.
+  contact:
+    name: ZenLedger
+    url: https://zenledger.io/contact-us/
+    email: support@zenledger.io
+  termsOfService: https://zenledger.io/legal/
+  x-generated-by: API Evangelist enrichment pipeline (derived from the provider-published Postman collection)
+  x-source: postman/zenledger-compliance-v3.postman_collection.json
+  x-source-url: https://docs.zenledger.io/compliance/v3/compliance_api.postman_collection.json
+servers:
+- url: https://api.zenledger.io
+  description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io in every saved example response.
+tags:
+- name: Supported Chains
+  description: Supported blockchain reference data.
+paths:
+  /compliance/api/v3/chains:
+    get:
+      operationId: getChains
+      summary: GET chains
+      description: '### GET **/**chains
+
+
+        **Returns** a paginated list of supported blockchains by making a GET request to the path `/compliance/api/v3/chains` on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        > *Results paginated with 100 elements per page
+
+
+        ### Request
+
+
+        ##### QUERY PARAMETERS
+
+
+        > **page** `number` Specific page requested for the paginated results
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Supported Chains
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: number
+        description: Specific page requested for the paginated results
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_chains_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      chains:
+                      - name: Optimism Chain
+                        chain_id: 10
+                        code: op
+                        label: Optimism Chain
+                      - name: Bitcoin
+                        chain_id: null
+                        code: btc
+                        label: Bitcoin (BTC)
+                      - name: Dogecoin
+                        chain_id: 2000
+                        code: doge
+                        label: Dogecoin (DOGE)
+                      - name: Polygon Network
+                        chain_id: 137
+                        code: matic
+                        label: Polygon Network (MATIC)
+                      - name: Avalanche C-Chain
+                        chain_id: 43114
+                        code: avax
+                        label: Avalanche C-Chain (AVAX)
+                      - name: Binance Coin Main-Net / BEP-2
+                        chain_id: null
+                        code: bnb
+                        label: Binance Coin (BNB) Main-Net / BEP-2
+                      - name: Ethereum - (ERC-20, ERC-721, ERC-1155)
+                        chain_id: 1
+                        code: eth
+                        label: Ethereum (ETH) - (ERC-20, ERC-721, ERC-1155)
+                      - name: Binance Smart Chain
+                        chain_id: 56
+                        code: bsc
+                        label: Binance Smart Chain (BSC)
+                      - name: Ethereum Classic
+                        chain_id: 61
+                        code: etc
+                        label: Ethereum Classic (ETC)
+                    meta:
+                      current_page: 1
+                      total_entries: 9
+                      total_pages: 1
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_chains_invalid_token:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-AUTHGET-AA4
+                      message: The access token is invalid
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/chains'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT bearer token obtained from POST /oauth/token using the OAuth 2.0 client_credentials grant with the client_id and client_secret ZenLedger issues. The token expires after 30 minutes (expires_in 1800) and must be refreshed at the same endpoint.

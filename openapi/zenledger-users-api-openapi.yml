@@ -1,0 +1,552 @@
+openapi: 3.2.0
+info:
+  title: ZenLedger Compliance Suite Users API
+  version: v3
+  description: REST surface of the ZenLedger Compliance Suite — the digital-asset trade-monitoring and crypto tax-compliance API financial institutions and enterprises use to register companies and users, import exchange accounts and wallets, read normalized transactions and holdings, screen wallet addresses against sanctions lists, and look up the supported currencies, sources and chains.
+  contact:
+    name: ZenLedger
+    url: https://zenledger.io/contact-us/
+    email: support@zenledger.io
+  termsOfService: https://zenledger.io/legal/
+  x-generated-by: API Evangelist enrichment pipeline (derived from the provider-published Postman collection)
+  x-source: postman/zenledger-compliance-v3.postman_collection.json
+  x-source-url: https://docs.zenledger.io/compliance/v3/compliance_api.postman_collection.json
+servers:
+- url: https://api.zenledger.io
+  description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io in every saved example response.
+tags:
+- name: Users
+  description: End users tracked under a company.
+paths:
+  /compliance/api/v3/companies/{company_reference}/users:
+    get:
+      operationId: getCompanyUsers
+      summary: GET company users
+      description: '### GET **/companies/{companyReference}/users**
+
+
+        **Returns** a list of all active users that exist in the system for a specific company by making a GET request to the path `/companies/{company_reference}/users` on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        ### Request
+
+
+        ##### URi PARAMETERS
+
+
+        > **companyReference** `string` The ID of a specific company
+
+
+        ##### QUERY PARAMETERS
+
+
+        > NONE
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Users
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_company_users_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      users:
+                      - id: 9f3ebcde-0d2c-4f8d-a5e8-e76b918372e4
+                        first_name: firstcompany4-name
+                        last_name: firstcompany4-namelast
+                        email: user@firstcompany4.com
+                        created_at: '2023-06-01T12:59:46.223Z'
+                        updated_at: '2023-06-01T12:59:46.223Z'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_company_users_company_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPGET-AA3
+                      message: Could not find company
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/users'
+    post:
+      operationId: createCompanyUser
+      summary: CREATE company user
+      description: '### POST **/companies/{companyReference}/users**
+
+
+        All API requests to this endpoint must be **signed and encrypted** to ensure integrity and security. The signing process is explained in the **Request Signature and Encryption** section and ensures that the request is authenticated and has not been tampered with. Encryption protects sensitive data during transmission.
+
+
+        **Creates** a new company user which is linked to the company by making a POST request to the `/compliance/api/v3/companies/{company_reference}/users` endpoint is used to create a new user in the system.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        ### Request
+
+
+        ##### URi PARAMETERS
+
+
+        > **companyReference** `string` The ID of a specific company
+
+
+        ##### QUERY PARAMETERS
+
+
+        > NONE
+
+
+        ##### BODY
+
+
+        *In JSON format
+
+
+        > **email** `string` Email address of the user
+
+        >
+
+        > **first_name** (optional) `string` First name of the user
+
+        >
+
+        > **last_name** (optional) `string` Last name of the user
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Users
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+            example:
+              email: johndoe@example.com
+              first_name: John
+              last_name: Doe
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                CREATE_company_user_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      id: 9f3ebcde-0d2c-4f8d-a5e8-e76b918372e4
+                      first_name: John
+                      last_name: Doe
+                      email: johndoe@example.com
+                      created_at: '2023-07-04T07:23:49.810Z'
+                      updated_at: '2023-07-04T07:23:49.810Z'
+                CREATE_company_user_active_users_limit_reached:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-USRPST-AA8
+                      message: Maximum number of active users limit exceeded
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/users'
+  /compliance/api/v3/companies/{company_reference}/users/{user_id}:
+    get:
+      operationId: getCompanyUser
+      summary: GET company user
+      description: '### GET **/companies/{companyReference}/users/{userId}**
+
+
+        **Returns** the details of a specific user by making a GET request to the path `/companies/{company_reference}/users/{user_id}` on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        ### Request
+
+
+        ##### URi PARAMETERS
+
+
+        > **companyReference** `string` The ID of a specific company
+
+
+        > **userId** `string` The ID of a specific user
+
+
+        ##### QUERY PARAMETERS
+
+
+        > NONE
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Users
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_company_users_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      users:
+                      - id: 9f3ebcde-0d2c-4f8d-a5e8-e76b918372e4
+                        first_name: firstcompany4-name
+                        last_name: firstcompany4-namelast
+                        email: user@firstcompany4.com
+                        created_at: '2023-06-01T12:59:46.223Z'
+                        updated_at: '2023-06-01T12:59:46.223Z'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_company_users_company_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPGET-AA3
+                      message: Could not find company
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/users/{{user_id}}'
+    put:
+      operationId: updateUserDetails
+      summary: UPDATE user details
+      description: '### UPDATE **/companies/{companyId}/users/{userId}**
+
+
+        All API requests to this endpoint must be **signed and encrypted** to ensure integrity and security. The signing process is explained in the **Request Signature and Encryption** section and ensures that the request is authenticated and has not been tampered with. Encryption protects sensitive data during transmission.
+
+
+        **Updates** the details of a user by making a PUT request to the path `/compliance/api/v3/companies/{company_reference}/users/{user_id}` on the base URL
+
+
+        **User Activation/Deactivation:**
+
+
+        If the boolean parameter **active** is passed in the body as *false*, the user will be deactivated, transactional data will no longer be pulled by ZenLedger and no data will be delivered by this API until the user is re-activated.
+
+
+        > Pass the parameter **active** as *false* to deactivate
+
+        > Pass the parameter **active** as *true* to re-activate
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        ### Request
+
+
+        ##### URi PARAMETERS
+
+
+        > **companyReference** `string` The ID of a specific company
+
+
+        > **userId** `string` The ID of a specific user
+
+
+        ##### QUERY PARAMETERS
+
+
+        > NONE
+
+
+        ##### BODY
+
+
+        *In JSON format
+
+
+        > **email** (optional) `string` Email address of the user
+
+        >
+
+        > **first_name** (optional) `string` First name of the user
+
+        >
+
+        > **last_name** (optional) `string` Last name of the user
+
+        >
+
+        > **active** (optional) `boolean` Activate/Deactivate a user if passed
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Users
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+            example:
+              first_name: user 1 of referenced company
+              last_name: user 1 of referenced company
+              email: user@firstcompany2.com
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                UPDATE_user_details_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      id: 9f3ebcde-0d2c-4f8d-a5e8-e76b918372e4
+                      first_name: user 1 of referenced company
+                      last_name: user 1 of referenced company
+                      email: user@firstcompany2.com
+                      created_at: '2023-06-01T12:59:46.223Z'
+                      updated_at: '2023-06-01T13:08:15.608Z'
+                      active: 'true'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                UPDATE_user_details_user_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-USRGET-AA2
+                      message: Could not find user
+                UPDATE_user_details_company_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPGET-AA3
+                      message: Could not find company
+                UPDATE_user_details_active_users_limit_reached:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-USRPST-AA8
+                      message: Maximum number of active users limit exceeded
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/users/{{user_id}}'
+    delete:
+      operationId: deleteCompanyUser
+      summary: DELETE company user
+      description: '### DELETE **/companies/{companyReference}/users/{userId}**
+
+
+        **Deletes** a user which is linked to the company by making a DELETE request to the `/compliance/api/v3/companies/{company_reference}/users/{user_id}` endpoint.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        ### Request
+
+
+        ##### URi PARAMETERS
+
+
+        > **companyReference** `string` The ID of a specific company
+
+
+        > **userId** `string` The ID of a specific user
+
+
+        ##### QUERY PARAMETERS
+
+
+        > NONE
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Users
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                DELETE_company_user_success:
+                  value:
+                    api_version: '3.0'
+                    data: []
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                DELETE_company_user_user_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-USRGET-AA2
+                      message: Could not find user
+                DELETE_company_user_company_not_found:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-CMPGET-AA3
+                      message: Could not find company
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/users/{{user_id}}'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT bearer token obtained from POST /oauth/token using the OAuth 2.0 client_credentials grant with the client_id and client_secret ZenLedger issues. The token expires after 30 minutes (expires_in 1800) and must be refreshed at the same endpoint.

@@ -1,0 +1,134 @@
+openapi: 3.2.0
+info:
+  title: ZenLedger Aggregator Suite Portfolios API
+  version: v1
+  description: REST surface of the ZenLedger Aggregator Suite — the partner/aggregator API for creating a portfolio from a set of exchange and wallet accounts, retrieving the resulting tax calculation, and reading the supported source and currency reference data.
+  contact:
+    name: ZenLedger
+    url: https://zenledger.io/contact-us/
+    email: support@zenledger.io
+  termsOfService: https://zenledger.io/legal/
+  x-generated-by: API Evangelist enrichment pipeline (derived from the provider-published Postman collection)
+  x-source: postman/zenledger-aggregators-v1.postman_collection.json
+  x-source-url: https://docs.zenledger.io/aggregators/rest-api/v1/aggregators_api.postman_collection.json
+servers:
+- url: https://api.zenledger.io
+  description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io in every saved example response.
+tags:
+- name: Portfolios
+  description: Create an aggregated portfolio from a set of accounts.
+paths:
+  /aggregators/api/v1/portfolios:
+    post:
+      operationId: createPortfolio
+      summary: CREATE portfolio
+      description: '### POST **/portfolios**
+
+
+        **Creates** a new portfolio to be later linked to a new user.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        ### Request
+
+
+        ##### QUERY PARAMETERS
+
+
+        > NONE
+
+
+        ##### BODY
+
+
+        *In JSON format
+
+
+        > **portfolio** `object` Object containing a list of wallets with the following properties.
+
+        >
+
+        >> **blockchain** (optional) `string` Blockchain of the wallet
+
+        >>
+
+        >> **coin** `string` Cryptocurrency symbol
+
+        >>
+
+        >> **address** `string` Wallet address.
+
+        >>
+
+        >> **display_name** (optional) `string` if set, Name used for identifying the source in UI.
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Portfolios
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+            example:
+              portfolio:
+              - blockchain: ethereum
+                coin: eth
+                address: '0xc5689793548164f7D6B5477EEE6697DF6F3C2843'
+                display_name: Eth wallet
+              - blockchain: bitcoin
+                coin: btc
+                address: 3Df7budise9ws3vzPADMbN5XA4JJZ8BuUR
+                display_name: BTC wallet
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                CREATE_portfolio_success:
+                  value:
+                    api_version: '1.0'
+                    data:
+                      signup_url: https://app.zenledger.io/new_sign_up?aggref=AGGREF&aggcode=AGGREF7bfa64c5d52e
+                      aggcode: AGGREF7bfa64c5d52e
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                CREATE_portfolio_can_not_create:
+                  value:
+                    api_version: '1.0'
+                    data: []
+                    errors:
+                      code: ZENAGG-PFLPST-AA1
+                      message: Could not create portfolio
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/aggregators/api/v1/portfolios/'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT bearer token obtained from POST /oauth/token using the OAuth 2.0 client_credentials grant with the client_id and client_secret ZenLedger issues. The token expires after 30 minutes (expires_in 1800) and must be refreshed at the same endpoint.

@@ -1,0 +1,1453 @@
+openapi: 3.2.0
+info:
+  title: Zenledger Supported Currencies API
+  contact:
+    name: ZenLedger
+    url: https://zenledger.io/contact-us/
+    email: support@zenledger.io
+  termsOfService: https://zenledger.io/legal/
+  x-generated-by: API Evangelist enrichment pipeline (derived from the provider-published Postman collection)
+  x-refined-note:
+  - x-source differs across the merged source definitions and was not carried
+  - x-source-url differs across the merged source definitions and was not carried
+  version: '1.0'
+  description: 'Operations tagged Supported Currencies across 2 of this provider''s published API definitions: zenledger-aggregator-api-openapi.yml, zenledger-compliance-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.zenledger.io
+  description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io in every saved example response.
+tags:
+- name: Supported Currencies
+  description: Currency reference data.
+paths:
+  /aggregators/api/v1/currencies:
+    get:
+      operationId: getCurrencies
+      summary: GET currencies
+      description: '### GET **/currencies**
+
+
+        **Returns** a paginated list of supported cryptocurrencies by making a GET request to the path `/aggregators/api/v1/currencies` on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        > *Results paginated with 100 elements per page
+
+
+        ### Request
+
+
+        ##### QUERY PARAMETERS
+
+
+        > **page** `number` Specific page requested for the paginated results
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Supported Currencies
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: number
+        description: Specific page requested for the paginated results
+        example: '1'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_currencies_success:
+                  value:
+                    api_version: '1.0'
+                    data:
+                      currencies:
+                      - reference: council-of-apes
+                        name: Council of Apes
+                        symbol: COAPE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x55006895f398d7713d69081144b19d8c9022b582'
+                      - reference: counosx
+                        name: CounosX
+                        symbol: CCXX
+                        blockchains: []
+                      - reference: counterparty
+                        name: Counterparty
+                        symbol: XCP
+                        blockchains: []
+                      - reference: county-metaverse
+                        name: County Metaverse
+                        symbol: COUNTY
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x1967cabd079fcdd363a044f1444bf00a94558a2f'
+                      - reference: couponbay
+                        name: CouponBay
+                        symbol: CUP
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x3209d14ff61766359e64aceff91877cec2ad968e'
+                      - reference: cousin-doge
+                        name: Cousin Doge
+                        symbol: COUSINDOGE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xda8df4506de8e110cc216937945963bab380a615'
+                      - reference: coution-live
+                        name: COUTION LIVE
+                        symbol: CTL
+                        blockchains:
+                        - platform: tron
+                          contract: tdaogsywy3wwuyktk8z1fxsa8nxnmdfk9a
+                      - reference: covalent
+                        name: Covalent
+                        symbol: CQT
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xd417144312dbf50465b1c641d016962017ef6240'
+                      - reference: covalent-cova
+                        name: Cova Unity
+                        symbol: COVA
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xb37a769b37224449d92aac57de379e1267cd3b00'
+                      - reference: covenant-child
+                        name: Covenant
+                        symbol: COVN
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x19ac2659599fd01c853de846919544276ad26f50'
+                      - reference: covercompared
+                        name: CoverCompared
+                        symbol: CVR
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x3c03b4ec9477809072ff9cc9292c9b25d4a8e6c6'
+                      - reference: cover-protocol
+                        name: Cover Protocol
+                        symbol: COVER
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x4688a8b1f292fdab17e9a90c8bc379dc1dbd8713'
+                        - platform: fantom
+                          contract: '0xb01e8419d842beebf1b70a7b5f7142abbaf7159d'
+                      - reference: covesting
+                        name: Covesting
+                        symbol: COV
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xada86b1b313d1d5267e3fc0bb303f0a2b66d0ea7'
+                        - platform: binance-smart-chain
+                          contract: '0x0f237db17aa4e6de062e6f052bd9c805789b01c3'
+                      - reference: covey
+                        name: Covey
+                        symbol: $CVY
+                        blockchains: []
+                      - reference: covicoin
+                        name: CoviCoin
+                        symbol: CVC
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xc6f0a9b75fa529dcc0f90459e30684e7ed9a9ea6'
+                      - reference: covid-19-recovery-token
+                        name: COVID-19 Recovery Token
+                        symbol: COVDR
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xdb8afb917a2d4848ee5b3bed7f6c0bab0555427d'
+                      - reference: covid-doge
+                        name: Covid Doge
+                        symbol: COVID DOGE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xae1f20ca661ec552c0664a73ad5e5963824f92e1'
+                      - reference: covid-slice
+                        name: Covid Slice
+                        symbol: COVID19
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x8d5eb659959c68bd78a4f6f2ecccbbcb8c2cfb79'
+                      - reference: covid-token
+                        name: Covid Token
+                        symbol: COVIDTOKEN
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x23c28e9346c82228fb2b62b20b6fe5d75989f5b2'
+                      - reference: cow--4
+                        name: COWRY
+                        symbol: COW
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xb149dd64ea4b173e5fc9ecf77bd380418695185d'
+                      - reference: cowboy-snake
+                        name: Cowboy Snake
+                        symbol: COWS
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x33b48893b8f119fb45f431b36f830a9584804201'
+                      - reference: cow-inu
+                        name: Cow Inu
+                        symbol: CI
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xceafc372af7fddccbfd28f10329710e58bb2f970'
+                      - reference: cow-protocol
+                        name: CoW Protocol
+                        symbol: COW
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xdef1ca1fb7fbcdc777520aa7f396b4e015f497ab'
+                        - platform: xdai
+                          contract: '0x177127622c4a00f3d409b75571e12cb3c8973d3c'
+                      - reference: cowrie
+                        name: Cowrie
+                        symbol: COWRIE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xde51d1599339809cafb8194189ce67d5bdca9e9e'
+                      - reference: cowry
+                        name: COWRY
+                        symbol: COW
+                        blockchains: []
+                      - reference: coxswap
+                        name: Coxswap
+                        symbol: COX
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x17fea92ca2e7570d07b63ecd6b698e01386555a4'
+                      - reference: coxswap-2
+                        name: Coxswap
+                        symbol: COX
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x2266cfa689da2186f307f2dd8beafa12a4ad9709'
+                      - reference: cpc--4
+                        name: CryptoPerformance Coin
+                        symbol: CPC
+                        blockchains: []
+                      - reference: cpchain
+                        name: CPChain
+                        symbol: CPC
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xfae4ee59cdd86e3be9e8b90b53aa866327d7c090'
+                        - platform: binance-smart-chain
+                          contract: cpc-fed
+                      - reference: cplay-network
+                        name: CPLAY Network
+                        symbol: CPLAY
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x740e08e52542df19d7f2f9cbf3924ac0bfe53071'
+                      - reference: cpos-cloud-payment
+                        name: CPOS Cloud Payment
+                        symbol: CPOS
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xc0dc5adfae1dada9111f376810d772cabd9b6f13'
+                      - reference: cprop
+                        name: CPROP
+                        symbol: CPROP
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x0fb843d37aa2a99db8d81af9fe2f0a6485c7c002'
+                      - reference: cpuchain
+                        name: CPUchain
+                        symbol: CPU
+                        blockchains: []
+                      - reference: cpucoin
+                        name: CPUcoin
+                        symbol: CPU
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x6d52dfefb16bb9cdc78bfca09061e44574886626'
+                      - reference: crabada
+                        name: Crabada
+                        symbol: CRA
+                        blockchains:
+                        - platform: avalanche
+                          contract: '0xa32608e873f9ddef944b24798db69d80bbb4d1ed'
+                      - reference: crabada-amulet
+                        name: Crabada Amulet
+                        symbol: CRAM
+                        blockchains:
+                        - platform: avalanche
+                          contract: '0xd2cd7a59aa8f8fdc68d01b1e8a95747730b927d3'
+                      - reference: crab-market
+                        name: Crab Market
+                        symbol: CRAB
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x24bcec1afda63e622a97f17cff9a61ffcfd9b735'
+                      - reference: crab-rave-token
+                        name: Crab Rave Token
+                        symbol: CRABS
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x2c9715d6d95443c3bdf29e473ad168ff6fa6627d'
+                      - reference: crabstrike
+                        name: CrabStrike
+                        symbol: CST
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x3993453b9587e06a0e925727fd844d2d2babd39f'
+                      - reference: cracle
+                        name: Cracle
+                        symbol: CRA
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x0fc0b3f6f5c769c138088266ac21760ab33f76ca'
+                      - reference: cradle-of-sins
+                        name: Cradle of Sins
+                        symbol: COS
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x4d9f39f7cb7c7444335077223ceef33dbb58096f'
+                        - platform: binance-smart-chain
+                          contract: '0x4d9f39f7cb7c7444335077223ceef33dbb58096f'
+                      - reference: crafting-finance
+                        name: Crafting Finance
+                        symbol: CRF
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x508df5aa4746be37b5b6a69684dfd8bdc322219d'
+                      - reference: craft-network
+                        name: Craft network
+                        symbol: CFT
+                        blockchains:
+                        - platform: icon
+                          contract: cx2e6d0fc0eca04965d06038c8406093337f085fcf
+                      - reference: cramer-coin
+                        name: Cramer Coin
+                        symbol: CRAMER
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x64df3aab3b21cc275bb76c4a581cf8b726478ee0'
+                        - platform: ethereum
+                          contract: '0x64df3aab3b21cc275bb76c4a581cf8b726478ee0'
+                      - reference: crane-miners
+                        name: TheCraneMiners
+                        symbol: CRANE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x8c85a0e86f37ca231463ead62a40350d7bf7cef0'
+                        - platform: binance-smart-chain
+                          contract: '0x8c85a0e86f37ca231463ead62a40350d7bf7cef0'
+                      - reference: cranx-chain
+                        name: GranX Chain
+                        symbol: GRANX
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xbd668ec47e10d3bf23b1d68139e545162a0dfcfa'
+                      - reference: cratos
+                        name: Cratos
+                        symbol: CRTS
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x678e840c640f619e17848045d23072844224dd37'
+                        - platform: binance-smart-chain
+                          contract: '0x678e840c640f619e17848045d23072844224dd37'
+                      - reference: crave
+                        name: Crave
+                        symbol: CRAVE
+                        blockchains: []
+                      - reference: crazy-bunny
+                        name: Crazy Bunny
+                        symbol: CRAZYBUNNY
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x48ed9372169ef0bf2b901bbe45e52b6a6b8f1ecc'
+                      - reference: crazy-bunny-equity-token
+                        name: Crazy Bunny Equity Token
+                        symbol: CBUNNY
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xaec23008b1098e39c0f8de90bf7431d185efe8b3'
+                      - reference: crazy-internet-coin
+                        name: Crazy Internet Coin
+                        symbol: CIC
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xad640689e6950b7453729a4686edb3fdfd754616'
+                      - reference: crazyminer
+                        name: CrazyMiner
+                        symbol: PWR
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xd52efe1039d706722b3d696e74ad4095dc3d3860'
+                      - reference: crazy-rich-coin
+                        name: Crazy Rich Coin
+                        symbol: CRC
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xc23fa49b581fff9a3ea7e49d0504b06d07c6ff2a'
+                      - reference: crazysharo
+                        name: CrazySharo
+                        symbol: SHARO
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x7f3daf301c629bfa243cbba6654370d929379657'
+                      - reference: crazy-tiger
+                        name: Crazy Tiger
+                        symbol: CRAZYTIGER
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xedd52d44de950ccc3b2e6abdf0da8e99bb0ec480'
+                      - reference: crazytime
+                        name: CrazyTime
+                        symbol: CRAZYTIME
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x94241428e0e36df628e0c2485bc0e158a5da3362'
+                      - reference: crazy-treasure-token
+                        name: Crazy Treasure Token
+                        symbol: CTT
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xf56783b3a4fa5f09efca962bd4bab1f5fadd9ab9'
+                      - reference: crb-coin
+                        name: CRB Coin
+                        symbol: CRB
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x518afa06aeca8dd0946b89a565e51f5a91d81176'
+                        - platform: ethereum
+                          contract: '0x2fd8bc03d9e827f77fac20b5130ee98b7f80149d'
+                      - reference: crd-network
+                        name: CRD Network
+                        symbol: CRD
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xcaaa93712bdac37f736c323c93d4d5fdefcc31cc'
+                      - reference: crdt
+                        name: CRDT
+                        symbol: CRDT
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xdaab5e695bb0e8ce8384ee56ba38fa8290618e52'
+                      - reference: cre8r-dao
+                        name: CRE8R DAO
+                        symbol: CRE8R
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xaa61d5dec73971cd4a026ef2820bb87b4a4ed8d6'
+                        - platform: fantom
+                          contract: '0x2ad402655243203fcfa7dcb62f8a08cc2ba88ae0'
+                      - reference: cream
+                        name: Creamcoin
+                        symbol: CRM
+                        blockchains: []
+                      - reference: cream-2
+                        name: Cream
+                        symbol: CREAM
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x2ba592f78db6436527729929aaf6c908497cb200'
+                        - platform: sora
+                          contract: '0x00521ad5caeadc2e3e04be4d4ebb0b7c8c9b71ba657c2362a3953490ebc81410'
+                        - platform: arbitrum-one
+                          contract: '0xf4d48ce3ee1ac3651998971541badbb9a14d7234'
+                        - platform: fantom
+                          contract: '0x657a1861c15a3ded9af0b6799a195a249ebdcbc6'
+                        - platform: energi
+                          contract: '0x1cca61099dcebe517f8cac58f27218e7aff2d3bf'
+                        - platform: solana
+                          contract: 9iwfhhe7bjkno4eb1wx3p4uyjjen9roglt4bvmdzzoin
+                        - platform: solana
+                          contract: 5fu5uugbjpuvdbveb3a1jtnirl8rxtiyesmwvkjtunqv
+                        - platform: near-protocol
+                          contract: 2ba592f78db6436527729929aaf6c908497cb200.factory.bridge.near
+                      - reference: creama
+                        name: Creama
+                        symbol: CREAMA
+                        blockchains:
+                        - platform: avalanche
+                          contract: '0x3947146f331b9ef6448064c6311cdd24d9467a1a'
+                      - reference: cream-eth2
+                        name: Cream ETH 2
+                        symbol: CRETH2
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xcbc1065255cbc3ab41a6868c22d1f1c573ab89fd'
+                        - platform: ethereum
+                          contract: '0x49d72e3973900a195a155a46441f0c08179fdb64'
+                      - reference: creamlands
+                        name: Creamlands
+                        symbol: CREAM
+                        blockchains:
+                        - platform: hedera-hashgraph
+                          contract: 0.0.926385
+                      - reference: creampye
+                        name: Creampye [OLD]
+                        symbol: PYE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xaad87f47cdea777faf87e7602e91e3a6afbe4d57'
+                      - reference: cream-shares
+                        name: IceCream Shares
+                        symbol: CSHARE
+                        blockchains:
+                        - platform: avalanche
+                          contract: '0x155f794b56353533e0afbf76e1b1fc57dfad5bd7'
+                        - platform: avalanche
+                          contract: '0x155f794b56353533e0afbf76e1b1fc57dfad5bd7'
+                      - reference: cream-wormhole
+                        name: Cream (Wormhole)
+                        symbol: CREAM
+                        blockchains:
+                        - platform: solana
+                          contract: hihxl2im6l6p1oqoseiixdj3phpynxvskh9a2ddqlvdh
+                      - reference: creamy
+                        name: Creamy
+                        symbol: CREAMY
+                        blockchains:
+                        - platform: solana
+                          contract: creampddimxxj2ztcwp5wmetba4nyakcrtbeqtsktqhe
+                      - reference: create
+                        name: Create
+                        symbol: CT
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xa85c461c66038ffc8433e2a961339b7f36656e16'
+                        - platform: binance-smart-chain
+                          contract: '0xa85c461c66038ffc8433e2a961339b7f36656e16'
+                      - reference: creaticles
+                        name: Creaticles
+                        symbol: CRE8
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xc36b4311b21fc0c2ead46f1ea6ce97c9c4d98d3d'
+                      - reference: creativecoin
+                        name: CREA
+                        symbol: CREA
+                        blockchains: []
+                      - reference: creator-platform
+                        name: Creator Platform
+                        symbol: CTR
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x923b83c26b3809d960ff80332ed00aa46d7ed375'
+                        - platform: binance-smart-chain
+                          contract: '0xd6cce248263ea1e2b8cb765178c944fc16ed0727'
+                      - reference: creator-protocol
+                        name: Creator Protocol
+                        symbol: CRE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xc2c14affaddee38d7375c400d144251a87d2c34a'
+                      - reference: creature_hunters
+                        name: Creature Hunters
+                        symbol: CHTS
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x1cdb9b4465f4e65b93d0ad802122c7c9279975c9'
+                      - reference: creda
+                        name: CreDA
+                        symbol: CREDA
+                        blockchains:
+                        - platform: arbitrum-one
+                          contract: '0xc136e6b376a9946b156db1ed3a34b08afdaed76d'
+                      - reference: cred-coin-pay
+                        name: CRED COIN PAY
+                        symbol: CRED
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xfc76ba9157ee5d079de8c1e969ee54096aaa6c9c'
+                      - reference: credefi
+                        name: Credefi
+                        symbol: CREDI
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xae6e307c3fe9e922e5674dbd7f830ed49c014c6b'
+                        - platform: binance-smart-chain
+                          contract: '0x2235e79086dd23135119366da45851c741874e5b'
+                      - reference: credefi-wormhole
+                        name: Credefi (Wormhole)
+                        symbol: CREDI
+                        blockchains:
+                        - platform: terra
+                          contract: terra18xyl0ees6ueyhkhn0mjdtrm82e393ult2dazl3
+                      - reference: credi--1
+                        name: CREDI
+                        symbol: CREDI
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xae6e307c3fe9e922e5674dbd7f830ed49c014c6b'
+                        - platform: ethereum
+                          contract: '0xae6e307c3fe9e922e5674dbd7f830ed49c014c6b'
+                      - reference: credit
+                        name: TerraCredit
+                        symbol: CREDIT
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x9d440a8dc5ae7dd4f6b406b78340856838c3e5da'
+                        - platform: binance-smart-chain
+                          contract: '0xc9308bcf5fa46d728422753d2d5afbc5cdb66b03'
+                      - reference: credit-2
+                        name: PROXI DeFi
+                        symbol: CREDIT
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xc4cb5793bd58bad06bf51fb37717b86b02cbe8a4'
+                      - reference: creditcoin-2
+                        name: Creditcoin
+                        symbol: CTC
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xa3ee21c306a700e682abcdfe9baa6a08f3820419'
+                      - reference: credit-printer
+                        name: Credit Printer
+                        symbol: CREDITP
+                        blockchains:
+                        - platform: fantom
+                          contract: '0x5e5aabc95380b38c014fdc5e602c5183177fcca4'
+                      - reference: credits
+                        name: CREDITS
+                        symbol: CS
+                        blockchains: []
+                      - reference: credit-suisse-inu
+                        name: Credit Suisse Inu
+                        symbol: CSI
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x74bff2018687b8a1ff7132e13cd4fdc763725bcf'
+                        - platform: ethereum
+                          contract: '0x74bff2018687b8a1ff7132e13cd4fdc763725bcf'
+                      - reference: creditum
+                        name: Creditum
+                        symbol: CREDIT
+                        blockchains:
+                        - platform: fantom
+                          contract: '0x77128dfdd0ac859b33f44050c6fa272f34872b5e'
+                      - reference: credmark
+                        name: Credmark
+                        symbol: CMK
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x68cfb82eacb9f198d508b514d898a403c449533e'
+                      - reference: creds
+                        name: Creds
+                        symbol: CREDS
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xc13f4f0f865bac08f62654b57e38669ebc4747a3'
+                      - reference: crema-finance
+                        name: Crema Finance
+                        symbol: CRM
+                        blockchains: []
+                      - reference: cremation-coin
+                        name: Cremation Coin
+                        symbol: CREMAT
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xb8501a9a9aaae239a2490f44e00b284baa0b131a'
+                        - platform: ethereum
+                          contract: '0x8b9f7e9586633ca4abffb1f746da8daed7849cb2'
+                      - reference: creo-engine
+                        name: Creo Engine
+                        symbol: CREO
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x9521728bf66a867bc65a93ece4a543d817871eb7'
+                      - reference: crescent-network
+                        name: Crescent Network
+                        symbol: CRE
+                        blockchains:
+                        - platform: cosmos
+                          contract: ucre
+                      - reference: crescentswap-moonlight
+                        name: Crescentswap Moonlight
+                        symbol: MNLT
+                        blockchains:
+                        - platform: arbitrum-one
+                          contract: '0x0a1694716de67c98f61942b2cab7df7fe659c87a'
+                      - reference: crespo
+                        name: Crespo
+                        symbol: CSO
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x5ecb025e51415dba9fd272c551076357cf4069f5'
+                      - reference: creta-world
+                        name: Creta World
+                        symbol: CRETA
+                        blockchains:
+                        - platform: polygon-pos
+                          contract: '0x202655af326de310491cb54f120e02ee0da92b55'
+                      - reference: creth2--1
+                        name: Cream ETH Token
+                        symbol: CRETH2
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x49d72e3973900a195a155a46441f0c08179fdb64'
+                        - platform: ethereum
+                          contract: '0x49d72e3973900a195a155a46441f0c08179fdb64'
+                      - reference: crevacoin
+                        name: Crevacoin
+                        symbol: CREVA
+                        blockchains: []
+                      - reference: crex-token
+                        name: Crex Token
+                        symbol: CREX
+                        blockchains: []
+                    meta:
+                      current_page: 42
+                      total_entries: 20048
+                      total_pages: 201
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_currencies_invalid_token:
+                  value:
+                    api_version: '1.0'
+                    data: []
+                    errors:
+                      code: ZENAGG-AUTHGET-AA4
+                      message: Invalid OAuth token
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/aggregators/api/v1/currencies?page=1'
+    servers:
+    - url: https://api.zenledger.io
+      description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io in every saved example response.
+  /compliance/api/v3/currencies:
+    get:
+      operationId: getCurrencies
+      summary: GET currencies
+      description: '### GET **/currencies**
+
+
+        **Returns** a paginated list of supported cryptocurrencies by making a GET request to the path `/compliance/api/v3/currencies` on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        > *Results paginated with 100 elements per page
+
+
+        ### Request
+
+
+        ##### QUERY PARAMETERS
+
+
+        > **page** `number` Specific page requested for the paginated results
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Supported Currencies
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: number
+        description: Specific page requested for the paginated results
+        example: '42'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_currencies_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      currencies:
+                      - reference: council-of-apes
+                        name: Council of Apes
+                        symbol: COAPE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x55006895f398d7713d69081144b19d8c9022b582'
+                      - reference: counosx
+                        name: CounosX
+                        symbol: CCXX
+                        blockchains: []
+                      - reference: counterparty
+                        name: Counterparty
+                        symbol: XCP
+                        blockchains: []
+                      - reference: county-metaverse
+                        name: County Metaverse
+                        symbol: COUNTY
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x1967cabd079fcdd363a044f1444bf00a94558a2f'
+                      - reference: couponbay
+                        name: CouponBay
+                        symbol: CUP
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x3209d14ff61766359e64aceff91877cec2ad968e'
+                      - reference: cousin-doge
+                        name: Cousin Doge
+                        symbol: COUSINDOGE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xda8df4506de8e110cc216937945963bab380a615'
+                      - reference: coution-live
+                        name: COUTION LIVE
+                        symbol: CTL
+                        blockchains:
+                        - platform: tron
+                          contract: tdaogsywy3wwuyktk8z1fxsa8nxnmdfk9a
+                      - reference: covalent
+                        name: Covalent
+                        symbol: CQT
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xd417144312dbf50465b1c641d016962017ef6240'
+                      - reference: covalent-cova
+                        name: Cova Unity
+                        symbol: COVA
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xb37a769b37224449d92aac57de379e1267cd3b00'
+                      - reference: covenant-child
+                        name: Covenant
+                        symbol: COVN
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x19ac2659599fd01c853de846919544276ad26f50'
+                      - reference: covercompared
+                        name: CoverCompared
+                        symbol: CVR
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x3c03b4ec9477809072ff9cc9292c9b25d4a8e6c6'
+                      - reference: cover-protocol
+                        name: Cover Protocol
+                        symbol: COVER
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x4688a8b1f292fdab17e9a90c8bc379dc1dbd8713'
+                        - platform: fantom
+                          contract: '0xb01e8419d842beebf1b70a7b5f7142abbaf7159d'
+                      - reference: covesting
+                        name: Covesting
+                        symbol: COV
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xada86b1b313d1d5267e3fc0bb303f0a2b66d0ea7'
+                        - platform: binance-smart-chain
+                          contract: '0x0f237db17aa4e6de062e6f052bd9c805789b01c3'
+                      - reference: covey
+                        name: Covey
+                        symbol: $CVY
+                        blockchains: []
+                      - reference: covicoin
+                        name: CoviCoin
+                        symbol: CVC
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xc6f0a9b75fa529dcc0f90459e30684e7ed9a9ea6'
+                      - reference: covid-19-recovery-token
+                        name: COVID-19 Recovery Token
+                        symbol: COVDR
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xdb8afb917a2d4848ee5b3bed7f6c0bab0555427d'
+                      - reference: covid-doge
+                        name: Covid Doge
+                        symbol: COVID DOGE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xae1f20ca661ec552c0664a73ad5e5963824f92e1'
+                      - reference: covid-slice
+                        name: Covid Slice
+                        symbol: COVID19
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x8d5eb659959c68bd78a4f6f2ecccbbcb8c2cfb79'
+                      - reference: covid-token
+                        name: Covid Token
+                        symbol: COVIDTOKEN
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x23c28e9346c82228fb2b62b20b6fe5d75989f5b2'
+                      - reference: cow--4
+                        name: COWRY
+                        symbol: COW
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xb149dd64ea4b173e5fc9ecf77bd380418695185d'
+                      - reference: cowboy-snake
+                        name: Cowboy Snake
+                        symbol: COWS
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x33b48893b8f119fb45f431b36f830a9584804201'
+                      - reference: cow-inu
+                        name: Cow Inu
+                        symbol: CI
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xceafc372af7fddccbfd28f10329710e58bb2f970'
+                      - reference: cow-protocol
+                        name: CoW Protocol
+                        symbol: COW
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xdef1ca1fb7fbcdc777520aa7f396b4e015f497ab'
+                        - platform: xdai
+                          contract: '0x177127622c4a00f3d409b75571e12cb3c8973d3c'
+                      - reference: cowrie
+                        name: Cowrie
+                        symbol: COWRIE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xde51d1599339809cafb8194189ce67d5bdca9e9e'
+                      - reference: cowry
+                        name: COWRY
+                        symbol: COW
+                        blockchains: []
+                      - reference: coxswap
+                        name: Coxswap
+                        symbol: COX
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x17fea92ca2e7570d07b63ecd6b698e01386555a4'
+                      - reference: coxswap-2
+                        name: Coxswap
+                        symbol: COX
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x2266cfa689da2186f307f2dd8beafa12a4ad9709'
+                      - reference: cpc--4
+                        name: CryptoPerformance Coin
+                        symbol: CPC
+                        blockchains: []
+                      - reference: cpchain
+                        name: CPChain
+                        symbol: CPC
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xfae4ee59cdd86e3be9e8b90b53aa866327d7c090'
+                        - platform: binance-smart-chain
+                          contract: cpc-fed
+                      - reference: cplay-network
+                        name: CPLAY Network
+                        symbol: CPLAY
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x740e08e52542df19d7f2f9cbf3924ac0bfe53071'
+                      - reference: cpos-cloud-payment
+                        name: CPOS Cloud Payment
+                        symbol: CPOS
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xc0dc5adfae1dada9111f376810d772cabd9b6f13'
+                      - reference: cprop
+                        name: CPROP
+                        symbol: CPROP
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x0fb843d37aa2a99db8d81af9fe2f0a6485c7c002'
+                      - reference: cpuchain
+                        name: CPUchain
+                        symbol: CPU
+                        blockchains: []
+                      - reference: cpucoin
+                        name: CPUcoin
+                        symbol: CPU
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x6d52dfefb16bb9cdc78bfca09061e44574886626'
+                      - reference: crabada
+                        name: Crabada
+                        symbol: CRA
+                        blockchains:
+                        - platform: avalanche
+                          contract: '0xa32608e873f9ddef944b24798db69d80bbb4d1ed'
+                      - reference: crabada-amulet
+                        name: Crabada Amulet
+                        symbol: CRAM
+                        blockchains:
+                        - platform: avalanche
+                          contract: '0xd2cd7a59aa8f8fdc68d01b1e8a95747730b927d3'
+                      - reference: crab-market
+                        name: Crab Market
+                        symbol: CRAB
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x24bcec1afda63e622a97f17cff9a61ffcfd9b735'
+                      - reference: crab-rave-token
+                        name: Crab Rave Token
+                        symbol: CRABS
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x2c9715d6d95443c3bdf29e473ad168ff6fa6627d'
+                      - reference: crabstrike
+                        name: CrabStrike
+                        symbol: CST
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x3993453b9587e06a0e925727fd844d2d2babd39f'
+                      - reference: cracle
+                        name: Cracle
+                        symbol: CRA
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x0fc0b3f6f5c769c138088266ac21760ab33f76ca'
+                      - reference: cradle-of-sins
+                        name: Cradle of Sins
+                        symbol: COS
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x4d9f39f7cb7c7444335077223ceef33dbb58096f'
+                        - platform: binance-smart-chain
+                          contract: '0x4d9f39f7cb7c7444335077223ceef33dbb58096f'
+                      - reference: crafting-finance
+                        name: Crafting Finance
+                        symbol: CRF
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x508df5aa4746be37b5b6a69684dfd8bdc322219d'
+                      - reference: craft-network
+                        name: Craft network
+                        symbol: CFT
+                        blockchains:
+                        - platform: icon
+                          contract: cx2e6d0fc0eca04965d06038c8406093337f085fcf
+                      - reference: cramer-coin
+                        name: Cramer Coin
+                        symbol: CRAMER
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x64df3aab3b21cc275bb76c4a581cf8b726478ee0'
+                        - platform: ethereum
+                          contract: '0x64df3aab3b21cc275bb76c4a581cf8b726478ee0'
+                      - reference: crane-miners
+                        name: TheCraneMiners
+                        symbol: CRANE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x8c85a0e86f37ca231463ead62a40350d7bf7cef0'
+                        - platform: binance-smart-chain
+                          contract: '0x8c85a0e86f37ca231463ead62a40350d7bf7cef0'
+                      - reference: cranx-chain
+                        name: GranX Chain
+                        symbol: GRANX
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xbd668ec47e10d3bf23b1d68139e545162a0dfcfa'
+                      - reference: cratos
+                        name: Cratos
+                        symbol: CRTS
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x678e840c640f619e17848045d23072844224dd37'
+                        - platform: binance-smart-chain
+                          contract: '0x678e840c640f619e17848045d23072844224dd37'
+                      - reference: crave
+                        name: Crave
+                        symbol: CRAVE
+                        blockchains: []
+                      - reference: crazy-bunny
+                        name: Crazy Bunny
+                        symbol: CRAZYBUNNY
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x48ed9372169ef0bf2b901bbe45e52b6a6b8f1ecc'
+                      - reference: crazy-bunny-equity-token
+                        name: Crazy Bunny Equity Token
+                        symbol: CBUNNY
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xaec23008b1098e39c0f8de90bf7431d185efe8b3'
+                      - reference: crazy-internet-coin
+                        name: Crazy Internet Coin
+                        symbol: CIC
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xad640689e6950b7453729a4686edb3fdfd754616'
+                      - reference: crazyminer
+                        name: CrazyMiner
+                        symbol: PWR
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xd52efe1039d706722b3d696e74ad4095dc3d3860'
+                      - reference: crazy-rich-coin
+                        name: Crazy Rich Coin
+                        symbol: CRC
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xc23fa49b581fff9a3ea7e49d0504b06d07c6ff2a'
+                      - reference: crazysharo
+                        name: CrazySharo
+                        symbol: SHARO
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x7f3daf301c629bfa243cbba6654370d929379657'
+                      - reference: crazy-tiger
+                        name: Crazy Tiger
+                        symbol: CRAZYTIGER
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xedd52d44de950ccc3b2e6abdf0da8e99bb0ec480'
+                      - reference: crazytime
+                        name: CrazyTime
+                        symbol: CRAZYTIME
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x94241428e0e36df628e0c2485bc0e158a5da3362'
+                      - reference: crazy-treasure-token
+                        name: Crazy Treasure Token
+                        symbol: CTT
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xf56783b3a4fa5f09efca962bd4bab1f5fadd9ab9'
+                      - reference: crb-coin
+                        name: CRB Coin
+                        symbol: CRB
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x518afa06aeca8dd0946b89a565e51f5a91d81176'
+                        - platform: ethereum
+                          contract: '0x2fd8bc03d9e827f77fac20b5130ee98b7f80149d'
+                      - reference: crd-network
+                        name: CRD Network
+                        symbol: CRD
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xcaaa93712bdac37f736c323c93d4d5fdefcc31cc'
+                      - reference: crdt
+                        name: CRDT
+                        symbol: CRDT
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xdaab5e695bb0e8ce8384ee56ba38fa8290618e52'
+                      - reference: cre8r-dao
+                        name: CRE8R DAO
+                        symbol: CRE8R
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xaa61d5dec73971cd4a026ef2820bb87b4a4ed8d6'
+                        - platform: fantom
+                          contract: '0x2ad402655243203fcfa7dcb62f8a08cc2ba88ae0'
+                      - reference: cream
+                        name: Creamcoin
+                        symbol: CRM
+                        blockchains: []
+                      - reference: cream-2
+                        name: Cream
+                        symbol: CREAM
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x2ba592f78db6436527729929aaf6c908497cb200'
+                        - platform: sora
+                          contract: '0x00521ad5caeadc2e3e04be4d4ebb0b7c8c9b71ba657c2362a3953490ebc81410'
+                        - platform: arbitrum-one
+                          contract: '0xf4d48ce3ee1ac3651998971541badbb9a14d7234'
+                        - platform: fantom
+                          contract: '0x657a1861c15a3ded9af0b6799a195a249ebdcbc6'
+                        - platform: energi
+                          contract: '0x1cca61099dcebe517f8cac58f27218e7aff2d3bf'
+                        - platform: solana
+                          contract: 9iwfhhe7bjkno4eb1wx3p4uyjjen9roglt4bvmdzzoin
+                        - platform: solana
+                          contract: 5fu5uugbjpuvdbveb3a1jtnirl8rxtiyesmwvkjtunqv
+                        - platform: near-protocol
+                          contract: 2ba592f78db6436527729929aaf6c908497cb200.factory.bridge.near
+                      - reference: creama
+                        name: Creama
+                        symbol: CREAMA
+                        blockchains:
+                        - platform: avalanche
+                          contract: '0x3947146f331b9ef6448064c6311cdd24d9467a1a'
+                      - reference: cream-eth2
+                        name: Cream ETH 2
+                        symbol: CRETH2
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xcbc1065255cbc3ab41a6868c22d1f1c573ab89fd'
+                        - platform: ethereum
+                          contract: '0x49d72e3973900a195a155a46441f0c08179fdb64'
+                      - reference: creamlands
+                        name: Creamlands
+                        symbol: CREAM
+                        blockchains:
+                        - platform: hedera-hashgraph
+                          contract: 0.0.926385
+                      - reference: creampye
+                        name: Creampye [OLD]
+                        symbol: PYE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xaad87f47cdea777faf87e7602e91e3a6afbe4d57'
+                      - reference: cream-shares
+                        name: IceCream Shares
+                        symbol: CSHARE
+                        blockchains:
+                        - platform: avalanche
+                          contract: '0x155f794b56353533e0afbf76e1b1fc57dfad5bd7'
+                        - platform: avalanche
+                          contract: '0x155f794b56353533e0afbf76e1b1fc57dfad5bd7'
+                      - reference: cream-wormhole
+                        name: Cream (Wormhole)
+                        symbol: CREAM
+                        blockchains:
+                        - platform: solana
+                          contract: hihxl2im6l6p1oqoseiixdj3phpynxvskh9a2ddqlvdh
+                      - reference: creamy
+                        name: Creamy
+                        symbol: CREAMY
+                        blockchains:
+                        - platform: solana
+                          contract: creampddimxxj2ztcwp5wmetba4nyakcrtbeqtsktqhe
+                      - reference: create
+                        name: Create
+                        symbol: CT
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xa85c461c66038ffc8433e2a961339b7f36656e16'
+                        - platform: binance-smart-chain
+                          contract: '0xa85c461c66038ffc8433e2a961339b7f36656e16'
+                      - reference: creaticles
+                        name: Creaticles
+                        symbol: CRE8
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xc36b4311b21fc0c2ead46f1ea6ce97c9c4d98d3d'
+                      - reference: creativecoin
+                        name: CREA
+                        symbol: CREA
+                        blockchains: []
+                      - reference: creator-platform
+                        name: Creator Platform
+                        symbol: CTR
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x923b83c26b3809d960ff80332ed00aa46d7ed375'
+                        - platform: binance-smart-chain
+                          contract: '0xd6cce248263ea1e2b8cb765178c944fc16ed0727'
+                      - reference: creator-protocol
+                        name: Creator Protocol
+                        symbol: CRE
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xc2c14affaddee38d7375c400d144251a87d2c34a'
+                      - reference: creature_hunters
+                        name: Creature Hunters
+                        symbol: CHTS
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x1cdb9b4465f4e65b93d0ad802122c7c9279975c9'
+                      - reference: creda
+                        name: CreDA
+                        symbol: CREDA
+                        blockchains:
+                        - platform: arbitrum-one
+                          contract: '0xc136e6b376a9946b156db1ed3a34b08afdaed76d'
+                      - reference: cred-coin-pay
+                        name: CRED COIN PAY
+                        symbol: CRED
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xfc76ba9157ee5d079de8c1e969ee54096aaa6c9c'
+                      - reference: credefi
+                        name: Credefi
+                        symbol: CREDI
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xae6e307c3fe9e922e5674dbd7f830ed49c014c6b'
+                        - platform: binance-smart-chain
+                          contract: '0x2235e79086dd23135119366da45851c741874e5b'
+                      - reference: credefi-wormhole
+                        name: Credefi (Wormhole)
+                        symbol: CREDI
+                        blockchains:
+                        - platform: terra
+                          contract: terra18xyl0ees6ueyhkhn0mjdtrm82e393ult2dazl3
+                      - reference: credi--1
+                        name: CREDI
+                        symbol: CREDI
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xae6e307c3fe9e922e5674dbd7f830ed49c014c6b'
+                        - platform: ethereum
+                          contract: '0xae6e307c3fe9e922e5674dbd7f830ed49c014c6b'
+                      - reference: credit
+                        name: TerraCredit
+                        symbol: CREDIT
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x9d440a8dc5ae7dd4f6b406b78340856838c3e5da'
+                        - platform: binance-smart-chain
+                          contract: '0xc9308bcf5fa46d728422753d2d5afbc5cdb66b03'
+                      - reference: credit-2
+                        name: PROXI DeFi
+                        symbol: CREDIT
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xc4cb5793bd58bad06bf51fb37717b86b02cbe8a4'
+                      - reference: creditcoin-2
+                        name: Creditcoin
+                        symbol: CTC
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xa3ee21c306a700e682abcdfe9baa6a08f3820419'
+                      - reference: credit-printer
+                        name: Credit Printer
+                        symbol: CREDITP
+                        blockchains:
+                        - platform: fantom
+                          contract: '0x5e5aabc95380b38c014fdc5e602c5183177fcca4'
+                      - reference: credits
+                        name: CREDITS
+                        symbol: CS
+                        blockchains: []
+                      - reference: credit-suisse-inu
+                        name: Credit Suisse Inu
+                        symbol: CSI
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x74bff2018687b8a1ff7132e13cd4fdc763725bcf'
+                        - platform: ethereum
+                          contract: '0x74bff2018687b8a1ff7132e13cd4fdc763725bcf'
+                      - reference: creditum
+                        name: Creditum
+                        symbol: CREDIT
+                        blockchains:
+                        - platform: fantom
+                          contract: '0x77128dfdd0ac859b33f44050c6fa272f34872b5e'
+                      - reference: credmark
+                        name: Credmark
+                        symbol: CMK
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x68cfb82eacb9f198d508b514d898a403c449533e'
+                      - reference: creds
+                        name: Creds
+                        symbol: CREDS
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0xc13f4f0f865bac08f62654b57e38669ebc4747a3'
+                      - reference: crema-finance
+                        name: Crema Finance
+                        symbol: CRM
+                        blockchains: []
+                      - reference: cremation-coin
+                        name: Cremation Coin
+                        symbol: CREMAT
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0xb8501a9a9aaae239a2490f44e00b284baa0b131a'
+                        - platform: ethereum
+                          contract: '0x8b9f7e9586633ca4abffb1f746da8daed7849cb2'
+                      - reference: creo-engine
+                        name: Creo Engine
+                        symbol: CREO
+                        blockchains:
+                        - platform: binance-smart-chain
+                          contract: '0x9521728bf66a867bc65a93ece4a543d817871eb7'
+                      - reference: crescent-network
+                        name: Crescent Network
+                        symbol: CRE
+                        blockchains:
+                        - platform: cosmos
+                          contract: ucre
+                      - reference: crescentswap-moonlight
+                        name: Crescentswap Moonlight
+                        symbol: MNLT
+                        blockchains:
+                        - platform: arbitrum-one
+                          contract: '0x0a1694716de67c98f61942b2cab7df7fe659c87a'
+                      - reference: crespo
+                        name: Crespo
+                        symbol: CSO
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x5ecb025e51415dba9fd272c551076357cf4069f5'
+                      - reference: creta-world
+                        name: Creta World
+                        symbol: CRETA
+                        blockchains:
+                        - platform: polygon-pos
+                          contract: '0x202655af326de310491cb54f120e02ee0da92b55'
+                      - reference: creth2--1
+                        name: Cream ETH Token
+                        symbol: CRETH2
+                        blockchains:
+                        - platform: ethereum
+                          contract: '0x49d72e3973900a195a155a46441f0c08179fdb64'
+                        - platform: ethereum
+                          contract: '0x49d72e3973900a195a155a46441f0c08179fdb64'
+                      - reference: crevacoin
+                        name: Crevacoin
+                        symbol: CREVA
+                        blockchains: []
+                      - reference: crex-token
+                        name: Crex Token
+                        symbol: CREX
+                        blockchains: []
+                    meta:
+                      current_page: 42
+                      total_entries: 20048
+                      total_pages: 201
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_currencies_invalid_token:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-AUTHGET-AA4
+                      message: The access token is invalid
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/currencies?page=42'
+    servers:
+    - url: https://api.zenledger.io
+      description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io in every saved example response.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT bearer token obtained from POST /oauth/token using the OAuth 2.0 client_credentials grant with the client_id and client_secret ZenLedger issues. The token expires after 30 minutes (expires_in 1800) and must be refreshed at the same endpoint.
+x-refined-from:
+- zenledger-aggregator-api-openapi.yml
+- zenledger-compliance-api-openapi.yml

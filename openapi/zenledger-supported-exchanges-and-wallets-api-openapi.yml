@@ -1,0 +1,1342 @@
+openapi: 3.2.0
+info:
+  title: Zenledger Supported Exchanges and Wallets API
+  contact:
+    name: ZenLedger
+    url: https://zenledger.io/contact-us/
+    email: support@zenledger.io
+  termsOfService: https://zenledger.io/legal/
+  x-generated-by: API Evangelist enrichment pipeline (derived from the provider-published Postman collection)
+  x-refined-note:
+  - x-source differs across the merged source definitions and was not carried
+  - x-source-url differs across the merged source definitions and was not carried
+  version: '1.0'
+  description: 'Operations tagged Supported Exchanges and Wallets across 2 of this provider''s published API definitions: zenledger-aggregator-api-openapi.yml, zenledger-compliance-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.zenledger.io
+  description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io in every saved example response.
+tags:
+- name: Supported Exchanges and Wallets
+  description: Supported exchange/wallet source reference data.
+paths:
+  /aggregators/api/v1/sources:
+    get:
+      operationId: getSources
+      summary: GET sources
+      description: '### GET **/sources**
+
+
+        **Returns** a paginated list of supported wallets by making a GET request to the path `/aggregators/api/v1/sources` on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        > *Results paginated with 100 elements per page
+
+
+        ### Request
+
+
+        ##### QUERY PARAMETERS
+
+
+        > **page** `number` Specific page requested for the paginated results
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Supported Exchanges and Wallets
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: number
+        description: Specific page requested for the paginated results
+        example: '1'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_sources_success:
+                  value:
+                    api_version: '1.0'
+                    data:
+                      sources:
+                      - reference: btc-wallet
+                        name: BTC Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: eth-wallet
+                        name: ETH Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: ltc-wallet
+                        name: LTC Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: abra
+                        name: Abra
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: jaxx
+                        name: Jaxx
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: ledger-nano
+                        name: Ledger Nano
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: keep-key
+                        name: Keep Key
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: ledger-blue
+                        name: Ledger Blue
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: bitlox
+                        name: Bitlox
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: bitlox-digital
+                        name: Bitlox Digital
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: exodus
+                        name: Exodus
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: copay
+                        name: Copay
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: mycelium
+                        name: Mycelium
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: my-ether-wallet
+                        name: MyEtherWallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: bit-pay
+                        name: BitPay
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: electrum
+                        name: Electrum
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: airbitz
+                        name: Airbitz
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: brd
+                        name: BRD
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: freewallet
+                        name: Freewallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: infinito-wallet
+                        name: Infinito Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: idex
+                        name: Idex
+                        type: exchange
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: coinomi
+                        name: Coinomi
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: ada-wallet
+                        name: ADA Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: daedalus
+                        name: Daedalus
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: bancor-network
+                        name: Bancor Network
+                        type: exchange
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: binance-dex
+                        name: Binance DEX
+                        type: exchange
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: xtz-wallet
+                        name: XTZ Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: zec-wallet
+                        name: ZEC Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: vet-wallet
+                        name: VET Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: ont-wallet
+                        name: ONT Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: ark-wallet
+                        name: ARK Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: dcr-wallet
+                        name: DCR Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: rdd-wallet
+                        name: RDD Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: atom-wallet
+                        name: ATOM Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: coinswitch
+                        name: Coinswitch
+                        type: exchange
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: trust-wallet
+                        name: Trust Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: metamask
+                        name: Metamask
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: ETH
+                      - reference: mycrypto
+                        name: Mycrypto
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: ETH
+                      - reference: uniswap
+                        name: Uniswap
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: dharma
+                        name: Dharma
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: compound
+                        name: Compound
+                        type: exchange
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: dgb-wallet
+                        name: DGB Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: vtc-wallet
+                        name: VTC Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: waves-wallet
+                        name: WAVES Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: sys-wallet
+                        name: SYS Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: zil-wallet
+                        name: ZIL Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: ZIL
+                      - reference: aion-wallet
+                        name: AION Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: algo-wallet
+                        name: ALGO Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: ALGO
+                      - reference: one-wallet
+                        name: ONE Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: xvg-wallet
+                        name: XVG Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: zerion
+                        name: Zerion
+                        type: exchange
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: aave
+                        name: Aave
+                        type: exchange
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: synthetix
+                        name: Synthetix
+                        type: exchange
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: 1inch-exchange
+                        name: 1inch.exchange
+                        type: exchange
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: balancer
+                        name: Balancer
+                        type: exchange
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: dot-wallet
+                        name: DOT Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: zapper-fi
+                        name: Zapper.fi
+                        type: exchange
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: iris-wallet
+                        name: IRIS Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: kava-wallet
+                        name: KAVA Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: sushiswap
+                        name: Sushiswap
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: coinbase-wallet
+                        name: Coinbase Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: curve
+                        name: Curve
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: paraswap
+                        name: Paraswap
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: ledger-hw
+                        name: Ledger HW
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: binance-chain
+                        name: Binance Chain
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: BSC
+                      - reference: polygon
+                        name: Polygon
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: MATIC
+                      - reference: matic-wallet
+                        name: MATIC Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: bsc-wallet
+                        name: BSC Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: pancake-swap
+                        name: PancakeSwap
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: BSC
+                      - reference: avalanche
+                        name: Avalanche
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: AVAX
+                      - reference: avax-wallet
+                        name: AVAX Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: fantom
+                        name: Fantom
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: FTM
+                      - reference: ftm-wallet
+                        name: FTM Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: FTM
+                      - reference: atomic
+                        name: Atomic
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: game-stop-wallet
+                        name: GameStop Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: bit-keep
+                        name: BitKeep
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: qredo
+                        name: Qredo
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: math-wallet
+                        name: MathWallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: coin98
+                        name: Coin98
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: phantom
+                        name: Phantom
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: SOL
+                      - reference: sol-wallet
+                        name: SOL Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: solana
+                        name: Solana
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: SOL
+                      - reference: torus
+                        name: Torus
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: SOL
+                      - reference: solflare
+                        name: Solflare
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: SOL
+                      - reference: safepal
+                        name: Safepal
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: SOL
+                      - reference: sollet
+                        name: Sollet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: SOL
+                      - reference: token-pocket
+                        name: Token Pocket
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: SOL
+                      - reference: slope
+                        name: Slope
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: SOL
+                      - reference: clover
+                        name: Clover
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: SOL
+                      - reference: glow
+                        name: Glow
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: SOL
+                      - reference: arbitrum
+                        name: Arbitrum
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: ARB
+                      - reference: arb-wallet
+                        name: ARB Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: optimism
+                        name: Optimism
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: OP
+                      - reference: op-wallet
+                        name: OP Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: unisat
+                        name: Unisat
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: btc_od-wallet
+                        name: BTC_OD Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                      - reference: base
+                        name: Base Chain
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: BASE
+                    meta:
+                      current_page: 1
+                      total_entries: 97
+                      total_pages: 1
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_sources_invalid_token:
+                  value:
+                    api_version: '1.0'
+                    data: []
+                    errors:
+                      code: ZENAGG-AUTHGET-AA4
+                      message: Invalid OAuth token
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/aggregators/api/v1/sources?page=1'
+    servers:
+    - url: https://api.zenledger.io
+      description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io in every saved example response.
+  /compliance/api/v3/sources:
+    get:
+      operationId: getSources
+      summary: GET sources
+      description: '### GET **/sources**
+
+
+        **Returns** a paginated list of supported exchanges and wallets by making a GET request to the path `/compliance/api/v3/sources` on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        > *Results paginated with 100 elements per page
+
+
+        ### Request
+
+
+        ##### QUERY PARAMETERS
+
+
+        > **page** `number` Specific page requested for the paginated results
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Supported Exchanges and Wallets
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: number
+        description: Specific page requested for the paginated results
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_sources_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      sources:
+                      - reference: coinbase
+                        name: Coinbase
+                        type: exchange
+                        api: true
+                        csv: false
+                        oauth: true
+                        address: false
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: true
+                        fiat_types_csv: true
+                        api_balances: true
+                        transaction_addresses: true
+                      - reference: bittrex
+                        name: Bittrex
+                        type: exchange
+                        api: false
+                        csv: true
+                        oauth: false
+                        address: false
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: false
+                        transaction_addresses: false
+                      - reference: binance
+                        name: Binance
+                        type: exchange
+                        api: true
+                        csv: true
+                        oauth: false
+                        address: false
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: true
+                        api_balances: false
+                        transaction_addresses: false
+                      - reference: gemini
+                        name: Gemini
+                        type: exchange
+                        api: true
+                        csv: false
+                        oauth: false
+                        address: false
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: true
+                        transaction_addresses: false
+                      - reference: bitstamp
+                        name: Bitstamp
+                        type: exchange
+                        api: true
+                        csv: false
+                        oauth: false
+                        address: false
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: false
+                        transaction_addresses: false
+                      - reference: coinbase-pro
+                        name: Coinbase Pro
+                        type: exchange
+                        api: true
+                        csv: true
+                        oauth: false
+                        address: false
+                        pass_phrase: true
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: true
+                        transaction_addresses: false
+                      - reference: kraken
+                        name: Kraken
+                        type: exchange
+                        api: true
+                        csv: true
+                        oauth: false
+                        address: false
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: true
+                        fiat_types_csv: true
+                        api_balances: true
+                        transaction_addresses: false
+                      - reference: kucoin
+                        name: Kucoin
+                        type: exchange
+                        api: true
+                        csv: true
+                        oauth: false
+                        address: false
+                        pass_phrase: true
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: false
+                        transaction_addresses: false
+                      - reference: bitfinex
+                        name: Bitfinex
+                        type: exchange
+                        api: true
+                        csv: false
+                        oauth: false
+                        address: false
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: false
+                        transaction_addresses: false
+                      - reference: hitbtc
+                        name: Hitbtc
+                        type: exchange
+                        api: true
+                        csv: false
+                        oauth: false
+                        address: false
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: false
+                        transaction_addresses: false
+                      - reference: btc-wallet
+                        name: BTC Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: true
+                        transaction_addresses: true
+                      - reference: eth-wallet
+                        name: ETH Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: true
+                        transaction_addresses: true
+                      - reference: ltc-wallet
+                        name: LTC Wallet
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: false
+                        transaction_addresses: true
+                      - reference: doge-wallet
+                        name: DOGE Wallet
+                        type: wallet
+                        api: false
+                        csv: true
+                        oauth: false
+                        address: false
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: true
+                        transaction_addresses: true
+                      - reference: dash-wallet
+                        name: DASH Wallet
+                        type: wallet
+                        api: false
+                        csv: true
+                        oauth: false
+                        address: false
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: false
+                        transaction_addresses: true
+                      - reference: jaxx
+                        name: Jaxx
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: true
+                        transaction_addresses: true
+                      - reference: trezor
+                        name: Trezor
+                        type: wallet
+                        api: false
+                        csv: true
+                        oauth: false
+                        address: false
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: true
+                        transaction_addresses: true
+                      - reference: ledger-nano
+                        name: Ledger Nano
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: true
+                        transaction_addresses: true
+                      - reference: exodus
+                        name: Exodus
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: true
+                        transaction_addresses: true
+                      - reference: bit-pay
+                        name: BitPay
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: true
+                        transaction_addresses: true
+                      - reference: electrum
+                        name: Electrum
+                        type: wallet
+                        api: false
+                        csv: false
+                        oauth: false
+                        address: true
+                        pass_phrase: false
+                        default_coin: null
+                        fiat_types_api: false
+                        fiat_types_csv: false
+                        api_balances: true
+                        transaction_addresses: true
+                    meta:
+                      current_page: 1
+                      total_entries: 21
+                      total_pages: 1
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_sources_invalid_token:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-AUTHGET-AA4
+                      message: The access token is invalid
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/sources'
+    servers:
+    - url: https://api.zenledger.io
+      description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io in every saved example response.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT bearer token obtained from POST /oauth/token using the OAuth 2.0 client_credentials grant with the client_id and client_secret ZenLedger issues. The token expires after 30 minutes (expires_in 1800) and must be refreshed at the same endpoint.
+x-refined-from:
+- zenledger-aggregator-api-openapi.yml
+- zenledger-compliance-api-openapi.yml

@@ -1,0 +1,251 @@
+openapi: 3.2.0
+info:
+  title: ZenLedger Compliance Suite Imports API
+  version: v3
+  description: REST surface of the ZenLedger Compliance Suite — the digital-asset trade-monitoring and crypto tax-compliance API financial institutions and enterprises use to register companies and users, import exchange accounts and wallets, read normalized transactions and holdings, screen wallet addresses against sanctions lists, and look up the supported currencies, sources and chains.
+  contact:
+    name: ZenLedger
+    url: https://zenledger.io/contact-us/
+    email: support@zenledger.io
+  termsOfService: https://zenledger.io/legal/
+  x-generated-by: API Evangelist enrichment pipeline (derived from the provider-published Postman collection)
+  x-source: postman/zenledger-compliance-v3.postman_collection.json
+  x-source-url: https://docs.zenledger.io/compliance/v3/compliance_api.postman_collection.json
+servers:
+- url: https://api.zenledger.io
+  description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io in every saved example response.
+tags:
+- name: Imports
+  description: Wallet and exchange-account import (signed and encrypted).
+paths:
+  /compliance/api/v3/companies/{company_reference}/users/{user_id}/imports:
+    post:
+      operationId: postWallet
+      summary: POST wallet
+      description: '### POST **/companies/{companyReference}/users/{userId}**
+
+
+        **Returns** the details of a specific user by making a GET request to the path `/companies/{company_reference}/users/{user_id}/imports` on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        ### Request
+
+
+        ##### URi PARAMETERS
+
+
+        > **companyReference** `string` The ID of a specific company
+
+
+        > **userId** `string` The ID of a specific user
+
+
+        ##### BODY
+
+
+        *In JSON format
+
+
+        > **data** `string` encrypted payload including all parameters explained above
+
+        >
+
+        > **iv** A 16-byte random value ensuring unique encryption outputs
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Imports
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific user
+      - name: X-Signature
+        in: header
+        required: false
+        schema:
+          type: string
+        description: 'Header carried in the published Postman example (example value: 90834609d89e2b6398b91b00fdfe5f0c48bef18e8d50eb11c5941ab4825e11fb).'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+            example:
+              data: i1P8lmd8zZhSmRFNAUe9izd/DbGbhd/5L9GpnbWmdywnbrJM9Lb3cTzKsPiGvlcgwvYt2bt2wF5m08LvZ/LqF0+sCfp5r6+FdKT2nbMOk4ICNDKBsGvqHyT8miRQ+IBRWCpKjx5tUHYOQKa275A5GIzpoDt8W7aQRW4ebheM3I6/4cqVrYhrTDL47p0ruMUhlGx0F56DUz+70yjZrI5dFg==
+              iv: 8pOeauVYagEIFQygF3Nctg==
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                POST_wallet_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      import_data:
+                      - user_ud: d2b9816f-1e14-4596-a6af-fde38cf36005
+                        source_id: e02bd7b9-9284-4427-91f8-21a3253343e4
+                        import_status: in-progress
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                GET_currencies_invalid_token:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-USRPST-AA5
+                      message: Wallet already imported for user
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v3/companies/{{company_reference}}/users/{{user_id}}/imports'
+  /compliance/api/v1/companies/{company_reference}/users/{user_id}/imports:
+    post:
+      operationId: postExchange
+      summary: POST exchange
+      description: '### POST **/companies/{companyReference}/users/{userId}**
+
+
+        **Returns** the details of a specific user by making a GET request to the path `/companies/{company_reference}/users/{user_id}/imports` on the base URL.
+
+
+        This endpoint requires authentication via a bearer token, provided in the Authorisation header of the request.
+
+
+        ### Request
+
+
+        ##### URi PARAMETERS
+
+
+        > **companyReference** `string` The ID of a specific company
+
+
+        > **userId** `string` The ID of a specific user
+
+
+        ##### BODY
+
+
+        *In JSON format
+
+
+        > **data** `string` encrypted payload including all parameters explained above
+
+        >
+
+        > **iv** A 16-byte random value ensuring unique encryption outputs
+
+
+        ##### RESPONSE `200`
+
+
+        ##### RESPONSE DATA
+
+
+        > **api_version** `string` Version of the targeted API
+
+        >
+
+        > **data** `string` Wrapper for response data (See response example)'
+      tags:
+      - Imports
+      parameters:
+      - name: company_reference
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific company
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of a specific user
+      - name: X-Signature
+        in: header
+        required: false
+        schema:
+          type: string
+        description: 'Header carried in the published Postman example (example value: 94f79fec19ad48f66a6d67a1519e1a8e5488619d515b169087b530fbe8e14682).'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+            example:
+              data: AerM+vv9M0TfBE6iTfH8uTGTXMZVQlzC1FvDYFjsoSfJPPXIZBkkB5inlh42Iw2r8gW0ttzb/GxH4MJJsNdwOzam16e9m+oc8WLHLh95ucODbzbnkYZgf05YgeoHthZCMuPmNAdoU/hNNQFbpcI+eB7c4dnhp85SnkM8QXj3ZzJyzt4KuGhG9HVd7Rdi7/Pnt7ai60VoxNGC6uIhSlO2RanZVimZIsflqaSZulglji7HW2bpXbLX9fX1OMl7EZrejLR2r2UOKPerp3RUZz3IHQ2+X9qJ+CZ5Ksa/B0M9G3waAzpTbbLYPdRDIj4WqaP7g/una1oUowDOWrYPb9ak0Pf+JLTTK2V1s3eYTq4ZFfw1eTTko4aWsZvM8299K25thR5liPzUckNZ1J1k9YCCro19up5nTA+gcXNSaaIc+w2gEnVIsnHCqlPFs4KhHBOmqsacF50yiGPe3+/eFAyo8spt5zHOW2LnCNIl3eeGm613D9JlgVkRdHgLkK7ZRnuTNAxqAc78gfjDsireDeNzTQ==
+              iv: WegG/Ldk24eQKz1GpmuQ0w==
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                POST_exchange_success:
+                  value:
+                    api_version: '3.0'
+                    data:
+                      import_data:
+                      - user_ud: 83b9c1ee-9df5-48e0-ac46-5ceec42a8a76
+                        source_id: 330a4910-39b6-49c9-81e5-d06c33c454c2
+                        import_status: in-progress
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                POST_exchange_invalid_api_keys:
+                  value:
+                    api_version: '3.0'
+                    data: []
+                    errors:
+                      code: ZENCS-USRPST-AA4
+                      message: Could not import exchange account for user
+      security:
+      - bearerAuth: []
+      x-postman-request: '{{base_url}}/compliance/api/v1/companies/{{company_reference}}/users/{{user_id}}/imports'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT bearer token obtained from POST /oauth/token using the OAuth 2.0 client_credentials grant with the client_id and client_secret ZenLedger issues. The token expires after 30 minutes (expires_in 1800) and must be refreshed at the same endpoint.
