@@ -732,7 +732,7 @@ paths:
       description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io in every saved example response.
   /compliance/api/v3/currencies:
     get:
-      operationId: getCurrencies
+      operationId: getComplianceApiV3Currencies
       summary: GET currencies
       description: '### GET **/currencies**
 
@@ -1438,6 +1438,8 @@ paths:
       security:
       - bearerAuth: []
       x-postman-request: '{{base_url}}/compliance/api/v3/currencies?page=42'
+      x-operation-id-source: normalized
+      x-operation-id-original: getCurrencies
     servers:
     - url: https://api.zenledger.io
       description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io in every saved example response.

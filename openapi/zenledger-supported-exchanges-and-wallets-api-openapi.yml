@@ -977,7 +977,7 @@ paths:
       description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io in every saved example response.
   /compliance/api/v3/sources:
     get:
-      operationId: getSources
+      operationId: getComplianceApiV3Sources
       summary: GET sources
       description: '### GET **/sources**
 
@@ -1327,6 +1327,8 @@ paths:
       security:
       - bearerAuth: []
       x-postman-request: '{{base_url}}/compliance/api/v3/sources'
+      x-operation-id-source: normalized
+      x-operation-id-original: getSources
     servers:
     - url: https://api.zenledger.io
       description: ZenLedger production API host. The published collection resolves {{base_url}} to https://api.zenledger.io in every saved example response.
