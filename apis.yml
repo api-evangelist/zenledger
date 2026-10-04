@@ -370,6 +370,9 @@ maintainers:
   - FN: APIs.json
     email: info@apis.io
 common:
+  - type: CapabilityMap
+    url: capabilities/zenledger-capability-edges.yml
+    name: ZenLedger Business Capability Map
   - type: Overlay
     url: overlays/zenledger-compliance-api-overlay.yaml
   - type: Overlay

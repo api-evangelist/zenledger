@@ -1,0 +1,36 @@
+slug: zenledger
+provider: ZenLedger
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: Taxes
+  spec_file: zenledger-taxes-api-openapi.yml
+  capability_id: BC-220.40
+  capability_id_l1: BC-220
+  capability_name: Tax Reporting & Compliance
+  confidence: 0.7
+  evidence: '''retrieving the resulting tax calculation'' for a portfolio created from exchange and wallet
+    accounts; GET /aggregators/api/v1/taxes'
+  reason: The single operation returns a computed crypto tax result (cost basis / gains), which is tax
+    computation and reporting output; mapped to Tax Management with moderate confidence on the Tax Reporting
+    & Compliance sub-capability since the endpoint is thinly documented.
+- tag: Wallet Screening
+  spec_file: zenledger-wallet-screening-api-openapi.yml
+  capability_id: BC-130.10
+  capability_id_l1: BC-130
+  capability_name: Regulatory Compliance Management
+  confidence: 0.7
+  evidence: '''screen wallet addresses against sanctions lists''; GET Wallet Screening Report'
+  reason: Sanctions screening of wallet addresses is a regulatory compliance control; the Software & Technology
+    frame has no financial-crime capability, so Regulatory Compliance Management is the closest honest
+    fit, held at moderate confidence.
