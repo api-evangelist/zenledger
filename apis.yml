@@ -17,7 +17,7 @@ x-source: harvest:secondary-market
 position: Producing
 specificationVersion: '0.23'
 created: '2026-09-05'
-modified: '2026-09-05'
+modified: '2026-10-06'
 tags:
   - Crypto Tax
   - Digital Assets
@@ -370,6 +370,10 @@ maintainers:
   - FN: APIs.json
     email: info@apis.io
 common:
+  - url: https://zenledger.io/blog/
+    type: Blog
+  - url: https://zenledger.io/feed/
+    type: BlogRSS
   - type: CapabilityMap
     url: capabilities/zenledger-capability-edges.yml
     name: ZenLedger Business Capability Map
