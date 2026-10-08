@@ -100,3 +100,59 @@ enterprise:
   - https://zenledger.io/enterprise/
   - https://zenledger.io/partnerships/
   - https://zenledger.io/government/
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - subscription
+  units: []
+  plans:
+  - name: Silver
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - year
+  - name: Gold
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - year
+  - name: Platinum
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - year
+  - name: Platinum + Unlimited transactions
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - year
+  - name: Premium Support Consultation
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - one-time
+  - name: Tax Pro Prepared Plan - Single Year
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - year
+  - name: Tax Pro Prepared Plan - Multi Year
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - other
