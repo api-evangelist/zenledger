@@ -64,50 +64,147 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-ZenLedger is a crypto tax and digital-asset accounting company. Beyond the consumer tax product at
-app.zenledger.io, it operates two documented B2B REST APIs on `https://api.zenledger.io`:
+ZenLedger is a Seattle-founded crypto tax and digital-asset accounting company whose platform ingests transactions from 400+ exchanges, 100+ DeFi protocols and 10+ NFT marketplaces to calculate cost basis, capital gains and income, and generate US tax forms. Beyond the consumer product it operates two documented B2B REST APIs on api.zenledger.io: the Compliance Suite API (v3), a digital-asset trade-monitoring surface built with COMPLY for financial institutions and enterprise compliance teams that registers companies and users, imports wallets and exchange accounts, returns normalized transactions and holdings, and screens blockchain addresses against sanctions lists; and the Aggregator Suite API (v1), a partner surface that builds an aggregated portfolio from a set of accounts and returns the resulting tax calculation. Both authenticate with OAuth 2.0 client_credentials JWTs and are documented as versioned Postman collections at docs.zenledger.io.
 
-| API | Version | Operations | Reference |
-|---|---|---|---|
-| **Compliance Suite API** — digital-asset trade monitoring, tax compliance and sanctions screening for financial institutions | v3 | 27 | https://docs.zenledger.io/compliance/v3/ |
-| **Aggregator Suite API** — partner surface that aggregates accounts into a portfolio and returns its tax calculation | v1 | 5 | https://docs.zenledger.io/aggregators/rest-api/v1/ |
+**Areas:** Crypto Tax · Digital Assets · Tax Compliance · Blockchain Analytics · RegTech · Accounting · Sanctions Screening · Financial Services · Portfolio Aggregation · Cryptocurrency
 
-Both authenticate with an OAuth 2.0 `client_credentials` JWT from `POST /oauth/token` (30-minute lifetime).
-Credentials are issued by ZenLedger; there is no self-serve API signup.
+## ZenLedger on APIs.io
 
-## Where the contract came from
+Everything profiled for ZenLedger is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/zenledger/](https://apis.io/providers/zenledger/)** — or go straight to one of the APIs or properties below.
 
-**ZenLedger publishes no OpenAPI.** Its machine-readable contract is a versioned **Postman collection** per API,
-served from its own documentation hub. Both collections are saved verbatim in `postman/`, and the OpenAPI documents
-in `openapi/` are mechanically derived from them by API Evangelist — every path, method, header, documented
-parameter, example request and example response is carried over; nothing was invented. Each derived document says
-so in `info.description` and records the original request template per operation in `x-postman-request`.
+### APIs (13)
 
-- `postman/zenledger-compliance-v3.postman_collection.json` — from https://docs.zenledger.io/compliance/v3/compliance_api.postman_collection.json
-- `postman/zenledger-aggregators-v1.postman_collection.json` — from https://docs.zenledger.io/aggregators/rest-api/v1/aggregators_api.postman_collection.json
+- [ZenLedger Authentication API](https://apis.io/apis/zenledger/zenledger-authentication-api/) — OAuth 2.0 client_credentials token issuance.
+- [ZenLedger Companies API](https://apis.io/apis/zenledger/zenledger-companies-api/) — Enterprise tenants registered under the Compliance Suite account.
+- [ZenLedger Holdings API](https://apis.io/apis/zenledger/zenledger-holdings-api/) — Per-source balances and import state for a user or company.
+- [ZenLedger Imports API](https://apis.io/apis/zenledger/zenledger-imports-api/) — Wallet and exchange-account import (signed and encrypted).
+- [ZenLedger Polymarkets API](https://apis.io/apis/zenledger/zenledger-polymarkets-api/) — Polymarket prediction-market positions.
+- [ZenLedger Portfolios API](https://apis.io/apis/zenledger/zenledger-portfolios-api/) — Create an aggregated portfolio from a set of accounts.
+- [ZenLedger Supported Chains API](https://apis.io/apis/zenledger/zenledger-supported-chains-api/) — Supported blockchain reference data.
+- [ZenLedger Supported Currencies API](https://apis.io/apis/zenledger/zenledger-supported-currencies-api/) — Currency reference data.
+- [ZenLedger Supported Exchanges and Wallets API](https://apis.io/apis/zenledger/zenledger-supported-exchanges-and-wallets-api/) — Supported exchange/wallet source reference data.
+- [ZenLedger Taxes API](https://apis.io/apis/zenledger/zenledger-taxes-api/) — Retrieve the tax calculation for an aggregated portfolio.
+- [ZenLedger Transactions API](https://apis.io/apis/zenledger/zenledger-transactions-api/) — Normalized crypto transactions for a user or across a company.
+- [ZenLedger Users API](https://apis.io/apis/zenledger/zenledger-users-api/) — End users tracked under a company.
+- [ZenLedger Wallet Screening API](https://apis.io/apis/zenledger/zenledger-wallet-screening-api/) — Sanctions and risk screening for a blockchain address.
 
-Confirmed live and first-party on 2026-09-05: an anonymous `POST https://api.zenledger.io/oauth/token` returns a
-conformant RFC 6749 `invalid_client` error (HTTP 401), and `GET /compliance/api/v3/chains` returns 401.
+### Published properties
 
-## What this profile found
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-- **A rich, current contract.** 32 operations, 45 documented error codes, a 46-subtype transaction taxonomy with
-  stated tax treatment per subtype, and three webhooks with a documented retry schedule.
-- **No agent surface.** No MCP server, no A2A agent card, no GraphQL, and no `/.well-known/` document on any host.
-- **No client SDK in any language.** npm, PyPI, RubyGems, crates.io, Maven and NuGet all return nothing
-  first-party. The `github.com/zenledger-io` organization holds forks of exchange clients ZenLedger consumes, not
-  clients for its own API.
-- **No rate limits, no idempotency, no sandbox.** Neither reference documents a rate limit, a retry-safety
-  mechanism, or a test mode.
-- **Unsigned webhooks.** No HMAC header, shared secret or IP allowlist is documented on inbound notifications —
-  including the one that carries a sanctions-screening verdict.
-- **A bounty program with no `security.txt`.** ZenLedger runs a real bug bounty at https://zenledger.io/security/
-  but serves no RFC 9116 document on any host, so no scanner or agent can find it.
+#### AsyncAPI (1)
 
-## Artifacts
+Event-driven and webhook contracts.
 
-`openapi/` `postman/` `overlays/` `authentication/` `conventions/` `errors/` `lifecycle/` `conformance/`
-`data-model/` `asyncapi/` `security/` `packages/` `plans/` `rate-limits/` `mcp/` `skills/` `llms/` `well-known/`
+- [Zenledger Compliance Webhooks](https://apis.io/asyncapis/zenledger/zenledger-compliance-webhooks/)
 
-- https://zenledger.io/
-- https://docs.zenledger.io/
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [zenledger-mcp.yml](https://apis.io/servers/zenledger/zenledger-mcp-yml/)
+
+#### Collections (2)
+
+Postman and Open Collection request collections.
+
+- [Aggregator Suite: REST API Reference](https://apis.io/collections/zenledger/postman-zenledger-aggregators-v1/)
+- [V3::Compliance Suite: REST API Reference](https://apis.io/collections/zenledger/postman-zenledger-compliance-v3/)
+
+#### Overlays (2)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Zenledger Aggregator Api Overlay](https://apis.io/overlays/zenledger/zenledger-aggregator-api-overlay/)
+- [Zenledger Compliance Api Overlay](https://apis.io/overlays/zenledger/zenledger-compliance-api-overlay/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Zenledger Authentication](https://apis.io/security/zenledger/zenledger-authentication/)
+- [Zenledger Domain Security](https://apis.io/security/zenledger/zenledger-domain-security/)
+- [Zenledger Trust Center](https://apis.io/security/zenledger/zenledger-trust-center/)
+- [Zenledger Vulnerability Disclosure](https://apis.io/security/zenledger/zenledger-vulnerability-disclosure/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Zenledger Plans Pricing](https://apis.io/plans/zenledger/zenledger-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Zenledger Rate Limits](https://apis.io/rate-limits/zenledger/zenledger-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://zenledger.io/)
+- [Documentation](https://docs.zenledger.io/)
+- [API reference](https://docs.zenledger.io/compliance/v3/README.md)
+- [Pricing](https://zenledger.io/pricing/)
+- [Support](https://support.zenledger.io/en/)
+- [Blog](https://zenledger.io/blog/)
+- [Terms of service](https://zenledger.io/terms-of-use/)
+- [Privacy policy](https://zenledger.io/privacy-policy/)
+- [GitHub](https://github.com/zenledger-io)
+- [Status](https://status.zenledger.io/)
+
+## API Evangelist rating
+
+**Kin Score 56.8** — strong · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 64.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 36.8 |
+| Developer ergonomics | 41.8 |
+| Access clarity | 78.9 |
+
+**Agent readiness 30.5** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | — |
+
+**Regulatory alignment 35.3** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/zenledger/](https://apis.io/providers/zenledger/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for ZenLedger: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/zenledger/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
